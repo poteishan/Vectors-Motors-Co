@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vectors Adventure Sports</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- RESET & BASE STYLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .overlay {
+            background-color: #000000;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .main-img {
+            background-repeat: no-repeat;
+            opacity: 0.35;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Focus on the right side of the image */
+            object-position: 75% center;
+        }
+
+        /* --- NAVIGATION BAR --- */
+        header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 20; /* Increased z-index so header sits above other elements */
+        }
+
+        .brand h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 700;
+            font-style: italic;
+            z-index: 21; /* Ensure brand stays visible when menu opens */
+        }
+
+        .brand span {
+            display: block;
+            font-family: 'Roboto', sans-serif;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            color: #ff4500;
+            margin-top: 4px;
+            font-weight: bold;
+        }
+
+        /* Desktop Nav Styles */
+        .nav-links ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #ff4500;
+        }
+
+        /* Hamburger Icon (Hidden on Desktop) */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            z-index: 21; /* Must be higher than the slide-out menu */
+            font-size: 1.8rem;
+            color: #fff;
+            transition: color 0.3s ease;
+        }
+
+        .hamburger:hover {
+            color: #ff4500;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .content-container {
+            position: relative;
+            z-index: 2;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 20px;
+        }
+
+        .headline-box {
+            border-radius: 20px;
+            background: linear-gradient(90deg, rgba(255, 69, 0, 0.9) 0%, rgba(255, 69, 0, 0) 100%);
+            color: #ffffff;
+            padding: 30px 40px;
+            display: inline-block;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+            margin-left: -40px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .headline-box h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 4rem;
+            line-height: 1.1;
+            text-transform: uppercase;
+            font-weight: 700;
+            font-style: italic;
+        }
+
+        .chevrons {
+            color: #1a1a1a;
+            font-size: 4rem;
+            font-weight: 700;
+            margin-left: 15px;
+            letter-spacing: -5px;
+            display: inline-block;
+            transform: translateY(5px);
+        }
+
+        .description {
+            max-width: 600px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #f0f0f0;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .divider {
+            width: 80px;
+            height: 5px;
+            background-color: #ff4500;
+            margin-bottom: 20px;
+            transform: skewX(-20deg);
+        }
+
+        .sub-heading {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            font-weight: 500;
+            color: #ff4500;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            background-color: #ff4500;
+            color: white;
+            padding: 15px 35px;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            border: 2px solid #ff4500;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            transform: skewX(-10deg);
+        }
+
+        .cta-btn span,
+        .cta-btn i {
+            transform: skewX(10deg);
+        }
+
+        .cta-btn i {
+            margin-right: 10px;
+        }
+
+        .cta-btn:hover {
+            background-color: transparent;
+            color: #ff4500;
+            border-color: #ff4500;
+        }
+
+        /* --- RESPONSIVE / HAMBURGER LOGIC --- */
+        @media (max-width: 768px) {
+            header {
+                padding: 20px;
+            }
+
+            .hamburger {
+                display: block; /* Show hamburger icon on mobile */
+            }
+
+            /* The Sliding Drawer */
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: 0;
+                height: 100vh;
+                width: 100%; /* Covers 70% of screen width */
+                background-color: #0f0f0f; /* Dark background for menu */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transform: translateX(100%); /* Hidden off-screen by default */
+                transition: transform 0.4s ease-in-out;
+                z-index: 15; /* Sits below the Brand/Hamburger but above content */
+                box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+            }
+
+            /* Class added via JS to slide it in */
+            .nav-links.nav-active {
+                transform: translateX(0%);
+            }
+
+            /* Mobile Menu List Items */
+            .nav-links ul {
+                flex-direction: column;
+                gap: 50px;
+                text-align: center;
+            }
+            
+            .nav-links a {
+                font-size: 1.2rem;
+            }
+
+            /* Content Adjustments */
+            .headline-box h2 {
+                font-size: 2.5rem;
+            }
+
+            .chevrons {
+                font-size: 2.5rem;
+            }
+
+            .headline-box {
+                margin-left: -20px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="hero">
+        <div class="overlay">
+            <img src="../images/Race.jpg"
+                class="main-img" alt="Off road adventure">
+        </div>
+
+        <header>
+            <div class="brand">
+                <h1>VECTORS MOTORS</h1>
+                <span>ADVENTURE & OFF-ROAD DIVISION</span>
+            </div>
+
+            <nav class="nav-links">
+                <ul>
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">The Track</a></li>
+                    <li><a href="#">Events</a></li>
+                    <li><a href="#">Team</a></li>
+                    <li><a href="#"><i class="fas fa-flag-checkered"></i> Live Race</a></li>
+                </ul>
+            </nav>
+
+            <div class="hamburger" id="hamburger-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+        </header>
+
+        <div class="content-container">
+            <div class="headline-box">
+                <h2>
+                    CONQUER <br>
+                    EVERY <br>
+                    TERRAIN <span class="chevrons">&gt;&gt;&gt;</span>
+                </h2>
+            </div>
+
+            <p class="description">
+                Join the ultimate off-road experience. From custom Baja SAE engineering to
+                professional adventure sports, Vectors Motors pushes the limits of
+                speed, endurance, and adrenaline.
+            </p>
+
+            <div class="divider"></div>
+
+            <h3 class="sub-heading">PRO RACING SERIES 2024</h3>
+
+            <a href="#" class="cta-btn">
+                <span><i class="fas fa-tachometer-alt"></i> Start Your Engine</span>
+            </a>
+        </div>
+    </section>
+
+    <script>
+        const hamburger = document.getElementById('hamburger-btn');
+        const navLinks = document.querySelector('.nav-links');
+        const icon = hamburger.querySelector('i');
+
+        hamburger.addEventListener('click', () => {
+            // Toggle the menu slide
+            navLinks.classList.toggle('nav-active');
+
+            // Toggle icon animation (Bars <-> X)
+            if (navLinks.classList.contains('nav-active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+    </script>
+
+</body>
+
+</html>

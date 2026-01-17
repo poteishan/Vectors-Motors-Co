@@ -234,7 +234,7 @@ a {
 
 .arrow {
     width: 40px;
-    height: 40px; 
+    height: 40px;
     border-top: 8px solid #e63946;
     border-right: 8px solid #e63946;
     transform: rotate(45deg);
@@ -1182,10 +1182,14 @@ RESPONSIVE DESIGN
     }
 }
 
-@media (max-width:1110px) {}
-
 /* Tablets */
 @media (max-width: 768px) {
+
+    .logo-text {
+        font-size: 1rem;
+        color: #ffffff;
+        letter-spacing: 1.5px;
+    }
 
     /* Navigation */
     .nav-links {
@@ -1503,7 +1507,7 @@ RESPONSIVE DESIGN
 /* Extra Small Devices */
 @media (max-width: 400px) {
     .logo-text {
-        font-size: 1.5rem;
+        font-size: 1rem;
     }
 
     .logo-tagline {

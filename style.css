@@ -1392,6 +1392,11 @@ RESPONSIVE DESIGN
 
 /* Mobile Phones */
 @media (max-width: 576px) {
+
+    .arrows {
+       display: none;
+    }
+
     .chatbot-header {
         margin-top: 90px;
     }

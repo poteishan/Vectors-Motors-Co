@@ -1223,6 +1223,7 @@ RESPONSIVE DESIGN
     }
 
     .hero .container {
+        height: 100vh;
         margin-left: 0px;
     }
 
@@ -1869,6 +1870,7 @@ body.no-scroll {
     }
 
     .hero .container {
+        height: 100vh;
         flex-direction: column;
     }
 

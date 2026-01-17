@@ -1392,6 +1392,9 @@ RESPONSIVE DESIGN
 
 /* Mobile Phones */
 @media (max-width: 576px) {
+    .chatbot-header {
+        margin-top: 90px;
+    }
 
     /* Hero Section */
     .hero-title {
@@ -1506,6 +1509,7 @@ RESPONSIVE DESIGN
 
 /* Extra Small Devices */
 @media (max-width: 400px) {
+
     .logo-text {
         font-size: 1rem;
     }
@@ -1533,10 +1537,18 @@ RESPONSIVE DESIGN
     .container {
         padding: 0 15px;
     }
+
+    .chatbot-header {
+        margin-top: 90px;
+    }
 }
 
 /* Landscape Mode for Mobile */
 @media (max-height: 600px) and (orientation: landscape) {
+    .chatbot-header {
+        margin-top: 90px;
+    }
+
     .hero {
         height: auto;
         min-height: 100vh;

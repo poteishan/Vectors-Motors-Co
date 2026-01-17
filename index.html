@@ -69,19 +69,23 @@
                     <div class="category-info">
                         <h3 class="category-title">RECREATION & ADVENTURE</h3>
                         <p class="category-description">Robust vehicles for adventure, sports, and dessert safari.</p>
-                        <a href="https://vectorsmotors.netlify.app/Sectors/adventure.html" class="btn btn-outline category-btn">EXPLORE SOLUTIONS</a>
+                        <a href="https://vectorsmotors.netlify.app/Sectors/adventure.html"
+                            class="btn btn-outline category-btn">EXPLORE SOLUTIONS</a>
                     </div>
                 </div>
 
                 <div class="category-card" data-category="tourist">
                     <div class="category-image">
-                        <img src="https://images.pexels.com/photos/14823611/pexels-photo-14823611.jpeg?cs=srgb&dl=pexels-pok-rie-33563-14823611.jpg&fm=jpg" alt="Tourism">
+                        <img src="https://images.pexels.com/photos/14823611/pexels-photo-14823611.jpeg?cs=srgb&dl=pexels-pok-rie-33563-14823611.jpg&fm=jpg"
+                            alt="Tourism">
                         <div class="category-overlay"></div>
                     </div>
                     <div class="category-info">
                         <h3 class="category-title">DISASTER MANAGMENT</h3>
-                        <p class="category-description">Robust vehicles for disaster management and emergency response.</p>
-                        <a href="https://vectorsmotors.netlify.app/Sectors/disaster.html" class="btn btn-outline category-btn">EXPLORE SOLUTIONS</a>
+                        <p class="category-description">Robust vehicles for disaster management and emergency response.
+                        </p>
+                        <a href="https://vectorsmotors.netlify.app/Sectors/disaster.html"
+                            class="btn btn-outline category-btn">EXPLORE SOLUTIONS</a>
                     </div>
                 </div>
 
@@ -96,7 +100,8 @@
                         <h3 class="category-title">CONSTRUCTION & MINING</h3>
                         <p class="category-description">Heavy-duty vehicles for construction sites, material transport,
                             and rough terrain work.</p>
-                        <a href="https://vectorsmotors.netlify.app/Sectors/mining.html" class="btn btn-outline category-btn">EXPLORE SOLUTIONS</a>
+                        <a href="https://vectorsmotors.netlify.app/Sectors/mining.html"
+                            class="btn btn-outline category-btn">EXPLORE SOLUTIONS</a>
                     </div>
                 </div>
             </div>
@@ -321,6 +326,32 @@
             <div class="chat-input" id="bookingInput">
                 <!-- Input/buttons will be inserted here -->
             </div>
+            <!-- QUERY FEATURE -->
+            <div class="chatbot-query" id="querySection" style="display:none;">
+
+                <input type="text" id="queryName" placeholder="Your Name">
+
+                <input type="email" id="queryEmail" placeholder="Email">
+                <input type="tel" id="queryPhone" placeholder="Phone Number">
+
+                <select id="querySector">
+                    <option value="">Select Sector</option>
+                    <option value="Adventure">Adventure</option>
+                    <option value="Mining">Mining</option>
+                    <option value="Disaster">Disaster</option>
+                </select>
+
+                <textarea id="queryMessage" placeholder="Write your query"></textarea>
+
+                <button class="chat-btn" id="sendQuery">
+                    Send Query
+                </button>
+                <button class="chat-btn btn-outline" id="cancelQuery">
+                    Cancel
+                </button>
+
+            </div>
+
 
             <div class="status-bar">
                 <div class="status-item">
@@ -395,13 +426,67 @@
 
     <!-- Load model-viewer library -->
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-
-    <!-- Existing scripts -->
-    <script src="app.js"></script>
     <!-- Chatbot scripts - Full functionality preserved -->
     <script src="Test/frontend/script.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="app.js"></script>
+
 
     <script>
+
+        // ================= QUERY FEATURE =================
+
+        function openQueryForm() {
+            const bookingInput = document.getElementById("bookingInput");
+            const querySection = document.getElementById("querySection");
+
+            if (bookingInput) bookingInput.style.display = "none";
+            if (querySection) querySection.style.display = "flex";
+        }
+
+        function closeQueryForm() {
+            const bookingInput = document.getElementById("bookingInput");
+            const querySection = document.getElementById("querySection");
+
+            if (querySection) querySection.style.display = "none";
+            if (bookingInput) bookingInput.style.display = "block";
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const sendBtn = document.getElementById("sendQuery");
+
+            if (sendBtn) {
+                sendBtn.addEventListener("click", () => {
+                    const name = document.getElementById("queryName").value.trim();
+                    const phone = document.getElementById("queryPhone").value.trim();
+                    const email = document.getElementById("queryEmail").value.trim();
+
+                    const sector = document.getElementById("querySector").value;
+                    const message = document.getElementById("queryMessage").value.trim();
+                    if (!name || !phone || !message) {
+                        alert("Please fill name, phone and message");
+                        return;
+                    }
+
+                    if (!/^\d{10}$/.test(phone)) {
+                        alert("Enter valid 10-digit phone number");
+                        return;
+                    }
+
+
+                    showBookingMessage(
+                        `📩 Query received successfully!\n\nName: ${name}\nPhone: ${phone}\nSector: ${sector || "N/A"}\n\nOur team will contact you soon.`,
+                        "bot"
+                    );
+
+
+                    closeQueryForm();
+                });
+            }
+        });
+
         // Chatbot Integration
         document.addEventListener('DOMContentLoaded', function () {
             // Initialize chatbot UI
@@ -578,14 +663,14 @@
                             <button class="chat-btn" onclick="startBookingFlow()">
                                 <i class="fas fa-calendar-check"></i> Start Booking
                             </button>
-                            <button class="chat-btn" onclick="showQuickServices()">
-                                <i class="fas fa-bolt"></i> Quick Service
-                            </button>
                             <button class="chat-btn" onclick="showServiceInfo()">
                                 <i class="fas fa-info-circle"></i> Service Info
                             </button>
                             <button class="chat-btn" onclick="showMaintenanceTips()">
                                 <i class="fas fa-tools"></i> Maintenance Tips
+                            </button>
+                            <button class="chat-btn" onclick="openQueryForm()">
+                                <i class="fas fa-envelope"></i> Send Query
                             </button>
                         </div>
                     `;
@@ -749,69 +834,18 @@
             }, 500);
         }
 
-        function selectBookingService(service) {
-            showBookingMessage(service, "user");
+        showBookingMessage(service, "user");
+        updateStatus("service", service);
 
-            // Update status
-            const statusService = document.getElementById('statusService');
-            if (statusService) {
-                statusService.textContent = service;
-            }
+        // Store service in window.currentBooking
+        window.currentBooking = window.currentBooking || {};
+        window.currentBooking.service = service;
 
-            // Continue to date selection
-            setTimeout(() => {
-                showBookingMessage("Select preferred date:", "bot");
-
-                const inputArea = document.getElementById("bookingInput");
-                if (!inputArea) return;
-
-                const today = new Date();
-                const dates = [];
-
-                for (let i = 1; i <= 5; i++) {
-                    const d = new Date(today);
-                    d.setDate(today.getDate() + i);
-
-                    dates.push({
-                        label: d.toLocaleDateString("en-IN", {
-                            weekday: "short",
-                            day: "numeric",
-                            month: "short"
-                        }),
-                        iso: d.toISOString().split("T")[0]
-                    });
-                }
-
-                inputArea.innerHTML = `
-        <div class="button-grid">
-            ${dates.map(d => `
-                <button class="chat-btn"
-                    onclick="selectBookingDate('${d.label}', '${d.iso}')">
-                    <i class="fas fa-calendar"></i> ${d.label}
-                </button>
-            `).join("")}
-
-            <button class="chat-btn other-date-btn"
-                onclick="openCalendar()">
-                <i class="fas fa-ellipsis-h"></i> Other dates
-            </button>
-
-            <!-- hidden but usable date input -->
-            <input type="date"
-                id="hiddenDatePicker"
-                min="${today.toISOString().split("T")[0]}"
-                onchange="handleCustomDate(this.value)"
-                style="
-                    position:absolute;
-                    opacity:0;
-                    pointer-events:none;
-                ">
-        </div>
-    `;
-            }, 500);
-
-
-        }
+        // Continue to date selection
+        setTimeout(() => {
+            showBookingMessage("Select preferred date:", "bot");
+            showDateSelection();
+        }, 500);
 
         function openCalendar() {
             const picker = document.getElementById("hiddenDatePicker");
@@ -916,111 +950,89 @@
             const pdfContent = document.getElementById('pdfContent');
             const pdfModal = document.getElementById('pdfModal');
 
-            const name = document.getElementById('statusName').textContent;
-            const service = document.getElementById('statusService').textContent;
-            const date = document.getElementById('statusDate').textContent;
+            // Get ACTUAL user data from the chatbot conversation
+            const statusName = document.getElementById('statusName');
+            const statusService = document.getElementById('statusService');
+            const statusDate = document.getElementById('statusDate');
+
+            const name = statusName ? statusName.textContent : 'Not Started';
+            const service = statusService ? statusService.textContent : 'No Service';
+            const date = statusDate ? statusDate.textContent : 'No Date';
+
+            // Check if booking is complete
+            if (name === 'Not Started' || service === 'No Service' || date === 'No Date') {
+                showBookingMessage("⚠️ Please complete your booking before downloading the summary.", "bot");
+                return;
+            }
+
+            // Calculate price based on service type
+            let price = 0;
+            if (service.includes('Regular')) price = 1500;
+            else if (service.includes('Full')) price = 6000;
+            else if (service.includes('Brake')) price = 3000;
+            else if (service.includes('Suspension')) price = 4500;
+            else if (service.includes('Oil Change')) price = 1500;
+            else if (service.includes('Brake Check')) price = 500;
+            else if (service.includes('Tire Service')) price = 1000;
+            else if (service.includes('Full Checkup')) price = 2000;
+
+            const bookingId = 'VM' + Date.now().toString().slice(-8);
 
             pdfContent.innerHTML = `
-                <div style="padding:20px;font-family:'Open Sans',sans-serif;">
-                    <h2 style="color:var(--primary-color);text-align:center;margin-bottom:20px;">🏍️ VECTORS MOTORS</h2>
-                    <h3 style="color:#666;text-align:center;margin-bottom:30px;">Service Booking Confirmation</h3>
-                    
-                    <div style="background:#f8f9fa;padding:20px;border-radius:8px;margin-bottom:20px;">
-                        <h4 style="color:var(--primary-color);margin-bottom:15px;">Booking Details</h4>
-                        <table style="width:100%;border-collapse:collapse;">
-                            <tr>
-                                <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Booking ID:</strong></td>
-                                <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">VM${Date.now().toString().slice(-8)}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Customer:</strong></td>
-                                <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${name}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Service:</strong></td>
-                                <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${service}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Date:</strong></td>
-                                <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${date}</td>
-                            </tr>
-                        </table>
-                    </div>
-                    
-                    <div style="background:#fff5f0;padding:20px;border-radius:8px;margin-bottom:20px;">
-                        <h4 style="color:#ff6b35;margin-bottom:15px;">Cost Breakdown</h4>
-                        <table style="width:100%;border-collapse:collapse;">
-                            <tr>
-                                <td style="padding:10px 0;border-bottom:1px solid #ddd;">Service Charge</td>
-                                <td style="padding:10px 0;border-bottom:1px solid #ddd;text-align:right;">₹${service.includes('Regular') ? '1,500' : service.includes('Full') ? '6,000' : service.includes('Brake') ? '3,000' : '4,500'}</td>
-                            </tr>
-                            <tr style="background:#ff6b35;color:white;font-weight:bold;">
-                                <td style="padding:15px 0;">TOTAL AMOUNT</td>
-                                <td style="padding:15px 0;text-align:right;">₹${service.includes('Regular') ? '1,500' : service.includes('Full') ? '6,000' : service.includes('Brake') ? '3,000' : '4,500'}</td>
-                            </tr>
-                        </table>
-                    </div>
-                    
-                    <div style="text-align:center;color:#666;font-size:14px;margin-top:30px;">
-                        <p>Thank you for choosing Vectors Motors!</p>
-                        <p><strong>Service Center:</strong> DYPCET, Vectors Motors & Co, Kolhapur - 416002</p>
-                        <p><strong>Contact:</strong> 1800-VECTORS-1</p>
-                    </div>
-                </div>
-            `;
+        <div style="padding:20px;font-family:'Open Sans',sans-serif;">
+            <h2 style="color:#1a3a5f;text-align:center;margin-bottom:20px;">🏍️ VECTORS MOTORS</h2>
+            <h3 style="color:#666;text-align:center;margin-bottom:30px;">Service Booking Confirmation</h3>
+            
+            <div style="background:#f8f9fa;padding:20px;border-radius:8px;margin-bottom:20px;">
+                <h4 style="color:#1a3a5f;margin-bottom:15px;">Booking Details</h4>
+                <table style="width:100%;border-collapse:collapse;">
+                    <tr>
+                        <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Booking ID:</strong></td>
+                        <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${bookingId}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Customer:</strong></td>
+                        <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${name}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Service:</strong></td>
+                        <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${service}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Date:</strong></td>
+                        <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${date}</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div style="background:#fff5f0;padding:20px;border-radius:8px;margin-bottom:20px;">
+                <h4 style="color:#e63946;margin-bottom:15px;">Cost Breakdown</h4>
+                <table style="width:100%;border-collapse:collapse;">
+                    <tr>
+                        <td style="padding:10px 0;border-bottom:1px solid #ddd;">Service Charge</td>
+                        <td style="padding:10px 0;border-bottom:1px solid #ddd;text-align:right;">₹${price.toLocaleString('en-IN')}</td>
+                    </tr>
+                    <tr style="background:#e63946;color:white;font-weight:bold;">
+                        <td style="padding:15px 0;">TOTAL AMOUNT</td>
+                        <td style="padding:15px 0;text-align:right;">₹${price.toLocaleString('en-IN')}</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div style="text-align:center;color:#666;font-size:14px;margin-top:30px;">
+                <p>Thank you for choosing Vectors Motors!</p>
+                <p><strong>Service Center:</strong> DYPCET, Vectors Motors & Co, Kolhapur - 416002</p>
+                <p><strong>Contact:</strong> 1800-VECTORS-1</p>
+                <p style="margin-top:15px;color:#999;">Document generated: ${new Date().toLocaleString('en-IN')}</p>
+            </div>
+        </div>
+    `;
 
             pdfModal.classList.add('active');
         }
 
-        function showQuickServices() {
-            showBookingMessage("Quick service options:", "bot");
+        showBookingMessage("Quick service options:", "bot");
 
-            const inputArea = document.getElementById('bookingInput');
-            if (inputArea) {
-                inputArea.innerHTML = `
-                    <div class="button-grid">
-                        <button class="chat-btn" onclick="bookQuickService('Oil Change - ₹1,500')">
-                            <i class="fas fa-oil-can"></i> Oil Change
-                            <small>₹1,500 • 1 hour</small>
-                        </button>
-                        <button class="chat-btn" onclick="bookQuickService('Brake Check - ₹500')">
-                            <i class="fas fa-car-crash"></i> Brake Check
-                            <small>₹500 • 30 min</small>
-                        </button>
-                        <button class="chat-btn" onclick="bookQuickService('Tire Service - ₹1,000')">
-                            <i class="fas fa-tire"></i> Tire Service
-                            <small>₹1,000 • 45 min</small>
-                        </button>
-                        <button class="chat-btn" onclick="bookQuickService('Full Checkup - ₹2,000')">
-                            <i class="fas fa-car"></i> Full Checkup
-                            <small>₹2,000 • 2 hours</small>
-                        </button>
-                    </div>
-                `;
-            }
-        }
-
-        function bookQuickService(service) {
-            showBookingMessage(service, "user");
-
-            setTimeout(() => {
-                showBookingMessage("Quick service booked!\nOur technician will contact you within 30 minutes.\nService charge: ₹500 (diagnostic fee included)", "bot");
-
-                const inputArea = document.getElementById('bookingInput');
-                if (inputArea) {
-                    inputArea.innerHTML = `
-                        <div class="button-grid">
-                            <button class="submit-btn" onclick="downloadBookingConfirmation()">
-                                <i class="fas fa-download"></i> Get Receipt
-                            </button>
-                            <button class="skip-btn" onclick="startBookingSystem()">
-                                <i class="fas fa-plus"></i> New Service
-                            </button>
-                        </div>
-                    `;
-                }
-            }, 1000);
-        }
 
         function showServiceInfo() {
             showBookingMessage("Our service packages:", "bot");

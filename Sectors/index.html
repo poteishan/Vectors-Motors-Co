@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vectors ATV | Premium All-Terrain Vehicles</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="./output.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Allerta+Stencil&family=Open+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- HTML2PDF for Chatbot -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+</head>
+<!-- reconnaissance -->
+
+<body>
+    <!-- Header/Navigation -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="#logo" class="logo">
+                    <span class="logo-text">VECTORS MOTORS & CO.</span>
+                    <span class="logo-tagline">ALL-TERRAIN SOLUTIONS</span>
+                </a>
+                <ul class="nav-links show">
+                    <li><a href="#home" class="nav-link active">HOME</a></li>
+                    <li><a href="#sectors" class="nav-link" id="products-toggle">SECTORS</a></li>
+                    <li><a href="#technology" class="nav-link">TECHNOLOGY</a></li>
+                    <li><a href="#about" class="nav-link">ABOUT</a></li>
+                    <li><a href="#contact" class="nav-link">CONTACT</a></li>
+                    <li><a href="#3d" class="nav-link" id="open3D">
+                            <i class="fas fa-cube flex"></i> 3D VIEW
+                        </a></li>
+                </ul>
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars" id="white"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Products Toggle Section (Hidden by default) -->
+    <section class="products-toggle-section" id="products-section">
+        <div class="container">
+            <div class="toggle-header">
+                <h2 class="section-title">OUR SECTORS</h2>
+                <p class="section-subtitle">Tailored solutions for every industry need</p>
+                <button class="close-toggle" id="close-products">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="categories-grid">
+                <div class="category-card" data-category="agriculture">
+                    <div class="category-image">
+                        <div class="rec-images">
+                            <img src="https://tse4.mm.bing.net/th/id/OIP.rDEPq_KRnTXgwP7HohnCNgHaE7?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3"
+                                alt="Race">
+                        </div>
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-info">
+                        <h3 class="category-title">RECREATION & ADVENTURE</h3>
+                        <p class="category-description">Robust vehicles for adventure, sports, and dessert safari.</p>
+                        <a href="#" class="btn btn-outline category-btn">EXPLORE SOLUTIONS</a>
+                    </div>
+                </div>
+
+                <div class="category-card" data-category="tourist">
+                    <div class="category-image">
+                        <img src="https://images.pexels.com/photos/14823611/pexels-photo-14823611.jpeg?cs=srgb&dl=pexels-pok-rie-33563-14823611.jpg&fm=jpg" alt="Tourism">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-info">
+                        <h3 class="category-title">DISASTER MANAGMENT</h3>
+                        <p class="category-description">Robust vehicles for disaster management and emergency response.</p>
+                        <a href="#" class="btn btn-outline category-btn">EXPLORE SOLUTIONS</a>
+                    </div>
+                </div>
+
+
+                <div class="category-card" data-category="construction">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"
+                            alt="Construction">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-info">
+                        <h3 class="category-title">CONSTRUCTION & MINING</h3>
+                        <p class="category-description">Heavy-duty vehicles for construction sites, material transport,
+                            and rough terrain work.</p>
+                        <a href="https://vectorsmotors.netlify.app/Sectors/mining.html" class="btn btn-outline category-btn">EXPLORE SOLUTIONS</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hero Section -->
+
+    <section class="hero">
+        <!-- background video -->
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="./images/FInal_Video.mp4" type="video/mp4">
+        </video>
+
+        <!-- black overlay -->
+        <div class="hero-overlay"></div>
+
+        <!-- content -->
+        <div class="hero-image">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="title flex align-items-center gap-25">
+                        <h1 class="hero-title flex align-items-center">CONQUER EVERY TERRAIN</h1>
+                        <div class="arrows">
+                            <span class="arrow"></span>
+                            <span class="arrow"></span>
+                            <span class="arrow"></span>
+                        </div>
+                    </div>
+                    <p class="hero-subtitle">
+                        Vectors designs and manufactures premium all-terrain vehicles built for
+                        extreme performance, reliability, and intelligent fleet management.
+                    </p>
+                    <div class="hero-divider"></div>
+                    <div class="access-platform">
+                        <h3 class="platform-title">ACCESS PLATFORM</h3>
+                        <a href="#" class="btn btn-primary">
+                            <i class="fas fa-eye"></i> VIEW PRODUCTS
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">BUILT FOR EXTREME CONDITIONS</h2>
+            <p class="section-subtitle">Our vehicles are engineered to excel where others fail</p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <h3 class="feature-title">EXTREME PERFORMANCE</h3>
+                    <p class="feature-description">Powerful engines and advanced suspension systems for tackling the
+                        toughest terrains.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">MAXIMUM RELIABILITY</h3>
+                    <p class="feature-description">Built with durable components and rigorous testing to ensure optimal
+                        performance in any condition.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Preview -->
+    <section class="products">
+        <div class="container">
+            <h2 class="section-title">EXPLORE OUR PRODUCT LINE</h2>
+            <p class="section-subtitle">Choose from our range of premium all-terrain vehicles</p>
+
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1593941707882-a5bba5338fe3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                            alt="Vectors ATV Model X">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">MODEL X</h3>
+                        <p class="product-description">Our flagship model with advanced terrain adaptation and 450HP
+                            engine.</p>
+                        <a href="#" class="btn btn-outline">LEARN MORE</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1591637333184-19aa84b3e01f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
+                            alt="Vectors ATV Ranger">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">RANGER</h3>
+                        <p class="product-description">Perfect for industrial and agricultural use with customizable
+                            cargo options.</p>
+                        <a href="#" class="btn btn-outline">LEARN MORE</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1621451537084-482c73073a0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
+                            alt="Vectors ATV Trailblazer">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">TRAILBLAZER</h3>
+                        <p class="product-description">Lightweight and agile, designed for recreational and sport use.
+                        </p>
+                        <a href="#" class="btn btn-outline">LEARN MORE</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <a href="#" class="btn btn-primary btn-large">
+                    <i class="fas fa-th-list"></i> VIEW ALL PRODUCTS
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <span class="logo-text">VECTORS</span>
+                        <span class="logo-tagline">ALL-TERRAIN SOLUTIONS</span>
+                    </a>
+                    <p class="footer-description">Designing and manufacturing premium all-terrain vehicles since 2010.
+                    </p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>PRODUCTS</h4>
+                        <ul>
+                            <li><a href="#">MODEL X</a></li>
+                            <li><a href="#">RANGER</a></li>
+                            <li><a href="#">TRAILBLAZER</a></li>
+                            <li><a href="#">ACCESSORIES</a></li>
+                            <li><a href="#">CUSTOM BUILDS</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-column">
+                        <h4>SOLUTIONS</h4>
+                        <ul>
+                            <li><a href="#">INDUSTRIAL USE</a></li>
+                            <li><a href="#">AGRICULTURE</a></li>
+                            <li><a href="#">RECREATION</a></li>
+                            <li><a href="#">EMERGENCY SERVICES</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-column" id="about">
+                        <h4>COMPANY</h4>
+                        <ul>
+                            <li><a href="#">ABOUT US</a></li>
+                            <li><a href="#">CAREERS</a></li>
+                            <li><a href="#">NEWS</a></li>
+                            <li><a href="#">CONTACT</a></li>
+                            <li><a href="#">SUPPORT</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2023 VECTORS ALL-TERRAIN VEHICLES. ALL RIGHTS RESERVED.</p>
+                <div class="footer-legal">
+                    <a href="#">PRIVACY POLICY</a>
+                    <a href="#">TERMS OF SERVICE</a>
+                    <a href="#">COOKIE POLICY</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Booking Chatbot Toggle Button -->
+    <div class="chatbot-toggle" id="chatbotToggle">
+        <i class="fa-solid fa-car"></i>
+        <div class="badge" id="chatbotBadge">!</div>
+    </div>
+
+    <!-- Booking Chatbot Container -->
+    <div class="chatbot-container" id="chatbotContainer">
+        <div class="chatbot-header">
+            <h3><i class="fas fa-calendar-alt"></i> BOOK SERVICE</h3>
+            <button class="close-chatbot" id="closeChatbot">&times;</button>
+        </div>
+
+        <div class="chatbot-body">
+            <div class="chat-messages" id="bookingMessages">
+                <!-- Messages will be inserted here -->
+            </div>
+
+            <div class="typing-indicator" id="bookingTyping">
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <span>Processing...</span>
+            </div>
+
+            <div class="chat-input" id="bookingInput">
+                <!-- Input/buttons will be inserted here -->
+            </div>
+
+            <div class="status-bar">
+                <div class="status-item">
+                    <i class="fas fa-user"></i>
+                    <span>Name: <span id="statusName">Not Started</span></span>
+                </div>
+                <div class="status-item">
+                    <i class="fas fa-wrench"></i>
+                    <span>Service: <span id="statusService">No Service</span></span>
+                </div>
+                <div class="status-item">
+                    <i class="fas fa-calendar"></i>
+                    <span>Date: <span id="statusDate">No Date</span></span>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <button class="quick-btn" id="quickQuote">
+                    <i class="fas fa-calculator"></i> Get Quote
+                </button>
+                <button class="quick-btn" id="quickHelp">
+                    <i class="fas fa-phone"></i> Emergency
+                </button>
+                <button class="quick-btn" id="quickBrochure">
+                    <i class="fas fa-file-pdf"></i> Brochure
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PDF Modal -->
+    <div class="modal" id="pdfModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-file-pdf"></i> Service Report</h3>
+                <button class="close-chatbot" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body" id="pdfContent">
+                <!-- PDF content will be inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button class="submit-btn" id="downloadPDF">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- ==================== 3D MODEL MODAL ==================== -->
+    <div class="model-slide" id="modelSlide">
+        <div class="model-slide-header">
+            <h2><i class="fas fa-cube"></i> ATV 3D Model</h2>
+            <button class="close-model" id="closeModel">&times;</button>
+        </div>
+        <div class="model-viewer-container">
+            <!-- 3D model will be loaded here -->
+            <model-viewer src="./images/Old.glb" alt="Vectors ATV 3D Model" camera-controls auto-rotate
+                shadow-intensity="1" exposure="1" style="width: 100%; height: 100%; background-color: white">
+            </model-viewer>
+            <div class="model-controls">
+                <button class="model-control-btn" onclick="toggleFullscreen()">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+            <div class="model-info">
+                <h3><i class="fas fa-info-circle"></i> Vectors ATV Model X</h3>
+                <p><strong>Engine:</strong> HONDA GX 430 4 Stroke Engine</p>
+                <p><strong>Suspension:</strong> AFCO Pneumatic Suspension</p>
+                <p><strong>Load Capacity:</strong> 250kg</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load model-viewer library -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+    <!-- Existing scripts -->
+    <script src="app.js"></script>
+    <!-- Chatbot scripts - Full functionality preserved -->
+    <script src="Test/frontend/script.js"></script>
+
+    <script>
+        // Chatbot Integration
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize chatbot UI
+            initChatbotUI();
+
+            // Start booking system
+            setTimeout(() => {
+                startBookingSystem();
+            }, 1000);
+
+            // Show notification badge after 5 seconds
+            setTimeout(() => {
+                const badge = document.getElementById('chatbotBadge');
+                const chatbotContainer = document.getElementById('chatbotContainer');
+                if (badge && !chatbotContainer.classList.contains('active')) {
+                    badge.style.display = 'flex';
+                }
+            }, 5000);
+        });
+
+        function initChatbotUI() {
+            const chatbotToggle = document.getElementById('chatbotToggle');
+            const chatbotContainer = document.getElementById('chatbotContainer');
+            const closeChatbot = document.getElementById('closeChatbot');
+            const badge = document.getElementById('chatbotBadge');
+
+            // Toggle chatbot
+            if (chatbotToggle) {
+                chatbotToggle.addEventListener('click', function () {
+                    chatbotContainer.classList.add('active');
+                    // Hide badge when opened
+                    if (badge) {
+                        badge.style.display = 'none';
+                    }
+                });
+            }
+
+            // Close chatbot
+            if (closeChatbot) {
+                closeChatbot.addEventListener('click', function () {
+                    chatbotContainer.classList.remove('active');
+                });
+            }
+
+            // Close modal
+            const closeModal = document.getElementById('closeModal');
+            const pdfModal = document.getElementById('pdfModal');
+
+            if (closeModal) {
+                closeModal.addEventListener('click', function () {
+                    pdfModal.classList.remove('active');
+                });
+            }
+
+            // Close modal when clicking outside
+            if (pdfModal) {
+                pdfModal.addEventListener('click', function (e) {
+                    if (e.target === this) {
+                        this.classList.remove('active');
+                    }
+                });
+            }
+
+            // Set up quick actions
+            const quickBook = document.getElementById('quickBook');
+            const quickQuote = document.getElementById('quickQuote');
+            const quickHelp = document.getElementById('quickHelp');
+            const quickBrochure = document.getElementById('quickBrochure');
+
+            if (quickBook) {
+                quickBook.addEventListener('click', function () {
+                    startBookingSystem();
+                });
+            }
+
+            if (quickQuote) {
+                quickQuote.addEventListener('click', function () {
+                    if (typeof generateQuickQuote === 'function') {
+                        const quote = generateQuickQuote();
+                        showBookingMessage(quote, "bot");
+                    }
+                });
+            }
+
+            if (quickHelp) {
+                quickHelp.addEventListener('click', function () {
+                    showBookingMessage("🚨 EMERGENCY ASSISTANCE\n\n• Call: 1800-VECTORS-1 (24/7)\n• WhatsApp: +91 98765 43210\n• Free pickup within 50km\n\nWe'll dispatch a technician immediately!", "bot");
+                });
+            }
+
+            if (quickBrochure) {
+                quickBrochure.addEventListener('click', function () {
+                    if (typeof generatePDFBrochure === 'function') {
+                        generatePDFBrochure();
+                    }
+                });
+            }
+
+            // Set up PDF buttons
+            const downloadPDF = document.getElementById('downloadPDF');
+            const emailPDF = document.getElementById('emailPDF');
+
+            if (downloadPDF) {
+                downloadPDF.addEventListener('click', function () {
+                    if (typeof window.generatePDFReport === 'function') {
+                        window.generatePDFReport();
+                    }
+                });
+            }
+        }
+
+        // Helper functions for chatbot
+        function showBookingMessage(text, sender) {
+            const messages = document.getElementById('bookingMessages');
+            if (!messages) return;
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+
+            const avatar = document.createElement('div');
+            avatar.className = 'avatar';
+            avatar.innerHTML = `<i class="fas fa-${sender === 'bot' ? 'robot' : 'user'}"></i>`;
+
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+
+            if (text.includes('\n')) {
+                const lines = text.split('\n');
+                lines.forEach(line => {
+                    const p = document.createElement('p');
+                    p.textContent = line;
+                    bubble.appendChild(p);
+                });
+            } else {
+                bubble.innerHTML = `<p>${text}</p>`;
+            }
+
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(bubble);
+            messages.appendChild(messageDiv);
+
+            // Scroll to bottom
+            setTimeout(() => {
+                messages.scrollTop = messages.scrollHeight;
+            }, 100);
+        }
+
+        function startBookingSystem() {
+            // Clear messages
+            const messages = document.getElementById('bookingMessages');
+            if (messages) {
+                messages.innerHTML = '';
+            }
+
+            // Show initial message
+            showBookingMessage("👋 Welcome to Vectors Motors ATV Service!", "bot");
+            showBookingMessage("I'll help you book a service appointment. Let's get started!", "bot");
+
+            // Reset status
+            const statusName = document.getElementById('statusName');
+            const statusService = document.getElementById('statusService');
+            const statusDate = document.getElementById('statusDate');
+
+            if (statusName) statusName.textContent = "Not Started";
+            if (statusService) statusService.textContent = "No Service";
+            if (statusDate) statusDate.textContent = "No Date";
+
+            // Show initial options after delay
+            setTimeout(() => {
+                const inputArea = document.getElementById('bookingInput');
+                if (inputArea) {
+                    inputArea.innerHTML = `
+                        <div class="button-grid">
+                            <button class="chat-btn" onclick="startBookingFlow()">
+                                <i class="fas fa-calendar-check"></i> Start Booking
+                            </button>
+                            <button class="chat-btn" onclick="showQuickServices()">
+                                <i class="fas fa-bolt"></i> Quick Service
+                            </button>
+                            <button class="chat-btn" onclick="showServiceInfo()">
+                                <i class="fas fa-info-circle"></i> Service Info
+                            </button>
+                            <button class="chat-btn" onclick="showMaintenanceTips()">
+                                <i class="fas fa-tools"></i> Maintenance Tips
+                            </button>
+                        </div>
+                    `;
+                }
+            }, 800);
+        }
+
+        function startBookingFlow() {
+            showBookingMessage("Let's book your service!", "user");
+
+            // Show typing indicator
+            const typing = document.getElementById('bookingTyping');
+            if (typing) {
+                typing.classList.add('active');
+            }
+
+            setTimeout(() => {
+                if (typing) {
+                    typing.classList.remove('active');
+                }
+                showBookingMessage("Great! Let's start with your details.", "bot");
+
+                // Show name input
+                const inputArea = document.getElementById('bookingInput');
+                if (inputArea) {
+                    inputArea.innerHTML = `
+                        <div class="input-container">
+                            <div class="input-group">
+                                <input type="text" id="userName" placeholder="Enter your full name" class="form-input">
+                            </div>
+                            <div class="button-group">
+                                <button class="submit-btn" onclick="submitUserName()">
+                                    <i class="fas fa-check"></i> Submit
+                                </button>
+                                <button class="skip-btn" onclick="startBookingSystem()">
+                                    <i class="fas fa-arrow-left"></i> Back
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+            }, 1000);
+        }
+
+        function fillName(name) {
+            const nameInput = document.getElementById('userName');
+            if (nameInput) {
+                nameInput.value = name;
+            }
+        }
+
+        function submitUserName() {
+            const nameInput = document.getElementById('userName');
+            const name = nameInput ? nameInput.value.trim() : '';
+
+            if (!name || name.length < 2) {
+                // Show error
+                const inputArea = document.getElementById('bookingInput');
+                if (inputArea) {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'error-message';
+                    errorDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please enter a valid name (min 2 characters)';
+                    inputArea.prepend(errorDiv);
+
+                    setTimeout(() => {
+                        if (errorDiv.parentNode) errorDiv.remove();
+                    }, 3000);
+                }
+                return;
+            }
+
+            showBookingMessage(name, "user");
+
+            // Update status
+            const statusName = document.getElementById('statusName');
+            if (statusName) {
+                statusName.textContent = name;
+            }
+
+            // Continue to next step
+            setTimeout(() => {
+                showBookingMessage("What's your contact number?", "bot");
+
+                const inputArea = document.getElementById('bookingInput');
+                if (inputArea) {
+                    inputArea.innerHTML = `
+                        <div class="input-container">
+                            <div class="input-group">
+                                <input type="tel" id="userPhone" placeholder="Enter 10-digit phone number" class="form-input">
+                            </div>
+                            <div class="button-group">
+                                <button class="submit-btn" onclick="submitUserPhone()">
+                                    <i class="fas fa-check"></i> Submit
+                                </button>
+                                <button class="skip-btn" onclick="startBookingFlow()">
+                                    <i class="fas fa-arrow-left"></i> Back
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+            }, 500);
+        }
+
+        function fillPhone(phone) {
+            const phoneInput = document.getElementById('userPhone');
+            if (phoneInput) {
+                phoneInput.value = phone;
+            }
+        }
+
+        function submitUserPhone() {
+            const phoneInput = document.getElementById('userPhone');
+            const phone = phoneInput ? phoneInput.value.trim() : '';
+
+            if (!phone || !/^\d{10}$/.test(phone)) {
+                // Show error
+                const inputArea = document.getElementById('bookingInput');
+                if (inputArea) {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'error-message';
+                    errorDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please enter a valid 10-digit phone number';
+                    inputArea.prepend(errorDiv);
+
+                    setTimeout(() => {
+                        if (errorDiv.parentNode) errorDiv.remove();
+                    }, 3000);
+                }
+                return;
+            }
+
+            showBookingMessage(phone, "user");
+
+            // Continue to service selection
+            setTimeout(() => {
+                showBookingMessage("Select service type:", "bot");
+
+                const inputArea = document.getElementById('bookingInput');
+                if (inputArea) {
+                    inputArea.innerHTML = `
+                        <div class="button-grid">
+                            <button class="chat-btn" onclick="selectBookingService('Regular Service')">
+                                <i class="fas fa-oil-can"></i> Regular Service
+                                <small>₹1,500 • 2-3 hours</small>
+                            </button>
+                            <button class="chat-btn" onclick="selectBookingService('Full Service')">
+                                <i class="fas fa-tools"></i> Full Service
+                                <small>₹6,000 • 5-6 hours</small>
+                            </button>
+                            <button class="chat-btn" onclick="selectBookingService('Brake Overhaul')">
+                                <i class="fas fa-car-crash"></i> Brake Service
+                                <small>₹3,000 • 3-4 hours</small>
+                            </button>
+                            <button class="chat-btn" onclick="selectBookingService('Suspension Repair')">
+                                <i class="fas fa-car"></i> Suspension
+                                <small>₹4,500 • 4-5 hours</small>
+                            </button>
+                        </div>
+                    `;
+                }
+            }, 500);
+        }
+
+        function selectBookingService(service) {
+            showBookingMessage(service, "user");
+
+            // Update status
+            const statusService = document.getElementById('statusService');
+            if (statusService) {
+                statusService.textContent = service;
+            }
+
+            // Continue to date selection
+            setTimeout(() => {
+                showBookingMessage("Select preferred date:", "bot");
+
+                const inputArea = document.getElementById("bookingInput");
+                if (!inputArea) return;
+
+                const today = new Date();
+                const dates = [];
+
+                for (let i = 1; i <= 5; i++) {
+                    const d = new Date(today);
+                    d.setDate(today.getDate() + i);
+
+                    dates.push({
+                        label: d.toLocaleDateString("en-IN", {
+                            weekday: "short",
+                            day: "numeric",
+                            month: "short"
+                        }),
+                        iso: d.toISOString().split("T")[0]
+                    });
+                }
+
+                inputArea.innerHTML = `
+        <div class="button-grid">
+            ${dates.map(d => `
+                <button class="chat-btn"
+                    onclick="selectBookingDate('${d.label}', '${d.iso}')">
+                    <i class="fas fa-calendar"></i> ${d.label}
+                </button>
+            `).join("")}
+
+            <button class="chat-btn other-date-btn"
+                onclick="openCalendar()">
+                <i class="fas fa-ellipsis-h"></i> Other dates
+            </button>
+
+            <!-- hidden but usable date input -->
+            <input type="date"
+                id="hiddenDatePicker"
+                min="${today.toISOString().split("T")[0]}"
+                onchange="handleCustomDate(this.value)"
+                style="
+                    position:absolute;
+                    opacity:0;
+                    pointer-events:none;
+                ">
+        </div>
+    `;
+            }, 500);
+
+
+        }
+
+        function openCalendar() {
+            const picker = document.getElementById("hiddenDatePicker");
+
+            picker.style.pointerEvents = "auto";
+            picker.showPicker();   // 🔥 modern browsers
+            picker.style.pointerEvents = "none";
+        }
+
+        function handleCustomDate(value) {
+            if (!value) return;
+
+            const d = new Date(value);
+            const label = d.toLocaleDateString("en-IN", {
+                weekday: "short",
+                day: "numeric",
+                month: "short"
+            });
+
+            selectBookingDate(label, value);
+        }
+
+
+
+        function selectBookingDate(dateStr, isoDate) {
+            showBookingMessage(dateStr, "user");
+
+            // Update status
+            const statusDate = document.getElementById('statusDate');
+            if (statusDate) {
+                statusDate.textContent = dateStr;
+            }
+
+            // Show confirmation
+            setTimeout(() => {
+                showBookingMessage("Great! Here's your booking summary:", "bot");
+
+                const name = document.getElementById('statusName').textContent;
+                const service = document.getElementById('statusService').textContent;
+                const date = document.getElementById('statusDate').textContent;
+
+                const inputArea = document.getElementById('bookingInput');
+                if (inputArea) {
+                    inputArea.innerHTML = `
+                        <div class="confirmation-card">
+                            <h3><i class="fas fa-check-circle"></i> Booking Summary</h3>
+                            <div class="confirmation-details">
+                                <div class="detail-row">
+                                    <span class="label">Name:</span>
+                                    <span class="value">${name}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="label">Service:</span>
+                                    <span class="value">${service}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="label">Date:</span>
+                                    <span class="value">${date}</span>
+                                </div>
+                                <div class="detail-row total">
+                                    <span class="label">Total Amount:</span>
+                                    <span class="value">₹${service.includes('Regular') ? '1,500' : service.includes('Full') ? '6,000' : service.includes('Brake') ? '3,000' : '4,500'}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="button-grid">
+                            <button class="submit-btn" onclick="confirmBooking()">
+                                <i class="fas fa-check"></i> Confirm Booking
+                            </button>
+                            <button class="skip-btn" onclick="startBookingSystem()">
+                                <i class="fas fa-edit"></i> Edit Details
+                            </button>
+                        </div>
+                    `;
+                }
+            }, 500);
+        }
+
+        function confirmBooking() {
+            showBookingMessage("✅ Booking Confirmed!", "bot");
+
+            const bookingId = 'VM' + Date.now().toString().slice(-6);
+            showBookingMessage(`Thank you! Your booking ID: ${bookingId}\nWe'll contact you within 24 hours to confirm.`, "bot");
+
+            // Show download option
+            const inputArea = document.getElementById('bookingInput');
+            if (inputArea) {
+                inputArea.innerHTML = `
+                    <div class="button-grid">
+                        <button class="submit-btn" onclick="downloadBookingConfirmation()">
+                            <i class="fas fa-download"></i> Download Summary
+                        </button>
+                        <button class="skip-btn" onclick="startBookingSystem()">
+                            <i class="fas fa-plus"></i> New Booking
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function downloadBookingConfirmation() {
+            const pdfContent = document.getElementById('pdfContent');
+            const pdfModal = document.getElementById('pdfModal');
+
+            const name = document.getElementById('statusName').textContent;
+            const service = document.getElementById('statusService').textContent;
+            const date = document.getElementById('statusDate').textContent;
+
+            pdfContent.innerHTML = `
+                <div style="padding:20px;font-family:'Open Sans',sans-serif;">
+                    <h2 style="color:var(--primary-color);text-align:center;margin-bottom:20px;">🏍️ VECTORS MOTORS</h2>
+                    <h3 style="color:#666;text-align:center;margin-bottom:30px;">Service Booking Confirmation</h3>
+                    
+                    <div style="background:#f8f9fa;padding:20px;border-radius:8px;margin-bottom:20px;">
+                        <h4 style="color:var(--primary-color);margin-bottom:15px;">Booking Details</h4>
+                        <table style="width:100%;border-collapse:collapse;">
+                            <tr>
+                                <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Booking ID:</strong></td>
+                                <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">VM${Date.now().toString().slice(-8)}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Customer:</strong></td>
+                                <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${name}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Service:</strong></td>
+                                <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${service}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Date:</strong></td>
+                                <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${date}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div style="background:#fff5f0;padding:20px;border-radius:8px;margin-bottom:20px;">
+                        <h4 style="color:#ff6b35;margin-bottom:15px;">Cost Breakdown</h4>
+                        <table style="width:100%;border-collapse:collapse;">
+                            <tr>
+                                <td style="padding:10px 0;border-bottom:1px solid #ddd;">Service Charge</td>
+                                <td style="padding:10px 0;border-bottom:1px solid #ddd;text-align:right;">₹${service.includes('Regular') ? '1,500' : service.includes('Full') ? '6,000' : service.includes('Brake') ? '3,000' : '4,500'}</td>
+                            </tr>
+                            <tr style="background:#ff6b35;color:white;font-weight:bold;">
+                                <td style="padding:15px 0;">TOTAL AMOUNT</td>
+                                <td style="padding:15px 0;text-align:right;">₹${service.includes('Regular') ? '1,500' : service.includes('Full') ? '6,000' : service.includes('Brake') ? '3,000' : '4,500'}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div style="text-align:center;color:#666;font-size:14px;margin-top:30px;">
+                        <p>Thank you for choosing Vectors Motors!</p>
+                        <p><strong>Service Center:</strong> DYPCET, Vectors Motors & Co, Kolhapur - 416002</p>
+                        <p><strong>Contact:</strong> 1800-VECTORS-1</p>
+                    </div>
+                </div>
+            `;
+
+            pdfModal.classList.add('active');
+        }
+
+        function showQuickServices() {
+            showBookingMessage("Quick service options:", "bot");
+
+            const inputArea = document.getElementById('bookingInput');
+            if (inputArea) {
+                inputArea.innerHTML = `
+                    <div class="button-grid">
+                        <button class="chat-btn" onclick="bookQuickService('Oil Change - ₹1,500')">
+                            <i class="fas fa-oil-can"></i> Oil Change
+                            <small>₹1,500 • 1 hour</small>
+                        </button>
+                        <button class="chat-btn" onclick="bookQuickService('Brake Check - ₹500')">
+                            <i class="fas fa-car-crash"></i> Brake Check
+                            <small>₹500 • 30 min</small>
+                        </button>
+                        <button class="chat-btn" onclick="bookQuickService('Tire Service - ₹1,000')">
+                            <i class="fas fa-tire"></i> Tire Service
+                            <small>₹1,000 • 45 min</small>
+                        </button>
+                        <button class="chat-btn" onclick="bookQuickService('Full Checkup - ₹2,000')">
+                            <i class="fas fa-car"></i> Full Checkup
+                            <small>₹2,000 • 2 hours</small>
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function bookQuickService(service) {
+            showBookingMessage(service, "user");
+
+            setTimeout(() => {
+                showBookingMessage("Quick service booked!\nOur technician will contact you within 30 minutes.\nService charge: ₹500 (diagnostic fee included)", "bot");
+
+                const inputArea = document.getElementById('bookingInput');
+                if (inputArea) {
+                    inputArea.innerHTML = `
+                        <div class="button-grid">
+                            <button class="submit-btn" onclick="downloadBookingConfirmation()">
+                                <i class="fas fa-download"></i> Get Receipt
+                            </button>
+                            <button class="skip-btn" onclick="startBookingSystem()">
+                                <i class="fas fa-plus"></i> New Service
+                            </button>
+                        </div>
+                    `;
+                }
+            }, 1000);
+        }
+
+        function showServiceInfo() {
+            showBookingMessage("Our service packages:", "bot");
+
+            const inputArea = document.getElementById('bookingInput');
+            if (inputArea) {
+                inputArea.innerHTML = `
+                    <div class="confirmation-card">
+                        <h3><i class="fas fa-info-circle"></i> Service Information</h3>
+                        <div class="confirmation-details">
+                            <div class="detail-row">
+                                <span class="label">Regular Service:</span>
+                                <span class="value">₹1,500 • 2-3 hours</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Full Service:</span>
+                                <span class="value">₹6,000 • 5-6 hours</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Brake Overhaul:</span>
+                                <span class="value">₹3,000 • 3-4 hours</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Suspension Repair:</span>
+                                <span class="value">₹4,500 • 4-5 hours</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Emergency Service:</span>
+                                <span class="value">₹2,000 + parts</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button-grid">
+                        <button class="submit-btn" onclick="startBookingFlow()">
+                            <i class="fas fa-calendar-check"></i> Book Service
+                        </button>
+                        <button class="skip-btn" onclick="startBookingSystem()">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function showMaintenanceTips() {
+            showBookingMessage("ATV Maintenance Tips:", "bot");
+
+            const inputArea = document.getElementById('bookingInput');
+            if (inputArea) {
+                inputArea.innerHTML = `
+                    <div class="confirmation-card">
+                        <h3><i class="fas fa-tools"></i> Maintenance Schedule</h3>
+                        <div class="confirmation-details">
+                            <div class="detail-row">
+                                <span class="label">Oil Change:</span>
+                                <span class="value">Every 50 hours or 6 months</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Air Filter:</span>
+                                <span class="value">Every 100 hours</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Spark Plugs:</span>
+                                <span class="value">Every 200 hours</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Brake Fluid:</span>
+                                <span class="value">Annually</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Coolant:</span>
+                                <span class="value">Every 2 years</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button-grid">
+                        <button class="submit-btn" onclick="startBookingFlow()">
+                            <i class="fas fa-calendar-check"></i> Schedule Maintenance
+                        </button>
+                        <button class="skip-btn" onclick="startBookingSystem()">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // Expose functions for script.js integration
+        window.showBookingMessage = showBookingMessage;
+        window.startBookingSystem = startBookingSystem;
+    </script>
+</body>
+
+</html>

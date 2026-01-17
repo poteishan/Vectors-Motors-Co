@@ -1,4 +1,11 @@
 // Configuration
+// querySection: document.getElementById('querySection'),
+// backFromQuery: document.getElementById('backFromQuery'),
+// queryName: document.getElementById('queryName'),
+// queryEmail: document.getElementById('queryEmail'),
+// querySector: document.getElementById('querySector'),
+// queryMessage: document.getElementById('queryMessage'),
+// sendQuery: document.getElementById('sendQuery'),
 const CONFIG = {
     company: {
         name: "Vectors Motors",
@@ -30,7 +37,7 @@ const CONFIG = {
             { name: "ATV Tire (Front)", price: 4500 },
             { name: "ATV Tire (Rear)", price: 5200 }
         ]
-    }
+    },
 };
 
 // Application State
@@ -168,11 +175,20 @@ const KNOWLEDGE_BASE = {
                 action: "startQuote"
             }
         ]
-    }
+    },
 };
 
 // DOM Elements
 const elements = {
+    querySection: document.getElementById('querySection'),
+    backFromQuery: document.getElementById('backFromQuery'),
+    queryName: document.getElementById('queryName'),
+    queryEmail: document.getElementById('queryEmail'),
+    querySector: document.getElementById('querySector'),
+    queryMessage: document.getElementById('queryMessage'),
+    sendQuery: document.getElementById('sendQuery'),
+    quickQuery: document.getElementById('quickQuery'),
+
     bookingMessages: document.getElementById('bookingMessages'),
     bookingInput: document.getElementById('bookingInput'),
     statusName: document.getElementById('statusName'),
@@ -555,7 +571,7 @@ function showDateButtons() {
             value: isoDate
         });
     }
-    
+
 
     buttons.push({ text: "Other Date", action: "showDatePicker" });
     renderButtonGrid(buttons, handleDateSelection, "booking");
@@ -741,6 +757,28 @@ function handleConfirmation(value, action) {
 
 // ==================== AI CHAT SYSTEM ====================
 function setupAIListeners() {
+
+    if (elements.backFromQuery) {
+        elements.backFromQuery.addEventListener('click', () => {
+            showCategorySection();
+        });
+    }
+
+    if (elements.cancelQuery) {
+        elements.cancelQuery.addEventListener('click', () => {
+            showCategorySection();
+        });
+    }
+
+    if (elements.sendQuery) {
+        elements.sendQuery.addEventListener('click', submitQuery);
+    }
+
+    // Add event listener for quickQuery button
+    if (elements.quickQuery) {
+        elements.quickQuery.addEventListener('click', showQueryForm);
+    }
+
     // Category buttons
     document.querySelectorAll('.category-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -790,6 +828,100 @@ function selectCategory(category) {
     showAIMessage(`Here are common questions about ${categoryData.title.toLowerCase()}:`, "bot");
 }
 
+// Add these functions to script.js
+
+function showQueryForm() {
+    console.log('showQueryForm called'); // Debug log
+
+    // Make sure elements exist
+    if (!elements.categorySection || !elements.querySection) {
+        console.error('Required elements not found');
+        return;
+    }
+
+    // Hide other sections
+    if (elements.categorySection) elements.categorySection.classList.remove('active');
+    if (elements.questionSection) elements.questionSection.classList.remove('active');
+    if (elements.followupSection) elements.followupSection.classList.remove('active');
+
+    // Show query section
+    if (elements.querySection) elements.querySection.classList.add('active');
+
+    // Clear form
+    if (elements.queryName) elements.queryName.value = '';
+    if (elements.queryEmail) elements.queryEmail.value = '';
+    if (elements.querySector) elements.querySector.value = '';
+    if (elements.queryMessage) elements.queryMessage.value = '';
+
+    // Show message in AI chat
+    showAIMessage("Please fill out the query form. Our team will contact you within 24 hours.", "bot");
+}
+
+function submitQuery() {
+    if (!elements.queryName || !elements.queryEmail || !elements.queryMessage) {
+        alert('Form elements not found');
+        return;
+    }
+
+    const name = elements.queryName.value.trim();
+    const email = elements.queryEmail.value.trim();
+    const sector = elements.querySector ? elements.querySector.value : '';
+    const message = elements.queryMessage.value.trim();
+
+    // Validation
+    if (!name || name.length < 2) {
+        alert('Please enter a valid name (min 2 characters)');
+        return;
+    }
+
+    if (!email || !isValidEmail(email)) {
+        alert('Please enter a valid email address');
+        return;
+    }
+
+    if (!message || message.length < 10) {
+        alert('Please enter a message (min 10 characters)');
+        return;
+    }
+
+    // Show in chat
+    showAIMessage(`Query Submitted:\nName: ${name}\nEmail: ${email}\nSector: ${sector}\nMessage: ${message}`, "user");
+
+    // Show confirmation
+    setTimeout(() => {
+        showAIMessage("✅ Thank you for your query!\n\nWe have received your message and our team will contact you at " + email + " within 24 hours.\n\nFor urgent matters, please call: 1800-VECTORS-1", "bot");
+
+        // Save to localStorage
+        saveQueryToLocalStorage({
+            name: name,
+            email: email,
+            sector: sector,
+            message: message,
+            timestamp: new Date().toISOString()
+        });
+
+        // Return to categories
+        setTimeout(() => {
+            showCategorySection();
+        }, 2000);
+    }, 500);
+}
+
+function saveQueryToLocalStorage(queryData) {
+    try {
+        const existingQueries = JSON.parse(localStorage.getItem('vectors-queries') || '[]');
+        existingQueries.push(queryData);
+        localStorage.setItem('vectors-queries', JSON.stringify(existingQueries));
+        console.log('Query saved:', queryData);
+    } catch (error) {
+        console.error('Error saving query:', error);
+    }
+}
+
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
 function selectQuestion(question) {
     state.ai.currentQuestion = question;
 
@@ -888,6 +1020,14 @@ function setupQuickActions() {
     elements.quickBrochure.addEventListener('click', () => {
         generatePDFBrochure();
     });
+
+    const quickQuery = document.getElementById('quickQuery');
+    if (quickQuery) {
+        quickQuery.addEventListener('click', showQueryForm);
+    }
+    if (elements.quickQuery) {
+        elements.quickQuery.addEventListener('click', showQueryForm);
+    }
 }
 
 function generateQuickQuote() {
@@ -1268,30 +1408,21 @@ function completeBooking() {
     showBookingMessage(`Thank you ${state.booking.name}! Your booking ID: ${bookingId}`, "bot");
     showBookingMessage("We'll contact you within 24 hours to confirm.", "bot");
 
-    // ===== FIX: Save booking to localStorage =====
-    try {
-        // Get service details from CONFIG
-        const serviceDetails = CONFIG.services[state.booking.service] || {
-            name: state.booking.service,
-            price: 0
-        };
+    // Save booking ID to state
+    state.booking.bookingId = bookingId;
 
-        // Create complete booking object
+    // Save to localStorage
+    try {
         const completeBookingData = {
             ...state.booking,
             bookingId: bookingId,
-            serviceDetails: serviceDetails,
             timestamp: new Date().toISOString(),
             parts: state.booking.parts || []
         };
-
-        // Save to localStorage
         localStorage.setItem('vectors-last-booking', JSON.stringify(completeBookingData));
-        console.log('Booking saved to localStorage:', completeBookingData);
     } catch (error) {
-        console.error('Error saving booking to localStorage:', error);
+        console.error('Error saving booking:', error);
     }
-    // ===== END FIX =====
 
     // Add download button
     elements.bookingInput.innerHTML = `
@@ -1362,44 +1493,60 @@ function resetBooking() {
 
 // ==================== PDF GENERATION ====================
 function generatePDFReport() {
+    // Get the booking data from the current state
     const booking = state.booking;
     
-    console.log('Current booking state in generatePDFReport:', booking);
-
-    // Try to get service details from CONFIG
-    let service;
+    console.log('Current booking data for PDF:', booking);
+    
+    // Check if we have valid booking data
+    if (!booking.name || booking.name === "Not Started") {
+        showBookingMessage("⚠️ Please complete your booking first before downloading the summary.", "bot");
+        return;
+    }
+    
+    // Get service details
+    let service = { name: "Service", price: 0 };
     if (booking.service && CONFIG.services[booking.service]) {
         service = CONFIG.services[booking.service];
-    } else {
-        // If service is not in CONFIG, try to load from localStorage
-        try {
-            const savedBooking = localStorage.getItem('vectors-last-booking');
-            if (savedBooking) {
-                const parsed = JSON.parse(savedBooking);
-                if (parsed.serviceDetails) {
-                    service = parsed.serviceDetails;
-                } else if (parsed.service && CONFIG.services[parsed.service]) {
-                    service = CONFIG.services[parsed.service];
-                }
-            }
-        } catch (e) {
-            console.error('Error loading saved booking:', e);
+    } else if (booking.service) {
+        // Try to extract service info from the service text
+        const serviceText = booking.service;
+        if (serviceText.includes('Regular')) {
+            service = CONFIG.services.regular;
+        } else if (serviceText.includes('Full')) {
+            service = CONFIG.services.full;
+        } else if (serviceText.includes('Brake')) {
+            service = CONFIG.services.brakes;
+        } else if (serviceText.includes('Suspension')) {
+            service = CONFIG.services.suspension;
+        } else if (serviceText.includes('Maintenance')) {
+            service = CONFIG.services.maintenance;
         }
     }
-
-    // If still no service, create a default
-    if (!service) {
-        service = { 
-            name: booking.service || "Service", 
-            price: 1500 // default price
-        };
-    }
-
+    
     // Calculate totals
     const partsTotal = booking.parts ? booking.parts.reduce((sum, part) => sum + (part.price || 0), 0) : 0;
     const total = service.price + partsTotal;
-    const bookingId = booking.bookingId || 'VM' + Date.now().toString().slice(-8);
-
+    const bookingId = 'VM' + Date.now().toString().slice(-6);
+    
+    // Format date if it exists
+    let formattedDate = booking.date || 'To be scheduled';
+    if (formattedDate !== 'No Date' && formattedDate !== 'To be scheduled') {
+        try {
+            const date = new Date(booking.date);
+            if (!isNaN(date)) {
+                formattedDate = date.toLocaleDateString('en-IN', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            }
+        } catch (e) {
+            // Keep original date string
+        }
+    }
+    
     // Generate HTML for PDF
     const html = `
         <div style="font-family: 'Open Sans', Arial, sans-serif; padding: 20px; max-width: 800px;">
@@ -1419,15 +1566,15 @@ function generatePDFReport() {
                 <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
                     <tr>
                         <td style="padding: 8px 0; border-bottom: 1px solid #ddd; font-weight: bold; width: 40%;">Booking ID:</td>
-                        <td style="padding: 8px 0; border-bottom: 1px solid #ddd;">${bookingId}</td>
+                        <td style="padding: 8px 0; border-bottom: 1px solid #ddd; font-weight: 600; color: #e63946;">${bookingId}</td>
                     </tr>
                     <tr>
                         <td style="padding: 8px 0; border-bottom: 1px solid #ddd; font-weight: bold;">Customer Name:</td>
-                        <td style="padding: 8px 0; border-bottom: 1px solid #ddd;">${booking.name || 'Not specified'}</td>
+                        <td style="padding: 8px 0; border-bottom: 1px solid #ddd;">${booking.name}</td>
                     </tr>
                     <tr>
                         <td style="padding: 8px 0; border-bottom: 1px solid #ddd; font-weight: bold;">Phone:</td>
-                        <td style="padding: 8px 0; border-bottom: 1px solid #ddd;">${booking.phone || 'Not specified'}</td>
+                        <td style="padding: 8px 0; border-bottom: 1px solid #ddd;">${booking.phone || 'Not provided'}</td>
                     </tr>
                     ${booking.email ? `
                     <tr>
@@ -1445,7 +1592,7 @@ function generatePDFReport() {
                     </tr>
                     <tr>
                         <td style="padding: 8px 0; border-bottom: 1px solid #ddd; font-weight: bold;">Service Date:</td>
-                        <td style="padding: 8px 0; border-bottom: 1px solid #ddd;">${booking.date || 'To be scheduled'}</td>
+                        <td style="padding: 8px 0; border-bottom: 1px solid #ddd;">${formattedDate}</td>
                     </tr>
                     <tr>
                         <td style="padding: 8px 0; font-weight: bold;">Issue Reported:</td>
@@ -1492,13 +1639,13 @@ function generatePDFReport() {
             </div>
         </div>
     `;
-
+    
     // Create temporary div for PDF generation
     const tempDiv = document.createElement('div');
     tempDiv.style.width = '794px';
     tempDiv.style.padding = '40px';
     tempDiv.innerHTML = html;
-
+    
     // Generate and download PDF
     html2pdf()
         .from(tempDiv)
@@ -1761,3 +1908,5 @@ window.addPartToBooking = addPartToBooking;
 window.finishPartsSelection = finishPartsSelection;
 window.skipParts = skipParts;
 window.generatePDFReport = generatePDFReport;
+window.showQueryForm = showQueryForm;
+window.submitQuery = submitQuery;

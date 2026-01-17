@@ -3113,3 +3113,32 @@ body.no-scroll {
         padding: 10px 14px;
     }
 }
+
+/* ================= QUERY CHAT ================= */
+
+.chatbot-query {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.chatbot-query input,
+.chatbot-query select,
+.chatbot-query textarea {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.chatbot-query textarea {
+    resize: none;
+    min-height: 70px;
+}
+
+.query-btns {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}

@@ -342,14 +342,14 @@
                 </select>
 
                 <textarea id="queryMessage" placeholder="Write your query"></textarea>
-
-                <button class="chat-btn" id="sendQuery">
-                    Send Query
-                </button>
-                <button class="chat-btn btn-outline" id="cancelQuery">
-                    Cancel
-                </button>
-
+                <div class="query-btns">
+                    <button class="chat-btn btn-outline" id="cancelQuery">
+                        Cancel
+                    </button>
+                    <button class="chat-btn" id="sendQuery">
+                        Send Query
+                    </button>
+                </div>
             </div>
 
 
@@ -435,7 +435,18 @@
 
     <script>
 
-        // ================= QUERY FEATURE =================
+        // ================= QUERY FEATURE ================
+        document.addEventListener("DOMContentLoaded", () => {
+            const cancelBtn = document.getElementById("cancelQuery");
+            if (cancelBtn) {
+                cancelBtn.addEventListener("click", () => {
+                    closeQueryForm();
+                    setTimeout(() => {
+                        showInitialOptions();
+                    }, 400);
+                });
+            }
+        });
 
         function openQueryForm() {
             const bookingInput = document.getElementById("bookingInput");

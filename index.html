@@ -299,13 +299,12 @@
     <!-- Booking Chatbot Toggle Button -->
     <div class="chatbot-toggle" id="chatbotToggle">
         <i class="fa-solid fa-car"></i>
-        <div class="badge" id="chatbotBadge">!</div>
     </div>
 
     <!-- Booking Chatbot Container -->
     <div class="chatbot-container" id="chatbotContainer">
         <div class="chatbot-header">
-            <h3><i class="fas fa-calendar-alt"></i> BOOK SERVICE</h3>
+            <h3><i class="fas fa-car-alt"></i> VECTOR'S ASSISTANCE</h3>
             <button class="close-chatbot" id="closeChatbot">&times;</button>
         </div>
 
@@ -503,8 +502,7 @@
 
             // Set up PDF buttons
             const downloadPDF = document.getElementById('downloadPDF');
-            const emailPDF = document.getElementById('emailPDF');
-
+    
             if (downloadPDF) {
                 downloadPDF.addEventListener('click', function () {
                     if (typeof window.generatePDFReport === 'function') {
@@ -1135,7 +1133,6 @@
             }
         }
 
-        // Expose functions for script.js integration
         window.showBookingMessage = showBookingMessage;
         window.startBookingSystem = startBookingSystem;
     </script>

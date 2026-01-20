@@ -384,7 +384,6 @@ const state = {
         step: 0,
         name: "",
         phone: "",
-        email: "",
         vehicle: "",
         service: "",
         date: "",
@@ -404,117 +403,6 @@ const state = {
     }
 };
 
-// AI Knowledge Base
-const KNOWLEDGE_BASE = {
-    maintenance: {
-        title: "🔧 Maintenance",
-        questions: [
-            {
-                id: "oil-change",
-                text: "How often should I change oil?",
-                answer: "Change engine oil every 50 hours or 6 months. Use SAE 10W-40 4-stroke oil for best results.",
-                followups: ["What oil brand is best?", "Can I do it myself?", "Oil change service cost"]
-            },
-            {
-                id: "tire-pressure",
-                text: "What's the correct tire pressure?",
-                answer: "Front tires: 5-7 PSI, Rear tires: 4-6 PSI. Check when cold and adjust for terrain.",
-                followups: ["How to check pressure?", "Best tires for sand", "Tire replacement cost"]
-            },
-            {
-                id: "battery-care",
-                text: "How to maintain battery?",
-                answer: "1. Keep terminals clean 2. Charge monthly if not used 3. Store in cool place 4. Check water level.",
-                followups: ["Battery replacement cost", "Jump start procedure", "Winter storage tips"]
-            }
-        ]
-    },
-    troubleshooting: {
-        title: "🔍 Troubleshooting",
-        questions: [
-            {
-                id: "wont-start",
-                text: "ATV won't start - what to check?",
-                answer: "Check: 1) Battery 2) Fuel 3) Spark plug 4) Kill switch 5) Clutch lever 6) Fuel valve.",
-                followups: ["Battery is fine, still won't start", "Makes clicking sound", "Starts then dies"]
-            },
-            {
-                id: "overheating",
-                text: "Engine overheating issues",
-                answer: "1. Check coolant 2. Clean radiator 3. Check thermostat 4. Verify fan 5. Check water pump.",
-                followups: ["Coolant leak found", "Fan not working", "Temperature gauge issues"]
-            }
-        ]
-    },
-    parts: {
-        title: "⚙️ Parts & Pricing",
-        questions: [
-            {
-                id: "oil-filter-price",
-                text: "Oil filter price & replacement",
-                answer: "Genuine oil filter: ₹250. Replace every service (50 hours). Labor: ₹200 if done separately.",
-                followups: ["Where to buy genuine parts", "Installation procedure", "Alternative brands"]
-            },
-            {
-                id: "brake-pad-price",
-                text: "Brake pad replacement cost",
-                answer: "Front pads: ₹800, Rear pads: ₹900. Installation: ₹300. Total: ₹1,100-₹1,200.",
-                followups: ["How long do pads last?", "Performance pads option", "DIY installation guide"]
-            }
-        ]
-    },
-    service: {
-        title: "📅 Service Info",
-        questions: [
-            {
-                id: "regular-service",
-                text: "What's included in regular service?",
-                answer: "1. Oil change 2. Filter replacement 3. Complete inspection 4. Tire check 5. Brake check 6. Battery test.",
-                followups: ["Regular service cost", "How long does it take?", "Can I wait while servicing?"]
-            },
-            {
-                id: "full-service",
-                text: "Full service details",
-                answer: "Complete diagnostics, all fluid changes, brake inspection, engine tune-up, suspension check.",
-                followups: ["Full service cost", "Duration of full service", "What fluids are changed?"]
-            }
-        ]
-    },
-    safety: {
-        title: "🛡️ Safety & Tips",
-        questions: [
-            {
-                id: "safety-gear",
-                text: "Essential safety gear",
-                answer: "1. DOT-approved helmet 2. Goggles 3. Gloves 4. Boots 5. Chest protector 6. Knee/elbow pads.",
-                followups: ["Best helmet brands", "Gear rental options", "Gear maintenance"]
-            },
-            {
-                id: "riding-tips",
-                text: "Safe riding practices",
-                answer: "1. Take training course 2. Check machine before riding 3. Ride within limits 4. No passengers on 1-seater.",
-                followups: ["Training course details", "Beginner riding areas", "Group riding etiquette"]
-            }
-        ]
-    },
-    booking: {
-        title: "📋 Book Service",
-        questions: [
-            {
-                id: "book-now",
-                text: "Book service appointment",
-                answer: "I'll help you book a service. Let's start with your details.",
-                action: "startBooking"
-            },
-            {
-                id: "get-quote",
-                text: "Get instant service quote",
-                answer: "Tell me what service you need, and I'll give you a detailed quote.",
-                action: "startQuote"
-            }
-        ]
-    }
-};
 
 // DOM Elements
 const elements = {
@@ -545,39 +433,9 @@ const elements = {
     pdfModal: document.getElementById('pdfModal'),
     closeModal: document.getElementById('closeModal'),
     downloadPDF: document.getElementById('downloadPDF'),
-    emailPDF: document.getElementById('emailPDF'),
     pdfContent: document.getElementById('pdfContent')
 };
 
-// Initialize Application
-// Initialize Application
-function init() {
-    // Check if mobile
-    checkMobile();
-
-    // Load saved booking if exists
-    const savedBooking = loadSavedBooking();
-    if (savedBooking) {
-        console.log('Restored previous booking:', savedBooking);
-    }
-
-    // Start booking system
-    startBookingSystem();
-
-    // Setup AI chat event listeners
-    setupAIListeners();
-
-    // Setup quick actions
-    setupQuickActions();
-
-    // Setup modal
-    setupModal();
-
-    // Setup window resize handler
-    window.addEventListener('resize', handleResize);
-
-    console.log("🏍️ Vectors Motors AI Assistant Initialized");
-}
 
 // Check if mobile device
 function checkMobile() {
@@ -616,85 +474,8 @@ function startBookingSystem() {
     setTimeout(() => askBookingQuestion(), 800);
 }
 
-function askBookingQuestion() {
-    clearBookingInput();
-
-    switch (state.booking.step) {
-        case 0:
-            showBookingMessage("What's your full name?", "bot");
-            showNameInput();
-            break;
-        case 1:
-            showBookingMessage("What's your contact number?", "bot");
-            showPhoneInput();
-            break;
-        case 2:
-            showBookingMessage("Your email address? (Optional)", "bot");
-            showEmailInput();
-            break;
-        case 3:
-            showBookingMessage("What's your ATV registration number?", "bot");
-            showVehicleButtons();
-            break;
-        case 4:
-            showBookingMessage("Select service type:", "bot");
-            showServiceButtons();
-            break;
-        case 5:
-            showBookingMessage("Describe the issue briefly:", "bot");
-            showIssueButtons();
-            break;
-        case 6:
-            showBookingMessage("Preferred service date?", "bot");
-            showDateButtons();
-            break;
-        case 7:
-            showBookingMessage("Need any spare parts?", "bot");
-            showPartsButtons();
-            break;
-        case 8:
-            showBookingMessage("Review your booking:", "bot");
-            showConfirmation();
-            break;
-    }
-}
 
 // Input Functions
-function showNameInput() {
-    elements.bookingInput.innerHTML = `
-        <div class="input-container">
-            <div class="input-group">
-                <input type="text" id="nameInput" placeholder="Enter your full name" class="form-input">
-                <button id="submitName" class="submit-btn">
-                    <i class="fas fa-check"></i> Submit
-                </button>
-            </div>
-            <div class="quick-options">
-                <p class="quick-label"><i class="fas fa-bolt"></i> Quick fill:</p>
-                <div class="quick-buttons">
-                    <button class="quick-option" data-name="Rahul Sharma">Rahul Sharma</button>
-                    <button class="quick-option" data-name="Priya Patel">Priya Patel</button>
-                    <button class="quick-option" data-name="Amit Kumar">Amit Kumar</button>
-                </div>
-            </div>
-        </div>
-    `;
-
-    const nameInput = document.getElementById('nameInput');
-    nameInput.focus();
-
-    document.getElementById('submitName').addEventListener('click', submitName);
-    nameInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') submitName();
-    });
-
-    document.querySelectorAll('.quick-option').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            nameInput.value = e.target.dataset.name;
-            submitName();
-        });
-    });
-}
 
 function submitName() {
     const name = document.getElementById('nameInput').value.trim();
@@ -711,40 +492,6 @@ function submitName() {
     setTimeout(() => askBookingQuestion(), 500);
 }
 
-function showPhoneInput() {
-    elements.bookingInput.innerHTML = `
-        <div class="input-container">
-            <div class="input-group">
-                <input type="tel" id="phoneInput" placeholder="Enter 10-digit phone" class="form-input">
-                <button id="submitPhone" class="submit-btn">
-                    <i class="fas fa-check"></i> Submit
-                </button>
-            </div>
-            <div class="quick-options">
-                <p class="quick-label"><i class="fas fa-bolt"></i> Quick fill:</p>
-                <div class="quick-buttons">
-                    <button class="quick-option" data-phone="9876543210">9876543210</button>
-                    <button class="quick-option" data-phone="8765432109">8765432109</button>
-                </div>
-            </div>
-        </div>
-    `;
-
-    const phoneInput = document.getElementById('phoneInput');
-    phoneInput.focus();
-
-    document.getElementById('submitPhone').addEventListener('click', submitPhone);
-    phoneInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') submitPhone();
-    });
-
-    document.querySelectorAll('.quick-option').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            phoneInput.value = e.target.dataset.phone;
-            submitPhone();
-        });
-    });
-}
 
 function submitPhone() {
     const phone = document.getElementById('phoneInput').value.trim();
@@ -760,82 +507,6 @@ function submitPhone() {
     setTimeout(() => askBookingQuestion(), 500);
 }
 
-function showEmailInput() {
-    elements.bookingInput.innerHTML = `
-        <div class="input-container">
-            <div class="input-group">
-                <input type="email" id="emailInput" placeholder="Enter email (optional)" class="form-input">
-                <div class="button-group">
-                    <button id="submitEmail" class="submit-btn">
-                        <i class="fas fa-check"></i> Submit
-                    </button>
-                    <button id="skipEmail" class="skip-btn">
-                        <i class="fas fa-forward"></i> Skip
-                    </button>
-                </div>
-            </div>
-            <div class="quick-options">
-                <p class="quick-label"><i class="fas fa-bolt"></i> Quick fill:</p>
-                <div class="quick-buttons">
-                    <button class="quick-option" data-email="customer@gmail.com">customer@gmail.com</button>
-                    <button class="quick-option" data-email="rider@outlook.com">rider@outlook.com</button>
-                </div>
-            </div>
-        </div>
-    `;
-
-    const emailInput = document.getElementById('emailInput');
-    emailInput.focus();
-
-    document.getElementById('submitEmail').addEventListener('click', submitEmail);
-    document.getElementById('skipEmail').addEventListener('click', skipEmail);
-    emailInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') submitEmail();
-    });
-
-    document.querySelectorAll('.quick-option').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            emailInput.value = e.target.dataset.email;
-            submitEmail();
-        });
-    });
-}
-
-function submitEmail() {
-    const email = document.getElementById('emailInput').value.trim();
-
-    if (email && !isValidEmail(email)) {
-        showError("Please enter a valid email address");
-        return;
-    }
-
-    state.booking.email = email;
-    state.booking.step = 3;
-    showBookingMessage(email || "Skipped email", "user");
-    setTimeout(() => askBookingQuestion(), 500);
-}
-
-function skipEmail() {
-    state.booking.email = "";
-    state.booking.step = 3;
-    showBookingMessage("Skipped email", "user");
-    setTimeout(() => askBookingQuestion(), 500);
-}
-
-function isValidEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-// Button Display Functions
-function showVehicleButtons() {
-    const buttons = [
-        { text: "DL01AB1234", value: "DL01AB1234" },
-        { text: "HR26BR4567", value: "HR26BR4567" },
-        { text: "Other", action: "showCustomVehicle" }
-    ];
-    renderButtonGrid(buttons, handleVehicleSelection, "booking");
-}
-
 function showServiceButtons() {
     const buttons = [
         { text: "🛢️ Regular Service", value: "regular", details: "₹1,500 • 2-3 hours" },
@@ -845,18 +516,6 @@ function showServiceButtons() {
         { text: "⚡ Full Service", value: "full", details: "₹6,000 • 5-6 hours" }
     ];
     renderButtonGrid(buttons, handleServiceSelection, "booking");
-}
-
-function showIssueButtons() {
-    const buttons = [
-        { text: "Strange noise from engine", value: "Strange noise from engine" },
-        { text: "Brakes not working properly", value: "Brakes not working properly" },
-        { text: "Suspension feels rough", value: "Suspension feels rough" },
-        { text: "Won't start", value: "Won't start" },
-        { text: "Overheating", value: "Overheating" },
-        { text: "Other issue", action: "showCustomIssue" }
-    ];
-    renderButtonGrid(buttons, handleIssueSelection, "booking");
 }
 
 function showDateButtons() {
@@ -881,16 +540,6 @@ function showDateButtons() {
     renderButtonGrid(buttons, handleDateSelection, "booking");
 }
 
-function showPartsButtons() {
-    const buttons = [
-        { text: "🛢️ Oil & Filter", value: "oil_filter", details: "₹650" },
-        { text: "🛑 Brake Pads", value: "brake_pads", details: "₹800" },
-        { text: "🔌 Spark Plug", value: "spark_plug", details: "₹300" },
-        { text: "✅ No Parts Needed", value: "none" },
-        { text: "➕ Add More Parts", action: "showDetailedParts" }
-    ];
-    renderButtonGrid(buttons, handlePartsSelection, "booking");
-}
 
 function showConfirmation() {
     const booking = state.booking;
@@ -910,10 +559,6 @@ function showConfirmation() {
                     <span class="label">Phone:</span>
                     <span class="value">${booking.phone}</span>
                 </div>
-                ${booking.email ? `<div class="detail-row">
-                    <span class="label">Email:</span>
-                    <span class="value">${booking.email}</span>
-                </div>` : ''}
                 <div class="detail-row">
                     <span class="label">Vehicle:</span>
                     <span class="value">${booking.vehicle}</span>
@@ -1011,39 +656,6 @@ function handleDateSelection(value, action) {
         showBookingMessage(dateStr, "user");
         updateStatus("date", dateStr);
         setTimeout(() => askBookingQuestion(), 500);
-    }
-}
-
-function handlePartsSelection(value, action) {
-    if (action === "showDetailedParts") {
-        showDetailedParts();
-    } else if (value === "none") {
-        state.booking.parts = [];
-        state.booking.step = 8;
-        showBookingMessage("No parts needed", "user");
-        setTimeout(() => askBookingQuestion(), 500);
-    } else {
-        const part = getPartDetails(value);
-        if (part) {
-            state.booking.parts.push(part);
-            showBookingMessage(`Added: ${part.name} (₹${part.price})`, "user");
-
-            setTimeout(() => {
-                showBookingMessage("Add more parts?", "bot");
-                const buttons = [
-                    { text: "➕ Add More", action: "showDetailedParts" },
-                    { text: "✅ Done", value: "done" }
-                ];
-                renderButtonGrid(buttons, (val, act) => {
-                    if (act === "showDetailedParts") {
-                        showDetailedParts();
-                    } else {
-                        state.booking.step = 8;
-                        setTimeout(() => askBookingQuestion(), 500);
-                    }
-                }, "booking");
-            }, 500);
-        }
     }
 }
 
@@ -1660,7 +1272,7 @@ function resetBooking() {
     // Clear current booking state
     state.booking = {
         step: 0,
-        name: "", phone: "", email: "", vehicle: "",
+        name: "", phone: "", vehicle: "",
         service: "", date: "", issue: "", parts: []
     };
 
@@ -1951,7 +1563,6 @@ function setupModal() {
     const closeModal = document.getElementById('closeModal');
     const pdfModal = document.getElementById('pdfModal');
     const downloadPDF = document.getElementById('downloadPDF');
-    const emailPDF = document.getElementById('emailPDF');
 
     // Close modal
     if (closeModal) {
@@ -1990,12 +1601,6 @@ function setupModal() {
         });
     }
 
-    // Email PDF
-    if (emailPDF) {
-        emailPDF.addEventListener('click', function () {
-            alert('PDF would be emailed to: ' + (state.booking.email || 'your registered email'));
-        });
-    }
 }
 
 function saveBookingForPDF() {
@@ -2010,9 +1615,6 @@ function saveBookingForPDF() {
         JSON.stringify(booking)
     );
 }
-
-
-
 
 // Initialize when page loads
 document.addEventListener('DOMContentLoaded', init);

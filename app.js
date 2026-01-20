@@ -1237,16 +1237,96 @@ function completeBooking() {
     `;
 }
 
-function saveBookingToLocalStorage() {
-    try {
-        const bookingData = {
-            ...state.booking,
-            timestamp: new Date().toISOString()
-        };
-        localStorage.setItem('vectors-last-booking', JSON.stringify(bookingData));
-    } catch (error) {
-        console.error('Error saving booking to localStorage:', error);
+function openQueryForm() {
+
+    const inputArea = document.getElementById("bookingInput");
+
+    inputArea.innerHTML = `
+        <div class="query-form">
+            <input type="text" id="qName" placeholder="Full Name" class="form-input">
+            <input type="email" id="qEmail" placeholder="Email Address" class="form-input">
+            <input type="tel" id="qPhone" placeholder="Phone Number" class="form-input">
+            
+            <select id="qTopic" class="form-input">
+                <option value="">Select Topic</option>
+                <option>Product Information</option>
+                <option>Service Support</option>
+                <option>Sectors</option>
+                <option>Bulk Order</option>
+                <option>Dealership</option>
+            </select>
+
+            <textarea id="qMessage" placeholder="Type your query..." class="form-input"></textarea>
+
+            <div class="button-grid">
+                <button class="submit-btn" onclick="submitQuery()">
+                    <i class="fas fa-paper-plane"></i> Send Query
+                </button>
+
+                <button class="skip-btn" onclick="startBookingSystem()">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+function submitQuery() {
+
+    const name = document.getElementById("qName").value.trim();
+    const email = document.getElementById("qEmail").value.trim();
+    const phone = document.getElementById("qPhone").value.trim();
+    const topic = document.getElementById("qTopic").value;
+    const message = document.getElementById("qMessage").value.trim();
+
+    if (!name || !email || !phone || !topic || !message) {
+        alert("Please fill all fields");
+        return;
     }
+
+    // ✅ Capture data (for backend later)
+    const queryData = {
+        name,
+        email,
+        phone,
+        topic,
+        message,
+        time: new Date().toLocaleString()
+    };
+
+    console.log("Query submitted:", queryData);
+
+    const inputArea = document.getElementById("bookingInput");
+
+    // ✅ remove query form
+    inputArea.innerHTML = "";
+
+    // ✅ bot confirmation
+    showBookingMessage("✅ Your query has been sent successfully.", "bot");
+    showBookingMessage("📞 Our support team will contact you shortly.", "bot");
+
+    // ✅ restore chatbot options
+    setTimeout(() => {
+        inputArea.innerHTML = `
+            <div class="button-grid">
+                <button class="chat-btn" onclick="startBookingFlow()">
+                    <i class="fas fa-calendar-check"></i> Book Service
+                </button>
+
+                <button class="chat-btn" onclick="openQueryForm()">
+                    <i class="fas fa-circle-question"></i> Send Query
+                </button>
+
+                <button class="chat-btn" onclick="showServiceInfo()">
+                    <i class="fas fa-info-circle"></i> Service Info
+                </button>
+
+                <button class="chat-btn" onclick="showMaintenanceTips()">
+                    <i class="fas fa-tools"></i> Maintenance Tips
+                </button>
+            </div>
+        `;
+    }, 1200);
 }
 
 // Then update each step completion function to call saveBookingToLocalStorage():

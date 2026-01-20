@@ -502,7 +502,7 @@
 
             // Set up PDF buttons
             const downloadPDF = document.getElementById('downloadPDF');
-    
+
             if (downloadPDF) {
                 downloadPDF.addEventListener('click', function () {
                     if (typeof window.generatePDFReport === 'function') {
@@ -577,9 +577,9 @@
                             <button class="chat-btn" onclick="startBookingFlow()">
                                 <i class="fas fa-calendar-check"></i> Start Booking
                             </button>
-                            <button class="chat-btn" onclick="showQuickServices()">
-                                <i class="fas fa-bolt"></i> Quick Service
-                            </button>
+                            <button class="chat-btn" onclick="openQueryForm()">
+            <i class="fas fa-circle-question"></i> Send Query
+        </button>
                             <button class="chat-btn" onclick="showServiceInfo()">
                                 <i class="fas fa-info-circle"></i> Service Info
                             </button>
@@ -995,56 +995,6 @@
             `;
 
             pdfModal.classList.add('active');
-        }
-
-        function showQuickServices() {
-            showBookingMessage("Quick service options:", "bot");
-
-            const inputArea = document.getElementById('bookingInput');
-            if (inputArea) {
-                inputArea.innerHTML = `
-                    <div class="button-grid">
-                        <button class="chat-btn" onclick="bookQuickService('Oil Change - ₹1,500')">
-                            <i class="fas fa-oil-can"></i> Oil Change
-                            <small>₹1,500 • 1 hour</small>
-                        </button>
-                        <button class="chat-btn" onclick="bookQuickService('Brake Check - ₹500')">
-                            <i class="fas fa-car-crash"></i> Brake Check
-                            <small>₹500 • 30 min</small>
-                        </button>
-                        <button class="chat-btn" onclick="bookQuickService('Tire Service - ₹1,000')">
-                            <i class="fas fa-tire"></i> Tire Service
-                            <small>₹1,000 • 45 min</small>
-                        </button>
-                        <button class="chat-btn" onclick="bookQuickService('Full Checkup - ₹2,000')">
-                            <i class="fas fa-car"></i> Full Checkup
-                            <small>₹2,000 • 2 hours</small>
-                        </button>
-                    </div>
-                `;
-            }
-        }
-
-        function bookQuickService(service) {
-            showBookingMessage(service, "user");
-
-            setTimeout(() => {
-                showBookingMessage("Quick service booked!\nOur technician will contact you within 30 minutes.\nService charge: ₹500 (diagnostic fee included)", "bot");
-
-                const inputArea = document.getElementById('bookingInput');
-                if (inputArea) {
-                    inputArea.innerHTML = `
-                        <div class="button-grid">
-                            <button class="submit-btn" onclick="downloadBookingConfirmation()">
-                                <i class="fas fa-download"></i> Get Receipt
-                            </button>
-                            <button class="skip-btn" onclick="startBookingSystem()">
-                                <i class="fas fa-plus"></i> New Service
-                            </button>
-                        </div>
-                    `;
-                }
-            }, 1000);
         }
 
         function showServiceInfo() {

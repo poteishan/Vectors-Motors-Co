@@ -1,9 +1,0 @@
-{
-  "categories": ["maintenance", "troubleshooting", "parts", "service", "safety", "booking"],
-  "defaultResponses": {
-    "greeting": "Hello! I'm your ATV AI Assistant. How can I help you today?",
-    "fallback": "I understand your question. For detailed assistance, please visit our service center or call 1800-VECTORS-1.",
-    "emergency": "🚨 For emergencies, call 1800-VECTORS-1 immediately. We provide 24/7 roadside assistance.",
-    "thanks": "You're welcome! Safe riding! 🏍️"
-  }
-}

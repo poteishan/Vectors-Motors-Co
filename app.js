@@ -1,4 +1,95 @@
 // app.js - Vectors ATV Website with Booking Chatbot Integration
+
+// ==================== 3D MODEL VIEWER FUNCTIONALITY ====================
+const open3DButton = document.getElementById('open3D');
+const modelSlide = document.getElementById('modelSlide');
+const closeModelButton = document.getElementById('closeModel');
+// Remove the duplicate body declaration - it's already declared at the top
+
+if (open3DButton && modelSlide) {
+    open3DButton.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Show the 3D model modal
+        modelSlide.classList.add('active');
+        body.classList.add('no-scroll');
+
+        // Hide any other open sections
+        const productsSection = document.getElementById('products-section');
+        if (productsSection) {
+            productsSection.classList.remove('show');
+        }
+
+        // Hide mobile menu if open
+        const navLinks = document.querySelector('.nav-links');
+        if (window.innerWidth <= 768 && navLinks.classList.contains('show')) {
+            navLinks.classList.remove('show');
+        }
+    });
+}
+
+if (closeModelButton && modelSlide) {
+    closeModelButton.addEventListener('click', function () {
+        modelSlide.classList.remove('active');
+        body.classList.remove('no-scroll');
+    });
+}
+
+// Close 3D model when clicking outside
+if (modelSlide) {
+    modelSlide.addEventListener('click', function (e) {
+        if (e.target === this) {
+            this.classList.remove('active');
+            body.classList.remove('no-scroll');
+        }
+    });
+}
+
+// Close 3D model with Escape key
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && modelSlide.classList.contains('active')) {
+        modelSlide.classList.remove('active');
+        body.classList.remove('no-scroll');
+    }
+});
+
+// Handle fullscreen change
+document.addEventListener('fullscreenchange', function () {
+    const button = document.querySelector('[onclick="toggleFullscreen()"] i');
+    if (button) {
+        if (document.fullscreenElement) {
+            button.className = 'fas fa-compress';
+        } else {
+            button.className = 'fas fa-expand';
+        }
+    }
+});
+
+// Function to toggle fullscreen
+function toggleFullscreen() {
+    const modelViewer = document.querySelector('model-viewer');
+    if (!modelViewer) return;
+
+    if (!document.fullscreenElement) {
+        if (modelViewer.requestFullscreen) {
+            modelViewer.requestFullscreen();
+        } else if (modelViewer.webkitRequestFullscreen) {
+            modelViewer.webkitRequestFullscreen();
+        } else if (modelViewer.msRequestFullscreen) {
+            modelViewer.msRequestFullscreen();
+        }
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     // ==================== WEBSITE FUNCTIONALITY ====================
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
@@ -225,6 +316,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ==================== BOOKING CHATBOT INTEGRATION ====================
 
+    const SERVICE_PRICES = {
+        "Regular Service": 1500,
+        "Full Service": 6000,
+        "Brake Overhaul": 3000,
+        "Suspension Repair": 4500
+    };
+
+
     // Initialize chatbot when page loads
     initBookingChatbot();
 
@@ -244,102 +343,1608 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // ==================== BOOKING CHATBOT FUNCTIONS ====================
 
-function initBookingChatbot() {
-    const chatbotToggle = document.getElementById('chatbotToggle');
-    const chatbotContainer = document.getElementById('chatbotContainer');
-    const closeChatbot = document.getElementById('closeChatbot');
-    const badge = document.getElementById('chatbotBadge');
+// Configuration
+const CONFIG = {
+    company: {
+        name: "Vectors Motors",
+        phone: "1800-VECTORS-1",
+        email: "service@vectorsmotors.com",
+        address: "123 Auto Nagar, Delhi"
+    },
+    services: {
+        regular: { name: "Regular Service", price: 1500, time: "2-3 hours" },
+        maintenance: { name: "Routine Maintenance", price: 3500, time: "3-4 hours" },
+        suspension: { name: "Suspension Repair", price: 4500, time: "4-5 hours" },
+        brakes: { name: "Brake Overhaul", price: 3000, time: "3-4 hours" },
+        full: { name: "Full Service", price: 6000, time: "5-6 hours" }
+    },
+    parts: {
+        engine: [
+            { name: "Oil Filter", price: 250 },
+            { name: "Engine Oil (1L)", price: 400 },
+            { name: "Spark Plug", price: 300 },
+            { name: "Carburetor", price: 2500 }
+        ],
+        brakes: [
+            { name: "Brake Pads (Front)", price: 800 },
+            { name: "Brake Pads (Rear)", price: 900 },
+            { name: "Brake Disc (Front)", price: 1200 },
+            { name: "Brake Disc (Rear)", price: 1500 }
+        ],
+        tires: [
+            { name: "ATV Tire (Front)", price: 4500 },
+            { name: "ATV Tire (Rear)", price: 5200 }
+        ]
+    }
+};
 
-    // Toggle chatbot
-    if (chatbotToggle) {
-        chatbotToggle.addEventListener('click', function () {
-            // Toggle the active class instead of just adding it
-            const isActive = chatbotContainer.classList.contains('active');
-            chatbotContainer.classList.toggle('active');
+// Application State
+const state = {
+    booking: {
+        step: 0,
+        name: "",
+        phone: "",
+        email: "",
+        vehicle: "",
+        service: "",
+        date: "",
+        issue: "",
+        parts: []
+    },
+    ai: {
+        currentCategory: null,
+        currentQuestion: null,
+        conversation: [],
+        mode: "demo"
+    },
+    ui: {
+        activeSection: "categories",
+        lastCategory: null,
+        isMobile: window.innerWidth <= 768
+    }
+};
 
-            // Hide badge when opened
-            if (!isActive && badge) {
-                badge.style.display = 'none';
+// AI Knowledge Base
+const KNOWLEDGE_BASE = {
+    maintenance: {
+        title: "🔧 Maintenance",
+        questions: [
+            {
+                id: "oil-change",
+                text: "How often should I change oil?",
+                answer: "Change engine oil every 50 hours or 6 months. Use SAE 10W-40 4-stroke oil for best results.",
+                followups: ["What oil brand is best?", "Can I do it myself?", "Oil change service cost"]
+            },
+            {
+                id: "tire-pressure",
+                text: "What's the correct tire pressure?",
+                answer: "Front tires: 5-7 PSI, Rear tires: 4-6 PSI. Check when cold and adjust for terrain.",
+                followups: ["How to check pressure?", "Best tires for sand", "Tire replacement cost"]
+            },
+            {
+                id: "battery-care",
+                text: "How to maintain battery?",
+                answer: "1. Keep terminals clean 2. Charge monthly if not used 3. Store in cool place 4. Check water level.",
+                followups: ["Battery replacement cost", "Jump start procedure", "Winter storage tips"]
             }
-        });
+        ]
+    },
+    troubleshooting: {
+        title: "🔍 Troubleshooting",
+        questions: [
+            {
+                id: "wont-start",
+                text: "ATV won't start - what to check?",
+                answer: "Check: 1) Battery 2) Fuel 3) Spark plug 4) Kill switch 5) Clutch lever 6) Fuel valve.",
+                followups: ["Battery is fine, still won't start", "Makes clicking sound", "Starts then dies"]
+            },
+            {
+                id: "overheating",
+                text: "Engine overheating issues",
+                answer: "1. Check coolant 2. Clean radiator 3. Check thermostat 4. Verify fan 5. Check water pump.",
+                followups: ["Coolant leak found", "Fan not working", "Temperature gauge issues"]
+            }
+        ]
+    },
+    parts: {
+        title: "⚙️ Parts & Pricing",
+        questions: [
+            {
+                id: "oil-filter-price",
+                text: "Oil filter price & replacement",
+                answer: "Genuine oil filter: ₹250. Replace every service (50 hours). Labor: ₹200 if done separately.",
+                followups: ["Where to buy genuine parts", "Installation procedure", "Alternative brands"]
+            },
+            {
+                id: "brake-pad-price",
+                text: "Brake pad replacement cost",
+                answer: "Front pads: ₹800, Rear pads: ₹900. Installation: ₹300. Total: ₹1,100-₹1,200.",
+                followups: ["How long do pads last?", "Performance pads option", "DIY installation guide"]
+            }
+        ]
+    },
+    service: {
+        title: "📅 Service Info",
+        questions: [
+            {
+                id: "regular-service",
+                text: "What's included in regular service?",
+                answer: "1. Oil change 2. Filter replacement 3. Complete inspection 4. Tire check 5. Brake check 6. Battery test.",
+                followups: ["Regular service cost", "How long does it take?", "Can I wait while servicing?"]
+            },
+            {
+                id: "full-service",
+                text: "Full service details",
+                answer: "Complete diagnostics, all fluid changes, brake inspection, engine tune-up, suspension check.",
+                followups: ["Full service cost", "Duration of full service", "What fluids are changed?"]
+            }
+        ]
+    },
+    safety: {
+        title: "🛡️ Safety & Tips",
+        questions: [
+            {
+                id: "safety-gear",
+                text: "Essential safety gear",
+                answer: "1. DOT-approved helmet 2. Goggles 3. Gloves 4. Boots 5. Chest protector 6. Knee/elbow pads.",
+                followups: ["Best helmet brands", "Gear rental options", "Gear maintenance"]
+            },
+            {
+                id: "riding-tips",
+                text: "Safe riding practices",
+                answer: "1. Take training course 2. Check machine before riding 3. Ride within limits 4. No passengers on 1-seater.",
+                followups: ["Training course details", "Beginner riding areas", "Group riding etiquette"]
+            }
+        ]
+    },
+    booking: {
+        title: "📋 Book Service",
+        questions: [
+            {
+                id: "book-now",
+                text: "Book service appointment",
+                answer: "I'll help you book a service. Let's start with your details.",
+                action: "startBooking"
+            },
+            {
+                id: "get-quote",
+                text: "Get instant service quote",
+                answer: "Tell me what service you need, and I'll give you a detailed quote.",
+                action: "startQuote"
+            }
+        ]
+    }
+};
+
+// DOM Elements
+const elements = {
+    bookingMessages: document.getElementById('bookingMessages'),
+    bookingInput: document.getElementById('bookingInput'),
+    statusName: document.getElementById('statusName'),
+    statusService: document.getElementById('statusService'),
+    statusDate: document.getElementById('statusDate'),
+
+    aiMessages: document.getElementById('aiMessages'),
+    aiInput: document.getElementById('aiInput'),
+    modelSelect: document.getElementById('modelSelect'),
+
+    categorySection: document.getElementById('categorySection'),
+    questionSection: document.getElementById('questionSection'),
+    followupSection: document.getElementById('followupSection'),
+
+    questionGrid: document.getElementById('questionGrid'),
+    followupGrid: document.getElementById('followupGrid'),
+    questionCategoryTitle: document.getElementById('questionCategoryTitle'),
+    backToCategories: document.getElementById('backToCategories'),
+
+    quickBook: document.getElementById('quickBook'),
+    quickQuote: document.getElementById('quickQuote'),
+    quickHelp: document.getElementById('quickHelp'),
+    quickBrochure: document.getElementById('quickBrochure'),
+
+    pdfModal: document.getElementById('pdfModal'),
+    closeModal: document.getElementById('closeModal'),
+    downloadPDF: document.getElementById('downloadPDF'),
+    emailPDF: document.getElementById('emailPDF'),
+    pdfContent: document.getElementById('pdfContent')
+};
+
+// Initialize Application
+// Initialize Application
+function init() {
+    // Check if mobile
+    checkMobile();
+
+    // Load saved booking if exists
+    const savedBooking = loadSavedBooking();
+    if (savedBooking) {
+        console.log('Restored previous booking:', savedBooking);
     }
 
-    // Close chatbot
-    if (closeChatbot) {
-        closeChatbot.addEventListener('click', function () {
-            chatbotContainer.classList.remove('active');
-        });
-    }
+    // Start booking system
+    startBookingSystem();
 
-    // Setup quick action buttons
+    // Setup AI chat event listeners
+    setupAIListeners();
+
+    // Setup quick actions
     setupQuickActions();
 
     // Setup modal
     setupModal();
 
-    // Setup escape key to close chatbot
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') {
-            const chatbotContainer = document.getElementById('chatbotContainer');
-            const pdfModal = document.getElementById('pdfModal');
+    // Setup window resize handler
+    window.addEventListener('resize', handleResize);
 
-            if (chatbotContainer && chatbotContainer.classList.contains('active')) {
-                chatbotContainer.classList.remove('active');
-            }
+    console.log("🏍️ Vectors Motors AI Assistant Initialized");
+}
 
-            if (pdfModal && pdfModal.classList.contains('active')) {
-                pdfModal.classList.remove('active');
-            }
+// Check if mobile device
+function checkMobile() {
+    state.ui.isMobile = window.innerWidth <= 768;
+    if (state.ui.isMobile) {
+        document.body.classList.add('mobile');
+    } else {
+        document.body.classList.remove('mobile');
+    }
+}
+
+// Handle window resize
+function handleResize() {
+    checkMobile();
+    adjustButtonGrids();
+}
+
+// Adjust button grids based on screen size
+function adjustButtonGrids() {
+    const grids = document.querySelectorAll('.button-grid');
+    grids.forEach(grid => {
+        if (state.ui.isMobile) {
+            grid.style.gridTemplateColumns = '1fr';
+        } else {
+            grid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(200px, 1fr))';
         }
     });
+}
 
-    // Start booking system
+// ==================== BOOKING SYSTEM ====================
+function startBookingSystem() {
+    clearBookingMessages();
+    showBookingMessage("👋 Welcome to Vectors Motors ATV Service!", "bot");
+    showBookingMessage("I'll help you book a service appointment. Let's get started!", "bot");
+
+    setTimeout(() => askBookingQuestion(), 800);
+}
+
+function askBookingQuestion() {
+    clearBookingInput();
+
+    switch (state.booking.step) {
+        case 0:
+            showBookingMessage("What's your full name?", "bot");
+            showNameInput();
+            break;
+        case 1:
+            showBookingMessage("What's your contact number?", "bot");
+            showPhoneInput();
+            break;
+        case 2:
+            showBookingMessage("Your email address? (Optional)", "bot");
+            showEmailInput();
+            break;
+        case 3:
+            showBookingMessage("What's your ATV registration number?", "bot");
+            showVehicleButtons();
+            break;
+        case 4:
+            showBookingMessage("Select service type:", "bot");
+            showServiceButtons();
+            break;
+        case 5:
+            showBookingMessage("Describe the issue briefly:", "bot");
+            showIssueButtons();
+            break;
+        case 6:
+            showBookingMessage("Preferred service date?", "bot");
+            showDateButtons();
+            break;
+        case 7:
+            showBookingMessage("Need any spare parts?", "bot");
+            showPartsButtons();
+            break;
+        case 8:
+            showBookingMessage("Review your booking:", "bot");
+            showConfirmation();
+            break;
+    }
+}
+
+// Input Functions
+function showNameInput() {
+    elements.bookingInput.innerHTML = `
+        <div class="input-container">
+            <div class="input-group">
+                <input type="text" id="nameInput" placeholder="Enter your full name" class="form-input">
+                <button id="submitName" class="submit-btn">
+                    <i class="fas fa-check"></i> Submit
+                </button>
+            </div>
+            <div class="quick-options">
+                <p class="quick-label"><i class="fas fa-bolt"></i> Quick fill:</p>
+                <div class="quick-buttons">
+                    <button class="quick-option" data-name="Rahul Sharma">Rahul Sharma</button>
+                    <button class="quick-option" data-name="Priya Patel">Priya Patel</button>
+                    <button class="quick-option" data-name="Amit Kumar">Amit Kumar</button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    const nameInput = document.getElementById('nameInput');
+    nameInput.focus();
+
+    document.getElementById('submitName').addEventListener('click', submitName);
+    nameInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') submitName();
+    });
+
+    document.querySelectorAll('.quick-option').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            nameInput.value = e.target.dataset.name;
+            submitName();
+        });
+    });
+}
+
+function submitName() {
+    const name = document.getElementById('nameInput').value.trim();
+
+    if (!name || name.length < 2) {
+        showError("Please enter a valid name (min 2 characters)");
+        return;
+    }
+
+    state.booking.name = name;
+    state.booking.step = 1;
+    showBookingMessage(name, "user");
+    updateStatus("name", name);
+    setTimeout(() => askBookingQuestion(), 500);
+}
+
+function showPhoneInput() {
+    elements.bookingInput.innerHTML = `
+        <div class="input-container">
+            <div class="input-group">
+                <input type="tel" id="phoneInput" placeholder="Enter 10-digit phone" class="form-input">
+                <button id="submitPhone" class="submit-btn">
+                    <i class="fas fa-check"></i> Submit
+                </button>
+            </div>
+            <div class="quick-options">
+                <p class="quick-label"><i class="fas fa-bolt"></i> Quick fill:</p>
+                <div class="quick-buttons">
+                    <button class="quick-option" data-phone="9876543210">9876543210</button>
+                    <button class="quick-option" data-phone="8765432109">8765432109</button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    const phoneInput = document.getElementById('phoneInput');
+    phoneInput.focus();
+
+    document.getElementById('submitPhone').addEventListener('click', submitPhone);
+    phoneInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') submitPhone();
+    });
+
+    document.querySelectorAll('.quick-option').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            phoneInput.value = e.target.dataset.phone;
+            submitPhone();
+        });
+    });
+}
+
+function submitPhone() {
+    const phone = document.getElementById('phoneInput').value.trim();
+
+    if (!phone || !/^\d{10}$/.test(phone)) {
+        showError("Please enter a valid 10-digit phone number");
+        return;
+    }
+
+    state.booking.phone = phone;
+    state.booking.step = 2;
+    showBookingMessage(phone, "user");
+    setTimeout(() => askBookingQuestion(), 500);
+}
+
+function showEmailInput() {
+    elements.bookingInput.innerHTML = `
+        <div class="input-container">
+            <div class="input-group">
+                <input type="email" id="emailInput" placeholder="Enter email (optional)" class="form-input">
+                <div class="button-group">
+                    <button id="submitEmail" class="submit-btn">
+                        <i class="fas fa-check"></i> Submit
+                    </button>
+                    <button id="skipEmail" class="skip-btn">
+                        <i class="fas fa-forward"></i> Skip
+                    </button>
+                </div>
+            </div>
+            <div class="quick-options">
+                <p class="quick-label"><i class="fas fa-bolt"></i> Quick fill:</p>
+                <div class="quick-buttons">
+                    <button class="quick-option" data-email="customer@gmail.com">customer@gmail.com</button>
+                    <button class="quick-option" data-email="rider@outlook.com">rider@outlook.com</button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    const emailInput = document.getElementById('emailInput');
+    emailInput.focus();
+
+    document.getElementById('submitEmail').addEventListener('click', submitEmail);
+    document.getElementById('skipEmail').addEventListener('click', skipEmail);
+    emailInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') submitEmail();
+    });
+
+    document.querySelectorAll('.quick-option').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            emailInput.value = e.target.dataset.email;
+            submitEmail();
+        });
+    });
+}
+
+function submitEmail() {
+    const email = document.getElementById('emailInput').value.trim();
+
+    if (email && !isValidEmail(email)) {
+        showError("Please enter a valid email address");
+        return;
+    }
+
+    state.booking.email = email;
+    state.booking.step = 3;
+    showBookingMessage(email || "Skipped email", "user");
+    setTimeout(() => askBookingQuestion(), 500);
+}
+
+function skipEmail() {
+    state.booking.email = "";
+    state.booking.step = 3;
+    showBookingMessage("Skipped email", "user");
+    setTimeout(() => askBookingQuestion(), 500);
+}
+
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// Button Display Functions
+function showVehicleButtons() {
+    const buttons = [
+        { text: "DL01AB1234", value: "DL01AB1234" },
+        { text: "HR26BR4567", value: "HR26BR4567" },
+        { text: "Other", action: "showCustomVehicle" }
+    ];
+    renderButtonGrid(buttons, handleVehicleSelection, "booking");
+}
+
+function showServiceButtons() {
+    const buttons = [
+        { text: "🛢️ Regular Service", value: "regular", details: "₹1,500 • 2-3 hours" },
+        { text: "📋 Routine Maintenance", value: "maintenance", details: "₹3,500 • 3-4 hours" },
+        { text: "🔧 Suspension Repair", value: "suspension", details: "₹4,500 • 4-5 hours" },
+        { text: "🛑 Brake Overhaul", value: "brakes", details: "₹3,000 • 3-4 hours" },
+        { text: "⚡ Full Service", value: "full", details: "₹6,000 • 5-6 hours" }
+    ];
+    renderButtonGrid(buttons, handleServiceSelection, "booking");
+}
+
+function showIssueButtons() {
+    const buttons = [
+        { text: "Strange noise from engine", value: "Strange noise from engine" },
+        { text: "Brakes not working properly", value: "Brakes not working properly" },
+        { text: "Suspension feels rough", value: "Suspension feels rough" },
+        { text: "Won't start", value: "Won't start" },
+        { text: "Overheating", value: "Overheating" },
+        { text: "Other issue", action: "showCustomIssue" }
+    ];
+    renderButtonGrid(buttons, handleIssueSelection, "booking");
+}
+
+function showDateButtons() {
+    const today = new Date();
+    const buttons = [];
+
+    for (let i = 1; i <= 5; i++) {
+        const date = new Date();
+        date.setDate(today.getDate() + i);
+        const day = date.toLocaleDateString('en-IN', { weekday: 'short' });
+        const dateStr = date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+        const isoDate = date.toISOString().split('T')[0];
+
+        buttons.push({
+            text: `${day}, ${dateStr}`,
+            value: isoDate
+        });
+    }
+
+
+    buttons.push({ text: "Other Date", action: "showDatePicker" });
+    renderButtonGrid(buttons, handleDateSelection, "booking");
+}
+
+function showPartsButtons() {
+    const buttons = [
+        { text: "🛢️ Oil & Filter", value: "oil_filter", details: "₹650" },
+        { text: "🛑 Brake Pads", value: "brake_pads", details: "₹800" },
+        { text: "🔌 Spark Plug", value: "spark_plug", details: "₹300" },
+        { text: "✅ No Parts Needed", value: "none" },
+        { text: "➕ Add More Parts", action: "showDetailedParts" }
+    ];
+    renderButtonGrid(buttons, handlePartsSelection, "booking");
+}
+
+function showConfirmation() {
+    const booking = state.booking;
+    const service = CONFIG.services[booking.service];
+    const partsTotal = booking.parts.reduce((sum, part) => sum + part.price, 0);
+    const total = service.price + partsTotal;
+
+    const html = `
+        <div class="confirmation-card">
+            <h3><i class="fas fa-check-circle"></i> Booking Summary</h3>
+            <div class="confirmation-details">
+                <div class="detail-row">
+                    <span class="label">Name:</span>
+                    <span class="value">${booking.name}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Phone:</span>
+                    <span class="value">${booking.phone}</span>
+                </div>
+                ${booking.email ? `<div class="detail-row">
+                    <span class="label">Email:</span>
+                    <span class="value">${booking.email}</span>
+                </div>` : ''}
+                <div class="detail-row">
+                    <span class="label">Vehicle:</span>
+                    <span class="value">${booking.vehicle}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Service:</span>
+                    <span class="value">${service.name} - ₹${service.price}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Date:</span>
+                    <span class="value">${booking.date}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Issue:</span>
+                    <span class="value">${booking.issue}</span>
+                </div>
+                ${booking.parts.length > 0 ? `<div class="detail-row">
+                    <span class="label">Parts:</span>
+                    <span class="value">${booking.parts.map(p => p.name).join(', ')}</span>
+                </div>` : ''}
+                <div class="detail-row total">
+                    <span class="label">Total Amount:</span>
+                    <span class="value">₹${total}</span>
+                </div>
+            </div>
+        </div>
+    `;
+
+    elements.bookingMessages.innerHTML += html;
+
+    const buttons = [
+        { text: "✅ Confirm Booking", action: "confirmBooking" },
+        { text: "✏️ Edit Details", action: "editBooking" },
+        { text: "📄 Download Summary", action: "downloadSummary" }
+    ];
+    renderButtonGrid(buttons, handleConfirmation, "booking");
+}
+
+// Button Handlers
+function handleVehicleSelection(value, action) {
+    if (action === "showCustomVehicle") {
+        showCustomInput("Enter registration number:", value => {
+            state.booking.vehicle = value;
+            state.booking.step = 4;
+            showBookingMessage(value, "user");
+            setTimeout(() => askBookingQuestion(), 500);
+        });
+    } else {
+        state.booking.vehicle = value;
+        state.booking.step = 4;
+        showBookingMessage(value, "user");
+        setTimeout(() => askBookingQuestion(), 500);
+    }
+}
+
+function handleServiceSelection(value) {
+    const service = CONFIG.services[value];
+    state.booking.service = value;
+    state.booking.step = 5;
+    showBookingMessage(service.name, "user");
+    updateStatus("service", service.name);
+    setTimeout(() => askBookingQuestion(), 500);
+}
+
+function handleIssueSelection(value, action) {
+    if (action === "showCustomIssue") {
+        showCustomInput("Describe the issue:", value => {
+            state.booking.issue = value;
+            state.booking.step = 6;
+            showBookingMessage(value, "user");
+            setTimeout(() => askBookingQuestion(), 500);
+        });
+    } else {
+        state.booking.issue = value;
+        state.booking.step = 6;
+        showBookingMessage(value, "user");
+        setTimeout(() => askBookingQuestion(), 500);
+    }
+}
+
+function handleDateSelection(value, action) {
+    if (action === "showDatePicker") {
+        showCustomDatePicker();
+    } else {
+        const date = new Date(value);
+        const dateStr = date.toLocaleDateString('en-IN', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        state.booking.date = dateStr;
+        state.booking.step = 7;
+        showBookingMessage(dateStr, "user");
+        updateStatus("date", dateStr);
+        setTimeout(() => askBookingQuestion(), 500);
+    }
+}
+
+function handlePartsSelection(value, action) {
+    if (action === "showDetailedParts") {
+        showDetailedParts();
+    } else if (value === "none") {
+        state.booking.parts = [];
+        state.booking.step = 8;
+        showBookingMessage("No parts needed", "user");
+        setTimeout(() => askBookingQuestion(), 500);
+    } else {
+        const part = getPartDetails(value);
+        if (part) {
+            state.booking.parts.push(part);
+            showBookingMessage(`Added: ${part.name} (₹${part.price})`, "user");
+
+            setTimeout(() => {
+                showBookingMessage("Add more parts?", "bot");
+                const buttons = [
+                    { text: "➕ Add More", action: "showDetailedParts" },
+                    { text: "✅ Done", value: "done" }
+                ];
+                renderButtonGrid(buttons, (val, act) => {
+                    if (act === "showDetailedParts") {
+                        showDetailedParts();
+                    } else {
+                        state.booking.step = 8;
+                        setTimeout(() => askBookingQuestion(), 500);
+                    }
+                }, "booking");
+            }, 500);
+        }
+    }
+}
+
+function handleConfirmation(value, action) {
+    if (action === "confirmBooking") {
+        completeBooking();
+    } else if (action === "editBooking") {
+        state.booking.step = 0;
+        clearBookingMessages();
+        startBookingSystem();
+    } else if (action === "downloadSummary") {
+        generatePDFReport();
+    }
+}
+
+// ==================== AI CHAT SYSTEM ====================
+function setupAIListeners() {
+    // Category buttons
+    document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const category = btn.dataset.category;
+            selectCategory(category);
+        });
+    });
+
+    // Back to categories
+    elements.backToCategories.addEventListener('click', () => {
+        showCategorySection();
+    });
+
+    // Model selector
+    elements.modelSelect.addEventListener('change', (e) => {
+        state.ai.mode = e.target.value;
+        showAIMessage(`Switched to ${e.target.options[e.target.selectedIndex].text}`, "bot");
+    });
+}
+
+function selectCategory(category) {
+    state.ai.currentCategory = category;
+    const categoryData = KNOWLEDGE_BASE[category];
+
+    if (!categoryData) return;
+
+    // Update UI
+    elements.questionCategoryTitle.innerHTML = `
+        <i class="fas fa-${getCategoryIcon(category)}"></i>
+        ${categoryData.title}
+    `;
+
+    // Show questions
+    showQuestionSection();
+
+    // Clear and render questions
+    elements.questionGrid.innerHTML = "";
+    categoryData.questions.forEach(q => {
+        const btn = document.createElement('button');
+        btn.className = 'question-btn';
+        btn.textContent = q.text;
+        btn.onclick = () => selectQuestion(q);
+        elements.questionGrid.appendChild(btn);
+    });
+
+    // Show AI message
+    showAIMessage(`Here are common questions about ${categoryData.title.toLowerCase()}:`, "bot");
+}
+
+function selectQuestion(question) {
+    state.ai.currentQuestion = question;
+
+    // Show question
+    showAIMessage(question.text, "user");
+
+    // Show typing indicator
+    showTypingIndicator("ai", true);
+
+    setTimeout(() => {
+        showTypingIndicator("ai", false);
+        showAIMessage(question.answer, "bot");
+
+        // Check for action
+        if (question.action) {
+            executeAction(question.action);
+        }
+
+        // Show follow-up questions if available
+        if (question.followups && question.followups.length > 0) {
+            setTimeout(() => {
+                showFollowupQuestions(question.followups);
+            }, 300);
+        }
+    }, 1000);
+}
+
+function showFollowupQuestions(followups) {
+    elements.followupGrid.innerHTML = "";
+
+    followups.forEach(followup => {
+        const btn = document.createElement('button');
+        btn.className = 'question-btn';
+        btn.textContent = followup;
+        btn.onclick = () => {
+            showAIMessage(followup, "user");
+            showTypingIndicator("ai", true);
+
+            setTimeout(() => {
+                showTypingIndicator("ai", false);
+                const response = generateFollowupResponse(followup);
+                showAIMessage(response, "bot");
+            }, 800);
+        };
+        elements.followupGrid.appendChild(btn);
+    });
+
+    // Show followup section
+    showFollowupSection();
+}
+
+function generateFollowupResponse(question) {
+    const responses = {
+        "What oil brand is best?": "We recommend Motul or Shell for ATV engines. Both offer excellent protection and performance.",
+        "Can I do it myself?": "Yes! Basic maintenance like oil changes can be DIY. We recommend our DIY kit for ₹1,000 with all tools.",
+        "Oil change service cost": "Oil change service: ₹1,500 including oil, filter, and inspection.",
+        "Battery is fine, still won't start": "Check fuel pump, ignition coil, and starter relay. Might need professional diagnostics.",
+        "Regular service cost": "Regular service: ₹1,500. Includes oil, filter, and 20-point inspection.",
+        "default": "For detailed information about this, I recommend visiting our service center or calling 1800-VECTORS-1."
+    };
+
+    return responses[question] || responses.default;
+}
+
+function executeAction(action) {
+    switch (action) {
+        case "startBooking":
+            showAIMessage("Let me help you book a service...", "bot");
+            selectCategory("booking");
+            break;
+        case "startQuote":
+            const quote = generateQuickQuote();
+            showAIMessage(quote, "bot");
+            break;
+    }
+}
+
+// ==================== QUICK ACTIONS ====================
+function setupQuickActions() {
+    elements.quickBook.addEventListener('click', () => {
+        selectCategory("booking");
+    });
+
+    elements.quickQuote.addEventListener('click', () => {
+        const quote = generateQuickQuote();
+        showAIMessage("📋 Instant Quote Generated", "bot");
+        setTimeout(() => {
+            showAIMessage(quote, "bot");
+        }, 300);
+    });
+
+    elements.quickHelp.addEventListener('click', () => {
+        showAIMessage("🚨 EMERGENCY ASSISTANCE\n\n• Call: 1800-VECTORS-1 (24/7)\n• WhatsApp: +91 98765 43210\n• Free pickup within 50km\n\nWe'll dispatch a technician immediately!", "bot");
+    });
+
+    elements.quickBrochure.addEventListener('click', () => {
+        generatePDFBrochure();
+    });
+}
+
+function generateQuickQuote() {
+    const services = Object.values(CONFIG.services);
+    const randomService = services[Math.floor(Math.random() * services.length)];
+
+    return `📋 INSTANT QUOTE\n\n` +
+        `Service: ${randomService.name}\n` +
+        `Price: ₹${randomService.price}\n` +
+        `Time: ${randomService.time}\n\n` +
+        `📍 Includes:\n` +
+        `• Complete inspection\n` +
+        `• Genuine parts (if needed)\n` +
+        `• 6-month warranty\n` +
+        `• Free pickup within 20km\n\n` +
+        `💡 Want to book this service?`;
+}
+
+// ==================== UI HELPERS ====================
+function showCategorySection() {
+    elements.categorySection.classList.add('active');
+    elements.questionSection.classList.remove('active');
+    elements.followupSection.classList.remove('active');
+    state.ai.currentCategory = null;
+}
+
+function showQuestionSection() {
+    elements.categorySection.classList.remove('active');
+    elements.questionSection.classList.add('active');
+    elements.followupSection.classList.remove('active');
+}
+
+function showFollowupSection() {
+    elements.categorySection.classList.remove('active');
+    elements.questionSection.classList.remove('active');
+    elements.followupSection.classList.add('active');
+}
+
+// Message Functions
+function showBookingMessage(text, sender) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${sender}`;
+
+    const avatar = document.createElement('div');
+    avatar.className = 'avatar';
+    avatar.innerHTML = `<i class="fas fa-${sender === 'bot' ? 'robot' : 'user'}"></i>`;
+
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+
+    if (text.includes('\n')) {
+        const lines = text.split('\n');
+        lines.forEach(line => {
+            const p = document.createElement('p');
+            p.textContent = line;
+            bubble.appendChild(p);
+        });
+    } else {
+        bubble.innerHTML = `<p>${text}</p>`;
+    }
+
+    messageDiv.appendChild(avatar);
+    messageDiv.appendChild(bubble);
+    elements.bookingMessages.appendChild(messageDiv);
+
+    // Scroll to bottom
+    setTimeout(() => {
+        elements.bookingMessages.scrollTop = elements.bookingMessages.scrollHeight;
+    }, 100);
+}
+
+function showAIMessage(text, sender) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${sender}`;
+
+    const avatar = document.createElement('div');
+    avatar.className = 'avatar';
+    avatar.innerHTML = `<i class="fas fa-${sender === 'bot' ? 'robot' : 'user'}"></i>`;
+
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+
+    const formattedText = text.replace(/\n/g, '<br>');
+    bubble.innerHTML = `<p>${formattedText}</p>`;
+
+    messageDiv.appendChild(avatar);
+    messageDiv.appendChild(bubble);
+    elements.aiMessages.appendChild(messageDiv);
+
+    // Scroll to bottom
+    setTimeout(() => {
+        elements.aiMessages.scrollTop = elements.aiMessages.scrollHeight;
+    }, 100);
+}
+
+function renderButtonGrid(buttons, handler, type) {
+    const container = type === "booking" ? elements.bookingInput : elements.aiInput;
+    container.innerHTML = "";
+
+    const grid = document.createElement('div');
+    grid.className = 'button-grid';
+
+    buttons.forEach(button => {
+        const btn = document.createElement('button');
+        btn.className = type === "booking" ? 'booking-btn' : 'question-btn';
+
+        if (type === "booking") {
+            btn.innerHTML = button.text;
+            if (button.details) {
+                const details = document.createElement('div');
+                details.className = 'btn-details';
+                details.textContent = button.details;
+                btn.appendChild(details);
+            }
+
+            btn.onclick = () => {
+                if (button.action) {
+                    handler(button.value, button.action);
+                } else {
+                    handler(button.value);
+                }
+            };
+        } else {
+            btn.textContent = button.text || button;
+            btn.onclick = () => handler(button.value || button);
+        }
+
+        grid.appendChild(btn);
+    });
+
+    container.appendChild(grid);
+}
+
+function clearBookingMessages() {
+    elements.bookingMessages.innerHTML = "";
+}
+
+function clearBookingInput() {
+    elements.bookingInput.innerHTML = "";
+}
+
+function updateStatus(type, value) {
+    switch (type) {
+        case "name":
+            elements.statusName.textContent = value;
+            break;
+        case "service":
+            elements.statusService.textContent = value;
+            break;
+        case "date":
+            elements.statusDate.textContent = value;
+            break;
+    }
+}
+
+function showTypingIndicator(type, show) {
+    let indicator;
+    if (type === "ai") {
+        indicator = document.getElementById('aiTyping');
+    } else {
+        indicator = document.getElementById('bookingTyping');
+    }
+
+    if (indicator) {
+        if (show) {
+            indicator.classList.add('active');
+        } else {
+            indicator.classList.remove('active');
+        }
+    }
+}
+
+function showError(message) {
+    const existingError = document.querySelector('.error-message');
+    if (existingError) existingError.remove();
+
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message';
+    errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+
+    const inputContainer = elements.bookingInput.querySelector('.input-container');
+    if (inputContainer) {
+        inputContainer.prepend(errorDiv);
+    } else {
+        elements.bookingInput.prepend(errorDiv);
+    }
+
+    setTimeout(() => {
+        if (errorDiv.parentNode) errorDiv.remove();
+    }, 3000);
+}
+
+// ==================== UTILITY FUNCTIONS ====================
+function getCategoryIcon(category) {
+    const icons = {
+        maintenance: 'oil-can',
+        troubleshooting: 'tools',
+        parts: 'cog',
+        service: 'calendar-alt',
+        safety: 'shield-alt',
+        booking: 'calendar-check'
+    };
+    return icons[category] || 'question-circle';
+}
+
+function getPartDetails(partId) {
+    const partsMap = {
+        oil_filter: { name: "Oil Filter", price: 250 },
+        brake_pads: { name: "Brake Pads", price: 800 },
+        spark_plug: { name: "Spark Plug", price: 300 },
+        tire_front: { name: "ATV Tire (Front)", price: 4500 },
+        tire_rear: { name: "ATV Tire (Rear)", price: 5200 },
+        battery: { name: "Battery", price: 2500 }
+    };
+    return partsMap[partId];
+}
+
+function showCustomInput(placeholder, callback) {
+    const modal = document.createElement('div');
+    modal.className = 'custom-input-modal';
+
+    modal.innerHTML = `
+        <div style="background: white; padding: 20px; border-radius: 12px; width: 90%; max-width: 400px;">
+            <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 16px;">
+                <i class="fas fa-edit"></i> ${placeholder}
+            </h3>
+            <input type="text" 
+                   id="customInput" 
+                   placeholder="${placeholder}"
+                   style="width: 100%; padding: 12px; border: 2px solid var(--border); 
+                   border-radius: 8px; margin-bottom: 15px; font-size: 14px;">
+            <div style="display: flex; gap: 10px;">
+                <button id="submitCustom" style="flex:1; background: var(--primary); color: white; 
+                        border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-size: 14px;">
+                    Submit
+                </button>
+                <button id="cancelCustom" style="flex:1; background: var(--light); color: var(--dark); 
+                        border: 1px solid var(--border); padding: 12px; border-radius: 8px; cursor: pointer; font-size: 14px;">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    setTimeout(() => {
+        document.getElementById('customInput').focus();
+    }, 100);
+
+    document.getElementById('submitCustom').onclick = () => {
+        const value = document.getElementById('customInput').value.trim();
+        if (value && callback) {
+            callback(value);
+        }
+        document.body.removeChild(modal);
+    };
+
+    document.getElementById('cancelCustom').onclick = () => {
+        document.body.removeChild(modal);
+    };
+
+    modal.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            document.body.removeChild(modal);
+        }
+        if (e.key === 'Enter' && document.activeElement.id === 'customInput') {
+            document.getElementById('submitCustom').click();
+        }
+    });
+}
+
+function showCustomDatePicker() {
+    const modal = document.createElement('div');
+    modal.className = 'custom-input-modal';
+
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const minDate = tomorrow.toISOString().split('T')[0];
+
+    modal.innerHTML = `
+        <div style="background: white; padding: 20px; border-radius: 12px; width: 90%; max-width: 400px;">
+            <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 16px;">
+                <i class="fas fa-calendar"></i> Select Date
+            </h3>
+            <input type="date" 
+                   id="datePicker" 
+                   min="${minDate}"
+                   style="width: 100%; padding: 12px; border: 2px solid var(--border); 
+                   border-radius: 8px; margin-bottom: 15px; font-size: 14px;">
+            <div style="display: flex; gap: 10px;">
+                <button id="submitDate" style="flex:1; background: var(--primary); color: white; 
+                        border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-size: 14px;">
+                    Select
+                </button>
+                <button id="cancelDate" style="flex:1; background: var(--light); color: var(--dark); 
+                        border: 1px solid var(--border); padding: 12px; border-radius: 8px; cursor: pointer; font-size: 14px;">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    setTimeout(() => {
+        document.getElementById('datePicker').focus();
+    }, 100);
+
+    document.getElementById('submitDate').onclick = () => {
+        const date = document.getElementById('datePicker').value;
+        if (date) {
+            handleDateSelection(date);
+        }
+        document.body.removeChild(modal);
+    };
+
+    document.getElementById('cancelDate').onclick = () => {
+        document.body.removeChild(modal);
+    };
+}
+
+function showDetailedParts() {
+    clearBookingInput();
+
+    let html = '<h4 style="color: var(--primary); margin-bottom: 10px; font-size: 15px;">Select Parts</h4>';
+
+    // Add parts by category
+    for (const category in CONFIG.parts) {
+        html += `<div style="margin-bottom: 15px;">
+                    <h5 style="color: #666; margin-bottom: 5px; font-size: 13px;">${category.charAt(0).toUpperCase() + category.slice(1)}</h5>
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">`;
+
+        CONFIG.parts[category].forEach(part => {
+            html += `<button class="booking-btn" onclick="addPartToBooking('${part.name}', ${part.price})">
+                        ${part.name} - ₹${part.price}
+                     </button>`;
+        });
+
+        html += '</div></div>';
+    }
+
+    html += `
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button class="submit-btn" onclick="finishPartsSelection()" style="flex: 1;">
+                <i class="fas fa-check"></i> Done
+            </button>
+            <button class="skip-btn" onclick="skipParts()" style="flex: 1;">
+                <i class="fas fa-times"></i> Skip Parts
+            </button>
+        </div>
+    `;
+
+    elements.bookingInput.innerHTML = html;
+}
+
+function addPartToBooking(name, price) {
+    state.booking.parts.push({ name, price });
+    showBookingMessage(`Added: ${name} (₹${price})`, "user");
+}
+
+function finishPartsSelection() {
+    state.booking.step = 8;
+    setTimeout(() => askBookingQuestion(), 500);
+}
+
+function skipParts() {
+    state.booking.parts = [];
+    state.booking.step = 8;
+    showBookingMessage("Skipped parts selection", "user");
+    setTimeout(() => askBookingQuestion(), 500);
+}
+
+function completeBooking() {
+    const bookingId = 'VM' + Date.now().toString().slice(-6);
+
+    showBookingMessage("✅ Booking Confirmed!", "bot");
+    showBookingMessage(`Thank you ${state.booking.name}! Your booking ID: ${bookingId}`, "bot");
+    showBookingMessage("We'll contact you within 24 hours to confirm.", "bot");
+    saveBookingForPDF();
+
+    // ===== FIX: Save booking to localStorage =====
+    try {
+        // Get service details from CONFIG
+        const serviceDetails = CONFIG.services[state.booking.service] || {
+            name: state.booking.service,
+            price: 0
+        };
+
+        // Create complete booking object
+        const completeBookingData = {
+            ...state.booking,
+            bookingId: bookingId,
+            serviceDetails: serviceDetails,
+            timestamp: new Date().toISOString(),
+            parts: state.booking.parts || []
+        };
+
+        // Save to localStorage
+        saveBookingForPDF();
+        console.log('Booking saved to localStorage:', completeBookingData);
+    } catch (error) {
+        console.error('Error saving booking to localStorage:', error);
+    }
+    // ===== END FIX =====
+
+    // Add download button
+    elements.bookingInput.innerHTML = `
+        <div class="input-container" style="text-align: center;">
+            <p style="margin-bottom: 15px; color: var(--primary); font-weight: 600;">Download your booking summary:</p>
+            <button class="submit-btn" onclick="generatePDFReport()" style="width: 100%;">
+                <i class="fas fa-download"></i> Download Booking Summary
+            </button>
+        </div>
+    `;
+}
+
+function saveBookingToLocalStorage() {
+    try {
+        const bookingData = {
+            ...state.booking,
+            timestamp: new Date().toISOString()
+        };
+        localStorage.setItem('vectors-last-booking', JSON.stringify(bookingData));
+    } catch (error) {
+        console.error('Error saving booking to localStorage:', error);
+    }
+}
+
+// Then update each step completion function to call saveBookingToLocalStorage():
+// For example, in submitName, submitPhone, etc.:
+
+function submitName() {
+    const name = document.getElementById('nameInput').value.trim();
+
+    if (!name || name.length < 2) {
+        showError("Please enter a valid name (min 2 characters)");
+        return;
+    }
+
+    state.booking.name = name;
+    state.booking.step = 1;
+    showBookingMessage(name, "user");
+    updateStatus("name", name);
+
+    setTimeout(() => askBookingQuestion(), 500);
+}
+
+function resetBooking() {
+    // Clear current booking state
+    state.booking = {
+        step: 0,
+        name: "", phone: "", email: "", vehicle: "",
+        service: "", date: "", issue: "", parts: []
+    };
+
+    // Clear status display
+    elements.statusName.textContent = "Not Started";
+    elements.statusService.textContent = "No Service";
+    elements.statusDate.textContent = "No Date";
+
+    // Restart booking system
     startBookingSystem();
 }
 
-function setupQuickActions() {
-    const quickBook = document.getElementById('quickBook');
-    const quickQuote = document.getElementById('quickQuote');
-    const quickHelp = document.getElementById('quickHelp');
-    const quickBrochure = document.getElementById('quickBrochure');
+// ==================== PDF GENERATION ====================
+function generatePDFReport() {
 
-    if (quickBook) {
-        quickBook.addEventListener('click', function () {
-            startBookingSystem();
-        });
+    const booking = JSON.parse(
+        localStorage.getItem("vectors-booking")
+    );
+
+    if (!booking) {
+        alert("Booking details not found.");
+        return;
     }
 
-    if (quickQuote) {
-        quickQuote.addEventListener('click', function () {
-            showBookingMessage("📋 **INSTANT QUOTE**\n\nService: Regular Maintenance\nTotal: ₹1,500\nIncludes:\n• Oil & filter change\n• Complete inspection\n• Tire pressure check\n• Brake inspection\n• Battery test\n\nWant to book this service?", "bot");
 
-            const inputArea = document.getElementById('bookingInput');
-            if (inputArea) {
-                inputArea.innerHTML = `
-                    <div class="button-grid">
-                        <button class="chat-btn" onclick="startBookingFlow()">
-                            <i class="fas fa-calendar-check"></i> Book Now
-                        </button>
-                        <button class="chat-btn" onclick="showServiceInfo()">
-                            <i class="fas fa-info-circle"></i> More Services
-                        </button>
+    const service =
+        CONFIG.services[booking.service] || { name: booking.service, price: 0 };
+
+    const partsTotal = (booking.parts || []).reduce(
+        (sum, p) => sum + (p.price || 0), 0
+    );
+
+    const total = service.price + partsTotal;
+
+    const html = `
+<div style="
+    font-family: 'Open Sans', Arial, sans-serif;
+    padding: 30px;
+    max-width: 700px;
+    margin: auto;
+    color: #333;
+">
+
+    <!-- HEADER -->
+    <div style="text-align:center; margin-bottom:25px;">
+        <h2 style="margin:0; letter-spacing:1px;">🚗 VECTORS MOTORS</h2>
+        <p style="margin-top:5px; color:#777;">Service Booking Confirmation</p>
+    </div>
+
+    <hr style="border:none; border-top:1px solid #ddd; margin-bottom:25px;">
+
+    <!-- BOOKING DETAILS -->
+    <h3 style="color:#2c3e50; margin-bottom:15px;">Booking Details</h3>
+
+    <table style="width:100%; border-collapse:collapse; font-size:15px;">
+        <tr>
+            <td style="padding:8px 0;"><strong>Booking ID:</strong></td>
+            <td style="padding:8px 0; text-align:right;">VM${Date.now().toString().slice(-8)}</td>
+        </tr>
+        <tr>
+            <td style="padding:8px 0;"><strong>Customer:</strong></td>
+            <td style="padding:8px 0; text-align:right;">${booking.name}</td>
+        </tr>
+        <tr>
+            <td style="padding:8px 0;"><strong>Service:</strong></td>
+            <td style="padding:8px 0; text-align:right;">${service.name}</td>
+        </tr>
+        <tr>
+            <td style="padding:8px 0;"><strong>Date:</strong></td>
+            <td style="padding:8px 0; text-align:right;">${booking.date}</td>
+        </tr>
+    </table>
+
+    <!-- COST BREAKDOWN -->
+    <div style="
+        background:#fff3ec;
+        padding:20px;
+        border-radius:8px;
+        margin-top:30px;
+    ">
+        <h3 style="color:#ff6b35; margin-bottom:15px;">Cost Breakdown</h3>
+
+        <table style="width:100%; border-collapse:collapse;">
+            <tr>
+                <td style="padding:10px 0;">Service Charge</td>
+                <td style="padding:10px 0; text-align:right;">₹${service.price}</td>
+            </tr>
+
+            <tr style="background:#ff6b35; color:white; font-weight:bold;">
+                <td style="padding:14px 0;">TOTAL AMOUNT</td>
+                <td style="padding:14px 0; text-align:right;">₹${booking.price}</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align:center; margin-top:35px; font-size:13px; color:#666;">
+        <p>Thank you for choosing <strong>Vectors Motors</strong>!</p>
+        <p>Service Center: DYPCET, Vectors Motors & Co, Kolhapur - 416002</p>
+        <p>Contact: 1800-VECTORS-1</p>
+    </div>
+
+</div>
+`;
+
+
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
+
+    html2pdf().from(temp).save("Vectors-Booking.pdf");
+}
+
+function generatePDFBrochure() {
+    const pdfContent = document.getElementById('pdfContent');
+    const pdfModal = document.getElementById('pdfModal');
+
+    if (!pdfContent || !pdfModal) return;
+
+    // Clear any previous content
+    pdfContent.innerHTML = '';
+
+    // Create brochure HTML
+    const html = `
+        <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto;">
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #1a3a5f;">
+                <h1 style="color: #1a3a5f; margin-bottom: 5px; font-size: 28px; font-family: 'Allerta Stencil', sans-serif;">🏍️ VECTORS MOTORS</h1>
+                <h2 style="color: #666; margin-top: 0; font-size: 20px;">ATV Service Price List & Brochure</h2>
+                <p style="color: #888; font-size: 14px;">Effective Date: ${new Date().toLocaleDateString('en-IN')}</p>
+            </div>
+            
+            <!-- Service Packages -->
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #1a3a5f; border-left: 4px solid #e63946; padding-left: 10px; font-size: 20px; margin-bottom: 20px; font-family: 'Allerta Stencil', sans-serif;">
+                    📋 SERVICE PACKAGES
+                </h3>
+                <div style="background: #f8f9fa; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                        <thead>
+                            <tr style="background: #1a3a5f; color: white;">
+                                <th style="padding: 12px; text-align: left; font-weight: bold;">Service Type</th>
+                                <th style="padding: 12px; text-align: right; font-weight: bold;">Price</th>
+                                <th style="padding: 12px; text-align: center; font-weight: bold;">Duration</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${Object.values(CONFIG.services).map(service => `
+                                <tr style="border-bottom: 1px solid #e0e0e0;">
+                                    <td style="padding: 12px; font-weight: 600;">${service.name}</td>
+                                    <td style="padding: 12px; text-align: right; color: #e63946; font-weight: bold;">₹${service.price.toLocaleString('en-IN')}</td>
+                                    <td style="padding: 12px; text-align: center; color: #666;">${service.time}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Parts Pricing -->
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #1a3a5f; border-left: 4px solid #2a9d8f; padding-left: 10px; font-size: 20px; margin-bottom: 20px; font-family: 'Allerta Stencil', sans-serif;">
+                    ⚙️ GENUINE PARTS PRICING
+                </h3>
+                
+                ${Object.keys(CONFIG.parts).map(category => {
+        const categoryName = category.charAt(0).toUpperCase() + category.slice(1);
+        return `
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="color: #444; font-size: 16px; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #eee;">
+                                ${categoryName} Parts
+                            </h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">
+                                ${CONFIG.parts[category].map(part => `
+                                    <div style="background: white; border: 1px solid #e0e0e0; border-radius: 6px; padding: 12px;">
+                                        <div style="font-weight: 600; color: #333; margin-bottom: 5px;">${part.name}</div>
+                                        <div style="color: #e63946; font-weight: bold; font-size: 16px;">₹${part.price.toLocaleString('en-IN')}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+    }).join('')}
+            </div>
+            
+            <!-- Maintenance Schedule -->
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #1a3a5f; border-left: 4px solid #ffb703; padding-left: 10px; font-size: 20px; margin-bottom: 20px; font-family: 'Allerta Stencil', sans-serif;">
+                    🔧 MAINTENANCE SCHEDULE
+                </h3>
+                <div style="background: #fff9e6; border-radius: 8px; padding: 20px;">
+                    <ul style="margin: 0; padding-left: 20px; color: #555;">
+                        <li style="margin-bottom: 8px;"><strong>Oil Change:</strong> Every 50 hours or 6 months</li>
+                        <li style="margin-bottom: 8px;"><strong>Air Filter:</strong> Every 100 hours or annually</li>
+                        <li style="margin-bottom: 8px;"><strong>Spark Plugs:</strong> Every 200 hours or 2 years</li>
+                        <li style="margin-bottom: 8px;"><strong>Brake Fluid:</strong> Annually</li>
+                        <li style="margin-bottom: 8px;"><strong>Coolant:</strong> Every 2 years</li>
+                        <li style="margin-bottom: 8px;"><strong>Tire Pressure:</strong> Check before every ride</li>
+                        <li><strong>Chain Lubrication:</strong> Every 10 hours of operation</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Contact Info -->
+            <div style="background: linear-gradient(135deg, #1a3a5f 0%, #2a9d8f 100%); color: white; border-radius: 8px; padding: 25px; text-align: center;">
+                <h3 style="margin-top: 0; font-size: 22px; margin-bottom: 15px; font-family: 'Allerta Stencil', sans-serif;">WHY CHOOSE VECTORS MOTORS?</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;">
+                    <div>
+                        <div style="font-size: 24px; margin-bottom: 5px;">✓</div>
+                        <div>15+ Years Experience</div>
                     </div>
-                `;
+                    <div>
+                        <div style="font-size: 24px; margin-bottom: 5px;">✓</div>
+                        <div>Genuine Parts</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 24px; margin-bottom: 5px;">✓</div>
+                        <div>6-Month Warranty</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 24px; margin-bottom: 5px;">✓</div>
+                        <div>24/7 Support</div>
+                    </div>
+                </div>
+                
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 6px; margin-top: 20px;">
+                    <div style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">📞 CONTACT US</div>
+                    <div style="margin-bottom: 5px;"><strong>Phone:</strong> 1800-VECTORS-1</div>
+                    <div style="margin-bottom: 5px;"><strong>Email:</strong> service@vectorsmotors.com</div>
+                    <div><strong>Address:</strong> 123 Auto Nagar, Delhi - 110020</div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0; color: #888; font-size: 12px;">
+                <p>This is a computer-generated document. Prices are subject to change without notice.</p>
+                <p>Document generated on: ${new Date().toLocaleString('en-IN')}</p>
+            </div>
+        </div>
+    `;
+    // Create a temporary div for PDF generation
+    const tempDiv = document.createElement('div');
+    tempDiv.style.width = '794px'; // A4 width in pixels at 96 DPI
+    tempDiv.style.padding = '40px';
+    tempDiv.innerHTML = html;
+
+    // Generate and download PDF
+    html2pdf()
+        .from(tempDiv)
+        .set({
+            margin: [15, 15, 15, 15],
+            filename: `Vectors-Motors-Brochure-${new Date().toISOString().split('T')[0]}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: {
+                scale: 2,
+                useCORS: true,
+                logging: false
+            },
+            jsPDF: {
+                unit: 'mm',
+                format: 'a4',
+                orientation: 'portrait'
             }
+        })
+        .save()
+        .then(() => {
+            // Show success message
+            if (typeof showBookingMessage === 'function') {
+                showBookingMessage("✅ Brochure downloaded successfully!", "bot");
+            } else if (typeof showAIMessage === 'function') {
+                showAIMessage("✅ Brochure downloaded successfully!", "bot");
+            }
+        })
+        .catch(error => {
+            console.error('PDF generation error:', error);
+            alert('Failed to generate PDF. Please try again.');
         });
-    }
 
-    if (quickHelp) {
-        quickHelp.addEventListener('click', function () {
-            showBookingMessage("🚨 **EMERGENCY ASSISTANCE**\n\n• Call: 1800-VECTORS-1 (24/7)\n• WhatsApp: +91 98765 43210\n• Free pickup within 50km\n• 2-hour response time\n\nWe'll dispatch a technician immediately!", "bot");
-        });
-    }
+    // Show in modal as well
+    pdfContent.innerHTML = html;
+    showPDFModal();
+}
 
-    if (quickBrochure) {
-        quickBrochure.addEventListener('click', function () {
-            generatePDFBrochure();
-        });
-    }
+function showPDFModal() {
+    elements.pdfModal.classList.add('active');
 }
 
 function setupModal() {
@@ -364,987 +1969,56 @@ function setupModal() {
         });
     }
 
-    // Download PDF
+    // Download PDF - This is for the modal download button
     if (downloadPDF) {
         downloadPDF.addEventListener('click', function () {
-            // Generate the PDF using html2pdf
-            const element = document.getElementById('pdfContent');
-            if (element) {
-                html2pdf().from(element).save('vectors-service-booking.pdf');
-            }
+            const element = document.createElement('div');
+            element.innerHTML = elements.pdfContent.innerHTML;
+            element.style.width = '794px';
+            element.style.padding = '40px';
+
+            html2pdf()
+                .from(element)
+                .set({
+                    margin: [10, 10, 10, 10],
+                    filename: 'vectors-booking-confirmation.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                })
+                .save();
         });
     }
 
     // Email PDF
     if (emailPDF) {
         emailPDF.addEventListener('click', function () {
-            alert('PDF would be emailed to your registered email address.');
+            alert('PDF would be emailed to: ' + (state.booking.email || 'your registered email'));
         });
     }
 }
 
-// ==================== BOOKING SYSTEM FUNCTIONS ====================
-
-function startBookingSystem() {
-    // Clear messages
-    clearBookingMessages();
-
-    // Show welcome messages
-    showBookingMessage("👋 Welcome to Vectors Motors ATV Service!", "bot");
-    showBookingMessage("I'll help you book a service appointment. Let's get started!", "bot");
-
-    // Reset status
-    // updateStatus("name", "Not Started");
-    // updateStatus("service", "No Service");
-    // updateStatus("date", "No Date");
-
-    // Show initial options after delay
-    setTimeout(() => {
-        showInitialOptions();
-    }, 800);
-}
-
-function showInitialOptions() {
-    const inputArea = document.getElementById('bookingInput');
-    if (!inputArea) return;
-
-    inputArea.innerHTML = `
-        <div class="button-grid">
-            <button class="chat-btn" onclick="startBookingFlow()">
-                <i class="fas fa-calendar-check"></i> Start Booking
-            </button>
-            <button class="chat-btn" onclick="showQuickServices()">
-                <i class="fas fa-bolt"></i> Quick Service
-            </button>
-            <button class="chat-btn" onclick="showServiceInfo()">
-                <i class="fas fa-info-circle"></i> Service Info
-            </button>
-            <button class="chat-btn" onclick="showMaintenanceTips()">
-                <i class="fas fa-tools"></i> Maintenance Tips
-            </button>
-        </div>
-    `;
-}
-
-function startBookingFlow() {
-    showBookingMessage("Let's book your service!", "user");
-
-    // Show typing indicator
-    showTypingIndicator(true);
-
-    setTimeout(() => {
-        showTypingIndicator(false);
-        showBookingMessage("Great! Let's start with your details.", "bot");
-
-        // Show name input
-        showNameInput();
-    }, 1000);
-}
-
-// ==================== INPUT FUNCTIONS ====================
-
-function showNameInput() {
-    const inputArea = document.getElementById('bookingInput');
-    if (!inputArea) return;
-
-    inputArea.innerHTML = `
-        <div class="input-container">
-            <div class="input-group">
-                <input type="text" id="userName" placeholder="Enter your full name" class="form-input">
-            </div>
-            <div class="button-group">
-                <button class="submit-btn" onclick="submitUserName()">
-                    <i class="fas fa-check"></i> Submit
-                </button>
-                <button class="skip-btn" onclick="showInitialOptions()">
-                    <i class="fas fa-arrow-left"></i> Back
-                </button>
-            </div>
-            <div class="quick-options">
-                <p class="quick-label"><i class="fas fa-bolt"></i> Quick fill:</p>
-                <div class="quick-buttons">
-                    <button class="quick-option" onclick="fillName('Rahul Sharma')">Rahul Sharma</button>
-                    <button class="quick-option" onclick="fillName('Priya Patel')">Priya Patel</button>
-                    <button class="quick-option" onclick="fillName('Amit Kumar')">Amit Kumar</button>
-                </div>
-            </div>
-        </div>
-    `;
-}
-
-function fillName(name) {
-    const nameInput = document.getElementById('userName');
-    if (nameInput) {
-        nameInput.value = name;
-    }
-}
-
-function submitUserName() {
-    const nameInput = document.getElementById('userName');
-    const name = nameInput ? nameInput.value.trim() : '';
-
-    if (!name || name.length < 2) {
-        showError("Please enter a valid name (min 2 characters)");
-        return;
-    }
-
-    showBookingMessage(name, "user");
-    updateStatus("name", name);
-
-    // Continue to phone input
-    setTimeout(() => {
-        showBookingMessage("What's your contact number?", "bot");
-        showPhoneInput();
-    }, 500);
-}
-
-function showPhoneInput() {
-    const inputArea = document.getElementById('bookingInput');
-    if (!inputArea) return;
-
-    inputArea.innerHTML = `
-        <div class="input-container">
-            <div class="input-group">
-                <input type="tel" id="userPhone" placeholder="Enter 10-digit phone number" class="form-input">
-            </div>
-            <div class="button-group">
-                <button class="submit-btn" onclick="submitUserPhone()">
-                    <i class="fas fa-check"></i> Submit
-                </button>
-                <button class="skip-btn" onclick="showNameInput()">
-                    <i class="fas fa-arrow-left"></i> Back
-                </button>
-            </div>
-            <div class="quick-options">
-                <p class="quick-label"><i class="fas fa-bolt"></i> Quick fill:</p>
-                <div class="quick-buttons">
-                    <button class="quick-option" onclick="fillPhone('9876543210')">9876543210</button>
-                    <button class="quick-option" onclick="fillPhone('8765432109')">8765432109</button>
-                </div>
-            </div>
-        </div>
-    `;
-}
-
-function fillPhone(phone) {
-    const phoneInput = document.getElementById('userPhone');
-    if (phoneInput) {
-        phoneInput.value = phone;
-    }
-}
-
-function submitUserPhone() {
-    const phoneInput = document.getElementById('userPhone');
-    const phone = phoneInput ? phoneInput.value.trim() : '';
-
-    if (!phone || !/^\d{10}$/.test(phone)) {
-        showError("Please enter a valid 10-digit phone number");
-        return;
-    }
-
-    showBookingMessage(phone, "user");
-
-    // Continue to service selection
-    setTimeout(() => {
-        showBookingMessage("Select service type:", "bot");
-        showServiceSelection();
-    }, 500);
-}
-
-function showServiceSelection() {
-    const inputArea = document.getElementById('bookingInput');
-    if (!inputArea) return;
-
-    inputArea.innerHTML = `
-        <div class="button-grid">
-            <button class="chat-btn" onclick="selectBookingService('Regular Service', 1500, '2-3 hours')">
-                <i class="fas fa-oil-can"></i> Regular Service
-                <small>₹1,500 • 2-3 hours</small>
-            </button>
-            <button class="chat-btn" onclick="selectBookingService('Full Service', 6000, '5-6 hours')">
-                <i class="fas fa-tools"></i> Full Service
-                <small>₹6,000 • 5-6 hours</small>
-            </button>
-            <button class="chat-btn" onclick="selectBookingService('Brake Overhaul', 3000, '3-4 hours')">
-                <i class="fas fa-car-crash"></i> Brake Service
-                <small>₹3,000 • 3-4 hours</small>
-            </button>
-            <button class="chat-btn" onclick="selectBookingService('Suspension Repair', 4500, '4-5 hours')">
-                <i class="fas fa-car"></i> Suspension
-                <small>₹4,500 • 4-5 hours</small>
-            </button>
-        </div>
-    `;
-}
-
-function selectBookingService(service, price, duration) {
-    // Store service details
-    window.currentBooking = window.currentBooking || {};
-    window.currentBooking.service = service;
-    window.currentBooking.price = price;
-    window.currentBooking.duration = duration;
-
-    showBookingMessage(`${service} - ₹${price}`, "user");
-    updateStatus("service", service);
-
-    // Continue to date selection
-    setTimeout(() => {
-        showBookingMessage("Select preferred date:", "bot");
-        showDateSelection();
-    }, 500);
-}
-
-function showDateSelection() {
-    const inputArea = document.getElementById('bookingInput');
-    if (!inputArea) return;
-
-    // Generate next 5 days
-    const today = new Date();
-    const dates = [];
-    for (let i = 1; i <= 5; i++) {
-        const date = new Date(today);
-        date.setDate(today.getDate() + i);
-        const day = date.toLocaleDateString('en-IN', { weekday: 'short' });
-        const dateStr = date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
-        dates.push({ day, date: dateStr, iso: date.toISOString().split('T')[0] });
-    }
-
-    inputArea.innerHTML = `
-        <div class="button-grid">
-            ${dates.map(d => `
-                <button class="chat-btn" onclick="selectBookingDate('${d.day}, ${d.date}', '${d.iso}')">
-                    <i class="fas fa-calendar"></i> ${d.day}, ${d.date}
-                </button>
-            `).join('')}
-            <button class="chat-btn" onclick="showCustomDatePicker()">
-                <i class="fas fa-calendar-plus"></i> Other Date
-            </button>
-        </div>
-    `;
-}
-
-function selectBookingDate(dateStr, isoDate) {
-    // Store date
-    window.currentBooking = window.currentBooking || {};
-    window.currentBooking.date = dateStr;
-    window.currentBooking.isoDate = isoDate;
-
-    showBookingMessage(dateStr, "user");
-    updateStatus("date", dateStr);
-
-    // Show confirmation
-    setTimeout(() => {
-        showConfirmation();
-    }, 500);
-}
-
-function showCustomDatePicker() {
-    const inputArea = document.getElementById('bookingInput');
-    if (!inputArea) return;
-
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const minDate = tomorrow.toISOString().split('T')[0];
-
-    inputArea.innerHTML = `
-        <div class="input-container">
-            <div class="input-group">
-                <input type="date" id="customDatePicker" min="${minDate}" class="form-input">
-            </div>
-            <div class="button-group">
-                <button class="submit-btn" onclick="submitCustomDate()">
-                    <i class="fas fa-check"></i> Select Date
-                </button>
-                <button class="skip-btn" onclick="showDateSelection()">
-                    <i class="fas fa-arrow-left"></i> Back
-                </button>
-            </div>
-        </div>
-    `;
-}
-
-function submitCustomDate() {
-    const datePicker = document.getElementById('customDatePicker');
-    const isoDate = datePicker ? datePicker.value : '';
-
-    if (!isoDate) {
-        showError("Please select a date");
-        return;
-    }
-
-    const date = new Date(isoDate);
-    const dateStr = date.toLocaleDateString('en-IN', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
-
-    selectBookingDate(dateStr, isoDate);
-}
-
-// ==================== CONFIRMATION & COMPLETION ====================
-
-function showConfirmation() {
-    const booking = window.currentBooking || {};
-    const name = document.getElementById('statusName').textContent;
-
-    showBookingMessage("Great! Here's your booking summary:", "bot");
-
-    const inputArea = document.getElementById('bookingInput');
-    if (!inputArea) return;
-
-    inputArea.innerHTML = `
-        <div class="confirmation-card">
-            <h3><i class="fas fa-check-circle"></i> Booking Summary</h3>
-            <div class="confirmation-details">
-                <div class="detail-row">
-                    <span class="label">Name:</span>
-                    <span class="value">${name}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="label">Service:</span>
-                    <span class="value">${booking.service || 'Not Selected'}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="label">Date:</span>
-                    <span class="value">${booking.date || 'Not Selected'}</span>
-                </div>
-                <div class="detail-row total">
-                    <span class="label">Total Amount:</span>
-                    <span class="value">₹${booking.price ? booking.price.toLocaleString('en-IN') : '0'}</span>
-                </div>
-            </div>
-        </div>
-        <div class="button-grid">
-            <button class="submit-btn" onclick="confirmBooking()">
-                <i class="fas fa-check"></i> Confirm Booking
-            </button>
-            <button class="skip-btn" onclick="showServiceSelection()">
-                <i class="fas fa-edit"></i> Edit Details
-            </button>
-        </div>
-    `;
-}
-
-function confirmBooking() {
-    showBookingMessage("✅ Booking Confirmed!", "bot");
-
-    // Store booking data in window.currentBooking for PDF generation
-    window.currentBooking = {
+function saveBookingForPDF() {
+    const booking = {
         name: document.getElementById('statusName').textContent,
         service: document.getElementById('statusService').textContent,
-        date: document.getElementById('statusDate').textContent,
-        price: (() => {
-            const serviceText = document.getElementById('statusService').textContent;
-            if (serviceText.includes('Regular')) return 1500;
-            if (serviceText.includes('Full')) return 6000;
-            if (serviceText.includes('Brake')) return 3000;
-            if (serviceText.includes('Suspension')) return 4500;
-            return 0;
-        })()
+        date: document.getElementById('statusDate').textContent
     };
 
-    const bookingId = 'VM' + Date.now().toString().slice(-6);
-    showBookingMessage(`Thank you! Your booking ID: ${bookingId}\nWe'll contact you within 24 hours to confirm.`, "bot");
-
-    // Show download option
-    const inputArea = document.getElementById('bookingInput');
-    if (inputArea) {
-        inputArea.innerHTML = `
-            <div class="button-grid">
-                <button class="submit-btn" onclick="downloadBookingConfirmation()">
-                    <i class="fas fa-download"></i> Download Summary
-                </button>
-                <button class="skip-btn" onclick="startBookingSystem()">
-                    <i class="fas fa-plus"></i> New Booking
-                </button>
-            </div>
-        `;
-    }
+    localStorage.setItem(
+        "vectors-booking",
+        JSON.stringify(booking)
+    );
 }
 
-function downloadBookingConfirmation() {
-    const pdfContent = document.getElementById('pdfContent');
-    const pdfModal = document.getElementById('pdfModal');
 
-    // Use stored booking data
-    const booking = window.currentBooking || {};
-    const name = booking.name || document.getElementById('statusName').textContent;
-    const service = booking.service || document.getElementById('statusService').textContent;
-    const date = booking.date || document.getElementById('statusDate').textContent;
-    const price = booking.price || 0;
 
-    pdfContent.innerHTML = `
-        <div style="padding:20px;font-family:'Open Sans',sans-serif;">
-            <h2 style="color:var(--primary-color);text-align:center;margin-bottom:20px;">🏍️ VECTORS MOTORS</h2>
-            <h3 style="color:#666;text-align:center;margin-bottom:30px;">Service Booking Confirmation</h3>
-            
-            <div style="background:#f8f9fa;padding:20px;border-radius:8px;margin-bottom:20px;">
-                <h4 style="color:var(--primary-color);margin-bottom:15px;">Booking Details</h4>
-                <table style="width:100%;border-collapse:collapse;">
-                    <tr>
-                        <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Booking ID:</strong></td>
-                        <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">VM${Date.now().toString().slice(-8)}</td>
-                    </tr>
-                    <tr>
-                        <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Customer:</strong></td>
-                        <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${name}</td>
-                    </tr>
-                    <tr>
-                        <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Service:</strong></td>
-                        <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${service}</td>
-                    </tr>
-                    <tr>
-                        <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Date:</strong></td>
-                        <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${date}</td>
-                    </tr>
-                </table>
-            </div>
-            
-            <div style="background:#fff5f0;padding:20px;border-radius:8px;margin-bottom:20px;">
-                <h4 style="color:#ff6b35;margin-bottom:15px;">Cost Breakdown</h4>
-                <table style="width:100%;border-collapse:collapse;">
-                    <tr>
-                        <td style="padding:10px 0;border-bottom:1px solid #ddd;">Service Charge</td>
-                        <td style="padding:10px 0;border-bottom:1px solid #ddd;text-align:right;">₹${price.toLocaleString('en-IN')}</td>
-                    </tr>
-                    <tr style="background:#ff6b35;color:white;font-weight:bold;">
-                        <td style="padding:15px 0;">TOTAL AMOUNT</td>
-                        <td style="padding:15px 0;text-align:right;">₹${price.toLocaleString('en-IN')}</td>
-                    </tr>
-                </table>
-            </div>
-            
-            <div style="text-align:center;color:#666;font-size:14px;margin-top:30px;">
-                <p>Thank you for choosing Vectors Motors!</p>
-                <p><strong>Service Center:</strong> 123 Auto Nagar, Delhi</p>
-                <p><strong>Contact:</strong> 1800-VECTORS-1</p>
-            </div>
-        </div>
-    `;
 
-    pdfModal.classList.add('active');
-}
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', init);
 
-// ==================== QUICK SERVICES ====================
-
-function showQuickServices() {
-    showBookingMessage("Quick service options:", "bot");
-
-    const inputArea = document.getElementById('bookingInput');
-    if (!inputArea) return;
-
-    inputArea.innerHTML = `
-        <div class="button-grid">
-            <button class="chat-btn" onclick="bookQuickService('Oil Change', 1500, '1 hour')">
-                <i class="fas fa-oil-can"></i> Oil Change
-                <small>₹1,500 • 1 hour</small>
-            </button>
-            <button class="chat-btn" onclick="bookQuickService('Brake Check', 500, '30 min')">
-                <i class="fas fa-car-crash"></i> Brake Check
-                <small>₹500 • 30 min</small>
-            </button>
-            <button class="chat-btn" onclick="bookQuickService('Tire Service', 1000, '45 min')">
-                <i class="fas fa-tire"></i> Tire Service
-                <small>₹1,000 • 45 min</small>
-            </button>
-            <button class="chat-btn" onclick="bookQuickService('Full Checkup', 2000, '2 hours')">
-                <i class="fas fa-car"></i> Full Checkup
-                <small>₹2,000 • 2 hours</small>
-            </button>
-        </div>
-    `;
-}
-
-function bookQuickService(service, price, duration) {
-    showBookingMessage(`${service} - ₹${price}`, "user");
-
-    setTimeout(() => {
-        const bookingId = 'VM' + Date.now().toString().slice(-6);
-        showBookingMessage(`✅ Quick service booked!\nBooking ID: ${bookingId}\nOur technician will contact you within 30 minutes.`, "bot");
-
-        const inputArea = document.getElementById('bookingInput');
-        if (inputArea) {
-            inputArea.innerHTML = `
-                <div class="button-grid">
-                    <button class="submit-btn" onclick="generateQuickReceipt('${service}', ${price})">
-                        <i class="fas fa-download"></i> Get Receipt
-                    </button>
-                    <button class="skip-btn" onclick="startBookingSystem()">
-                        <i class="fas fa-plus"></i> New Service
-                    </button>
-                </div>
-            `;
-        }
-    }, 1000);
-}
-// ==================== 3D MODEL VIEWER FUNCTIONALITY ====================
-const open3DButton = document.getElementById('open3D');
-const modelSlide = document.getElementById('modelSlide');
-const closeModelButton = document.getElementById('closeModel');
-// Remove the duplicate body declaration - it's already declared at the top
-
-if (open3DButton && modelSlide) {
-    open3DButton.addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        // Show the 3D model modal
-        modelSlide.classList.add('active');
-        body.classList.add('no-scroll');
-
-        // Hide any other open sections
-        const productsSection = document.getElementById('products-section');
-        if (productsSection) {
-            productsSection.classList.remove('show');
-        }
-
-        // Hide mobile menu if open
-        const navLinks = document.querySelector('.nav-links');
-        if (window.innerWidth <= 768 && navLinks.classList.contains('show')) {
-            navLinks.classList.remove('show');
-        }
-    });
-}
-
-if (closeModelButton && modelSlide) {
-    closeModelButton.addEventListener('click', function () {
-        modelSlide.classList.remove('active');
-        body.classList.remove('no-scroll');
-    });
-}
-
-// Close 3D model when clicking outside
-if (modelSlide) {
-    modelSlide.addEventListener('click', function (e) {
-        if (e.target === this) {
-            this.classList.remove('active');
-            body.classList.remove('no-scroll');
-        }
-    });
-}
-
-// Close 3D model with Escape key
-document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && modelSlide.classList.contains('active')) {
-        modelSlide.classList.remove('active');
-        body.classList.remove('no-scroll');
-    }
-});
-
-// Handle fullscreen change
-document.addEventListener('fullscreenchange', function () {
-    const button = document.querySelector('[onclick="toggleFullscreen()"] i');
-    if (button) {
-        if (document.fullscreenElement) {
-            button.className = 'fas fa-compress';
-        } else {
-            button.className = 'fas fa-expand';
-        }
-    }
-});
-
-// Function to toggle fullscreen
-function toggleFullscreen() {
-    const modelViewer = document.querySelector('model-viewer');
-    if (!modelViewer) return;
-
-    if (!document.fullscreenElement) {
-        if (modelViewer.requestFullscreen) {
-            modelViewer.requestFullscreen();
-        } else if (modelViewer.webkitRequestFullscreen) {
-            modelViewer.webkitRequestFullscreen();
-        } else if (modelViewer.msRequestFullscreen) {
-            modelViewer.msRequestFullscreen();
-        }
-    } else {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-        }
-    }
-}
-
-// ==================== INFORMATION FUNCTIONS ====================
-
-function showServiceInfo() {
-    showBookingMessage("Our service packages:", "bot");
-
-    const inputArea = document.getElementById('bookingInput');
-    if (!inputArea) return;
-
-    inputArea.innerHTML = `
-        <div class="confirmation-card">
-            <h3><i class="fas fa-info-circle"></i> Service Information</h3>
-            <div class="confirmation-details">
-                <div class="detail-row">
-                    <span class="label">Regular Service:</span>
-                    <span class="value">₹1,500 • 2-3 hours</span>
-                </div>
-                <div class="detail-row">
-                    <span class="label">Full Service:</span>
-                    <span class="value">₹6,000 • 5-6 hours</span>
-                </div>
-                <div class="detail-row">
-                    <span class="label">Brake Overhaul:</span>
-                    <span class="value">₹3,000 • 3-4 hours</span>
-                </div>
-                <div class="detail-row">
-                    <span class="label">Suspension Repair:</span>
-                    <span class="value">₹4,500 • 4-5 hours</span>
-                </div>
-                <div class="detail-row">
-                    <span class="label">Emergency Service:</span>
-                    <span class="value">₹2,000 + parts</span>
-                </div>
-            </div>
-        </div>
-        <div class="button-grid">
-            <button class="submit-btn" onclick="startBookingFlow()">
-                <i class="fas fa-calendar-check"></i> Book Service
-            </button>
-            <button class="skip-btn" onclick="showInitialOptions()">
-                <i class="fas fa-arrow-left"></i> Back
-            </button>
-        </div>
-    `;
-}
-
-function showMaintenanceTips() {
-    showBookingMessage("ATV Maintenance Tips:", "bot");
-
-    const inputArea = document.getElementById('bookingInput');
-    if (!inputArea) return;
-
-    inputArea.innerHTML = `
-        <div class="confirmation-card">
-            <h3><i class="fas fa-tools"></i> Maintenance Schedule</h3>
-            <div class="confirmation-details">
-                <div class="detail-row">
-                    <span class="label">Oil Change:</span>
-                    <span class="value">Every 50 hours or 6 months</span>
-                </div>
-                <div class="detail-row">
-                    <span class="label">Air Filter:</span>
-                    <span class="value">Every 100 hours</span>
-                </div>
-                <div class="detail-row">
-                    <span class="label">Spark Plugs:</span>
-                    <span class="value">Every 200 hours</span>
-                </div>
-                <div class="detail-row">
-                    <span class="label">Brake Fluid:</span>
-                    <span class="value">Annually</span>
-                </div>
-                <div class="detail-row">
-                    <span class="label">Coolant:</span>
-                    <span class="value">Every 2 years</span>
-                </div>
-            </div>
-        </div>
-        <div class="button-grid">
-            <button class="submit-btn" onclick="startBookingFlow()">
-                <i class="fas fa-calendar-check"></i> Schedule Maintenance
-            </button>
-            <button class="skip-btn" onclick="showInitialOptions()">
-                <i class="fas fa-arrow-left"></i> Back
-            </button>
-        </div>
-    `;
-}
-
-// ==================== PDF GENERATION ====================
-
-function generatePDFReport() {
-    const booking = window.currentBooking || {};
-    const name = document.getElementById('statusName').textContent;
-    const pdfContent = document.getElementById('pdfContent');
-    const pdfModal = document.getElementById('pdfModal');
-
-    if (!pdfContent || !pdfModal) return;
-
-    const bookingId = 'VM' + Date.now().toString().slice(-8);
-
-    pdfContent.innerHTML = `
-        <div style="padding:20px;font-family:'Open Sans',sans-serif;">
-            <h2 style="color:#1a3a5f;text-align:center;margin-bottom:20px;">🏍️ VECTORS MOTORS</h2>
-            <h3 style="color:#666;text-align:center;margin-bottom:30px;">Service Booking Confirmation</h3>
-            
-            <div style="background:#f8f9fa;padding:20px;border-radius:8px;margin-bottom:20px;">
-                <h4 style="color:#1a3a5f;margin-bottom:15px;">Booking Details</h4>
-                <table style="width:100%;border-collapse:collapse;">
-                    <tr>
-                        <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Booking ID:</strong></td>
-                        <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${bookingId}</td>
-                    </tr>
-                    <tr>
-                        <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Customer:</strong></td>
-                        <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${name}</td>
-                    </tr>
-                    <tr>
-                        <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Service:</strong></td>
-                        <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${booking.service || 'Not Selected'}</td>
-                    </tr>
-                    <tr>
-                        <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Date:</strong></td>
-                        <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${booking.date || 'Not Selected'}</td>
-                    </tr>
-                </table>
-            </div>
-            
-            <div style="background:#fff5f0;padding:20px;border-radius:8px;margin-bottom:20px;">
-                <h4 style="color:#e63946;margin-bottom:15px;">Cost Breakdown</h4>
-                <table style="width:100%;border-collapse:collapse;">
-                    <tr>
-                        <td style="padding:10px 0;border-bottom:1px solid #ddd;">Service Charge</td>
-                        <td style="padding:10px 0;border-bottom:1px solid #ddd;text-align:right;">₹${booking.price ? booking.price.toLocaleString('en-IN') : '0'}</td>
-                    </tr>
-                    <tr style="background:#e63946;color:white;font-weight:bold;">
-                        <td style="padding:15px 0;">TOTAL AMOUNT</td>
-                        <td style="padding:15px 0;text-align:right;">₹${booking.price ? booking.price.toLocaleString('en-IN') : '0'}</td>
-                    </tr>
-                </table>
-            </div>
-            
-            <div style="text-align:center;color:#666;font-size:14px;margin-top:30px;">
-                <p>Thank you for choosing Vectors Motors!</p>
-                <p><strong>Service Center:</strong> 123 Auto Nagar, Delhi</p>
-                <p><strong>Contact:</strong> 1800-VECTORS-1</p>
-            </div>
-        </div>
-    `;
-
-    pdfModal.classList.add('active');
-}
-
-function generateQuickReceipt(service, price) {
-    const pdfContent = document.getElementById('pdfContent');
-    const pdfModal = document.getElementById('pdfModal');
-
-    if (!pdfContent || !pdfModal) return;
-
-    const receiptId = 'QR' + Date.now().toString().slice(-6);
-
-    pdfContent.innerHTML = `
-        <div style="padding:20px;font-family:'Open Sans',sans-serif;">
-            <h2 style="color:#1a3a5f;text-align:center;margin-bottom:20px;">🏍️ VECTORS MOTORS</h2>
-            <h3 style="color:#666;text-align:center;margin-bottom:30px;">Quick Service Receipt</h3>
-            
-            <div style="background:#f8f9fa;padding:20px;border-radius:8px;margin-bottom:20px;">
-                <h4 style="color:#1a3a5f;margin-bottom:15px;">Service Details</h4>
-                <table style="width:100%;border-collapse:collapse;">
-                    <tr>
-                        <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Receipt ID:</strong></td>
-                        <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${receiptId}</td>
-                    </tr>
-                    <tr>
-                        <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Service:</strong></td>
-                        <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${service}</td>
-                    </tr>
-                    <tr>
-                        <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Date:</strong></td>
-                        <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${new Date().toLocaleDateString('en-IN')}</td>
-                    </tr>
-                </table>
-            </div>
-            
-            <div style="background:#fff5f0;padding:20px;border-radius:8px;margin-bottom:20px;">
-                <h4 style="color:#e63946;margin-bottom:15px;">Payment Details</h4>
-                <table style="width:100%;border-collapse:collapse;">
-                    <tr>
-                        <td style="padding:10px 0;border-bottom:1px solid #ddd;">Service Charge</td>
-                        <td style="padding:10px 0;border-bottom:1px solid #ddd;text-align:right;">₹${price.toLocaleString('en-IN')}</td>
-                    </tr>
-                    <tr style="background:#e63946;color:white;font-weight:bold;">
-                        <td style="padding:15px 0;">TOTAL AMOUNT</td>
-                        <td style="padding:15px 0;text-align:right;">₹${price.toLocaleString('en-IN')}</td>
-                    </tr>
-                </table>
-            </div>
-            
-            <div style="text-align:center;color:#666;font-size:14px;margin-top:30px;">
-                <p>Thank you for choosing Vectors Motors!</p>
-                <p>Our technician will contact you within 30 minutes.</p>
-            </div>
-        </div>
-    `;
-
-    pdfModal.classList.add('active');
-}
-
-function generatePDFBrochure() {
-    const pdfContent = document.getElementById('pdfContent');
-    const pdfModal = document.getElementById('pdfModal');
-
-    if (!pdfContent || !pdfModal) return;
-
-    pdfContent.innerHTML = `
-        <div style="padding:20px;font-family:'Open Sans',sans-serif;">
-            <h2 style="color:#1a3a5f;text-align:center;margin-bottom:20px;">🏍️ VECTORS MOTORS</h2>
-            <h3 style="color:#666;text-align:center;margin-bottom:30px;">ATV Service Brochure</h3>
-            
-            <div style="margin:20px 0;padding:15px;background:#f8f9fa;border-radius:8px;">
-                <h4 style="color:#1a3a5f;margin-bottom:15px;">Service Packages</h4>
-                <table style="width:100%;border-collapse:collapse;">
-                    <tr style="border-bottom:1px solid #ddd;">
-                        <td style="padding:10px;">Regular Service</td>
-                        <td style="text-align:right;padding:10px;font-weight:bold;">₹1,500</td>
-                        <td style="padding:10px;color:#666;">2-3 hours</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid #ddd;">
-                        <td style="padding:10px;">Full Service</td>
-                        <td style="text-align:right;padding:10px;font-weight:bold;">₹6,000</td>
-                        <td style="padding:10px;color:#666;">5-6 hours</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid #ddd;">
-                        <td style="padding:10px;">Brake Overhaul</td>
-                        <td style="text-align:right;padding:10px;font-weight:bold;">₹3,000</td>
-                        <td style="padding:10px;color:#666;">3-4 hours</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid #ddd;">
-                        <td style="padding:10px;">Suspension Repair</td>
-                        <td style="text-align:right;padding:10px;font-weight:bold;">₹4,500</td>
-                        <td style="padding:10px;color:#666;">4-5 hours</td>
-                    </tr>
-                    <tr>
-                        <td style="padding:10px;">Emergency Service</td>
-                        <td style="text-align:right;padding:10px;font-weight:bold;">₹2,000</td>
-                        <td style="padding:10px;color:#666;">+ parts cost</td>
-                    </tr>
-                </table>
-            </div>
-            
-            <div style="margin:20px 0;padding:15px;background:#f8f9fa;border-radius:8px;">
-                <h4 style="color:#1a3a5f;margin-bottom:15px;">Maintenance Schedule</h4>
-                <ul style="list-style:none;padding:0;">
-                    <li style="padding:8px 0;border-bottom:1px solid #ddd;">Oil Change: Every 50 hours or 6 months</li>
-                    <li style="padding:8px 0;border-bottom:1px solid #ddd;">Air Filter: Every 100 hours</li>
-                    <li style="padding:8px 0;border-bottom:1px solid #ddd;">Spark Plugs: Every 200 hours</li>
-                    <li style="padding:8px 0;border-bottom:1px solid #ddd;">Brake Fluid: Annually</li>
-                    <li style="padding:8px 0;">Coolant: Every 2 years</li>
-                </ul>
-            </div>
-            
-            <div style="background:#1a3a5f;color:white;padding:20px;border-radius:8px;text-align:center;">
-                <h4 style="margin-top:0;font-size:18px;">Why Choose Us?</h4>
-                <p style="margin:10px 0;">✓ 15+ Years Experience ✓ Genuine Parts ✓ 6-Month Warranty ✓ 24/7 Support</p>
-                <p style="font-size:16px;font-weight:bold;margin:15px 0;">1800-VECTORS-1</p>
-                <p>service@vectorsmotors.com</p>
-                <p>123 Auto Nagar, Delhi - 110020</p>
-            </div>
-        </div>
-    `;
-
-    pdfModal.classList.add('active');
-}
-
-// ==================== HELPER FUNCTIONS ====================
-
-function showBookingMessage(text, sender) {
-    const messages = document.getElementById('bookingMessages');
-    if (!messages) return;
-
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${sender}`;
-
-    const avatar = document.createElement('div');
-    avatar.className = 'avatar';
-    avatar.innerHTML = `<i class="fas fa-${sender === 'bot' ? 'robot' : 'user'}"></i>`;
-
-    const bubble = document.createElement('div');
-    bubble.className = 'bubble';
-
-    // Handle newlines
-    if (text.includes('\n')) {
-        const lines = text.split('\n');
-        lines.forEach(line => {
-            const p = document.createElement('p');
-            p.textContent = line;
-            bubble.appendChild(p);
-        });
-    } else {
-        bubble.innerHTML = `<p>${text}</p>`;
-    }
-
-    messageDiv.appendChild(avatar);
-    messageDiv.appendChild(bubble);
-    messages.appendChild(messageDiv);
-
-    // Scroll to bottom
-    setTimeout(() => {
-        messages.scrollTop = messages.scrollHeight;
-    }, 100);
-}
-
-function clearBookingMessages() {
-    const messages = document.getElementById('bookingMessages');
-    if (messages) {
-        messages.innerHTML = '';
-    }
-}
-
-function updateStatus(type, value) {
-    switch (type) {
-        case "name":
-            const statusName = document.getElementById('statusName');
-            if (statusName) statusName.textContent = value;
-            break;
-        case "service":
-            const statusService = document.getElementById('statusService');
-            if (statusService) statusService.textContent = value;
-            break;
-        case "date":
-            const statusDate = document.getElementById('statusDate');
-            if (statusDate) statusDate.textContent = value;
-            break;
-    }
-}
-
-function showTypingIndicator(show) {
-    const typingIndicator = document.getElementById('bookingTyping');
-    if (typingIndicator) {
-        if (show) {
-            typingIndicator.classList.add('active');
-        } else {
-            typingIndicator.classList.remove('active');
-        }
-    }
-}
-
-function showError(message) {
-    const inputArea = document.getElementById('bookingInput');
-    if (!inputArea) return;
-
-    const existingError = inputArea.querySelector('.error-message');
-    if (existingError) existingError.remove();
-
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-message';
-    errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
-
-    const inputContainer = inputArea.querySelector('.input-container');
-    if (inputContainer) {
-        inputContainer.prepend(errorDiv);
-    } else {
-        inputArea.prepend(errorDiv);
-    }
-
-    setTimeout(() => {
-        if (errorDiv.parentNode) errorDiv.remove();
-    }, 3000);
-}
-
-// ==================== EXPOSE FUNCTIONS FOR SCRIPT.JS ====================
-
-// Expose functions so they can be called from inline onclick handlers
-window.startBookingSystem = startBookingSystem;
-window.startBookingFlow = startBookingFlow;
-window.showQuickServices = showQuickServices;
-window.showServiceInfo = showServiceInfo;
-window.showMaintenanceTips = showMaintenanceTips;
+// Expose functions for inline onclick handlers
+window.addPartToBooking = addPartToBooking;
+window.finishPartsSelection = finishPartsSelection;
+window.skipParts = skipParts;
 window.generatePDFReport = generatePDFReport;
-window.generatePDFBrochure = generatePDFBrochure;

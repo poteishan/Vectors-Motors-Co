@@ -147,6 +147,15 @@ a {
     margin-right: 8px;
 }
 
+.contact {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
 /* Header Styles */
 .header {
     position: absolute;
@@ -173,6 +182,9 @@ a {
 }
 
 .logo-text {
+    display: flex;
+    align-items: center;
+    gap: 20px;
     font-size: 1.8rem;
     color: #ffffff;
     letter-spacing: 1.5px;
@@ -234,6 +246,26 @@ a {
     transform: rotate(45deg);
 }
 
+.anti-arrows {
+    display: flex;
+}
+
+.test-arrow {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.anti-arrow {
+    width: 40px;
+    height: 40px;
+    border-bottom: 8px solid #e63946;
+    border-left: 8px solid #e63946;
+    transform: rotate(45deg);
+    margin-left: 10px;
+}
+
 .nav-link:hover::after {
     width: 100%;
 }
@@ -266,13 +298,21 @@ a {
     transform: scale(1.1);
 }
 
+.test-video {
+    display: block;
+    margin: 40px auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    max-width: 100%;
+}
+
 /* ============================================
 IMPROVED SECTORS SECTION DESIGN
 ============================================ */
 .products-toggle-section {
     position: fixed;
     inset: 0;
-    background: linear-gradient(135deg, #0d1b2a, #1a3a5f);
+    background: linear-gradient(135deg, rgb(11, 25, 50));
     padding: 80px 0;
     z-index: 1001;
     display: none;
@@ -952,21 +992,40 @@ body.no-scroll {
 
 /* Footer */
 .footer {
-    background-color: var(--dark-color);
+    background-color:#0a1527;
     color: white;
     padding: 60px 0 30px;
 }
 
 .footer-content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 60px;
+    align-items: flex-start;
     margin-bottom: 3rem;
 }
 
 .footer-brand {
-    flex: 1;
-    min-width: 300px;
+    max-width: 380px;
+}
+
+.footer-nav,
+.footer-column,
+.contact {
+    margin-top: 10px;
+}
+
+.contact {
+    align-items: flex-start;
+}
+
+.contact p {
+    margin: 8px 0;
+    font-size: 0.95rem;
+}
+
+
+.footer-brand {
     margin-bottom: 2rem;
 }
 
@@ -1162,7 +1221,7 @@ body.no-scroll {
 }
 
 .chatbot-header {
-    background: var(--primary-color);
+    background-color: #0B1931;
     color: white;
     padding: 15px 20px;
     display: flex;
@@ -1480,7 +1539,7 @@ body.no-scroll {
     display: flex;
     justify-content: space-between;
     padding: 12px 20px;
-    background: var(--primary-color);
+    background-color: #0B1931;
     color: white;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     flex-wrap: wrap;
@@ -1680,6 +1739,86 @@ textarea.form-input {
     justify-content: flex-end;
 }
 
+/* =========================
+   FOOTER NAV LINKS
+========================= */
+
+.footer-end {
+    grid-column: 1 / -1;
+    /* take full width */
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    align-items: center;
+    gap: 30px;
+    margin-top: 40px;
+    /* align-items: stretch; */
+}
+
+.footer-end iframe,
+.footer-end img {
+    width: 100%;
+    height: 100%;
+    min-height: 260px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.footer-end iframe {
+    border: 0;
+}
+
+.footer-nav h4 {
+    font-family: 'Allerta Stencil', sans-serif;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.footer-links-list {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links-list li {
+    margin-bottom: 10px;
+}
+
+.footer-links-list a {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.95rem;
+    transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.footer-links-list a:hover {
+    color: #ffffff;
+    padding-left: 6px;
+}
+
+.footer-title {
+    color: #ffffff;
+    font-family: 'Allerta Stencil', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 1.5px;
+    position: relative;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+/* blue underline */
+.footer-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 45px;
+    height: 2px;
+    background: linear-gradient(90deg, #00b4ff, #00e0ff);
+    box-shadow: 0 0 6px rgba(0, 180, 255, 0.8);
+}
+
+
 .typing-indicator {
     display: none;
     align-items: center;
@@ -1717,7 +1856,16 @@ textarea.form-input {
     animation-delay: -0.16s;
 }
 
+.responsive-map {
+    width: 100%;
+    height: 350px;
+    border: 0;
+    border-radius: 12px;
+    margin-top: 15px;
+}
+
 @keyframes bounce {
+
     0%,
     80%,
     100% {
@@ -1753,6 +1901,18 @@ RESPONSIVE DESIGN
 
 /* Large Tablets and Small Desktops */
 @media (max-width: 1024px) {
+    .responsive-map {
+        height: 280px;
+    }
+
+    .arrows {
+        display: none;
+    }
+
+    .anti-arrows {
+        display: none;
+    }
+
     .hero-title {
         font-size: 2.8rem;
     }
@@ -1773,6 +1933,42 @@ RESPONSIVE DESIGN
 
 /* Tablets */
 @media (max-width: 768px) {
+    .footer-end {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-end iframe,
+    .footer-end img {
+        min-height: 220px;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .footer-brand,
+    .footer-nav,
+    .contact {
+        align-items: center;
+    }
+
+    .footer-links-list {
+        padding: 0;
+    }
+
+    .responsive-map {
+        height: 280px;
+    }
+
+    .arrows {
+        display: none;
+    }
+
+    .anti-arrows {
+        display: none;
+    }
+
     .logo-text {
         font-size: 1rem;
         color: #ffffff;
@@ -1795,7 +1991,7 @@ RESPONSIVE DESIGN
     .nav-links.show {
         justify-content: center;
         align-items: center;
-        background-color: #1a3a5f;
+        background-color: #0B1931;
         top: 0;
         z-index: -1;
         position: absolute;
@@ -2000,6 +2196,10 @@ RESPONSIVE DESIGN
 /* Mobile Phones */
 @media (max-width: 576px) {
     .arrows {
+        display: none;
+    }
+
+    .anti-arrows {
         display: none;
     }
 

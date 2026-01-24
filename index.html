@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./images/logo.svg" type="image/x-icon">
     <title>Vectors ATV | Premium All-Terrain Vehicles</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -33,8 +34,7 @@
                     <li><a href="#home" class="nav-link active">HOME</a></li>
                     <li><a href="#sectors" class="nav-link" id="products-toggle">SECTORS</a></li>
                     <li><a href="#technology" class="nav-link">TECHNOLOGY</a></li>
-                    <li><a href="#about" class="nav-link">ABOUT</a></li>
-                    <li><a href="#contact" class="nav-link">CONTACT</a></li>
+                    <li><a href="#aboutus" class="nav-link">ABOUT US</a></li>
                     <li><a href="#3d" class="nav-link" id="open3D">
                             <i class="fas fa-cube flex"></i> 3D VIEW
                         </a></li>
@@ -138,7 +138,7 @@
                     <div class="hero-divider"></div>
                     <div class="access-platform">
                         <h3 class="platform-title">ACCESS PLATFORM</h3>
-                        <a href="#" class="btn btn-primary">
+                        <a href="#" class="btn btn-primary" id="viewProductsBtn">
                             <i class="fas fa-eye"></i> VIEW PRODUCTS
                         </a>
                     </div>
@@ -176,56 +176,23 @@
     </section>
 
     <!-- Products Preview -->
-    <section class="products">
+    <section class="products" id="technology">
         <div class="container">
-            <h2 class="section-title">EXPLORE OUR PRODUCT LINE</h2>
+            <h2 class="section-title">WATCH THE ULTIMATE TEST OF OUR VEHICLE</h2>
             <p class="section-subtitle">Choose from our range of premium all-terrain vehicles</p>
-
-            <div class="products-grid">
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1593941707882-a5bba5338fe3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-                            alt="Vectors ATV Model X">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">MODEL X</h3>
-                        <p class="product-description">Our flagship model with advanced terrain adaptation and 450HP
-                            engine.</p>
-                        <a href="#" class="btn btn-outline">LEARN MORE</a>
-                    </div>
+            <!-- <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/e1ijbyxJu48?si=wyfAdkgTO1kC-qoH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" class="test-video" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
+            <div class="test-arrow">
+                <div class="arrows">
+                    <span class="arrow"></span>
+                    <span class="arrow"></span>
+                    <span class="arrow"></span>
                 </div>
-
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1591637333184-19aa84b3e01f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
-                            alt="Vectors ATV Ranger">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">RANGER</h3>
-                        <p class="product-description">Perfect for industrial and agricultural use with customizable
-                            cargo options.</p>
-                        <a href="#" class="btn btn-outline">LEARN MORE</a>
-                    </div>
+                <video src="./images/videoplayback.mp4" class="test-video" type="video/mp4" controls></video>
+                <div class="anti-arrows">
+                    <span class="anti-arrow"></span>
+                    <span class="anti-arrow"></span>
+                    <span class="anti-arrow"></span>
                 </div>
-
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1621451537084-482c73073a0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
-                            alt="Vectors ATV Trailblazer">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">TRAILBLAZER</h3>
-                        <p class="product-description">Lightweight and agile, designed for recreational and sport use.
-                        </p>
-                        <a href="#" class="btn btn-outline">LEARN MORE</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="text-center">
-                <a href="#" class="btn btn-primary btn-large">
-                    <i class="fas fa-th-list"></i> VIEW ALL PRODUCTS
-                </a>
             </div>
         </div>
     </section>
@@ -236,10 +203,10 @@
             <div class="footer-content">
                 <div class="footer-brand">
                     <a href="#" class="logo">
-                        <span class="logo-text">VECTORS</span>
+                        <span class="logo-text">VECTORS MOTORS & CO</span>
                         <span class="logo-tagline">ALL-TERRAIN SOLUTIONS</span>
                     </a>
-                    <p class="footer-description">Designing and manufacturing premium all-terrain vehicles since 2010.
+                    <p class="footer-description">Designing and manufacturing premium all-terrain vehicles since 2025.
                     </p>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -249,44 +216,36 @@
                         <a href="#"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
-
-                <div class="footer-links">
-                    <div class="footer-column">
-                        <h4>PRODUCTS</h4>
-                        <ul>
-                            <li><a href="#">MODEL X</a></li>
-                            <li><a href="#">RANGER</a></li>
-                            <li><a href="#">TRAILBLAZER</a></li>
-                            <li><a href="#">ACCESSORIES</a></li>
-                            <li><a href="#">CUSTOM BUILDS</a></li>
-                        </ul>
+                <div class="footer-nav">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links-list">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#sectors">Sectors</a></li>
+                        <li><a href="#technology">Technology</a></li>
+                        <li><a href="#aboutus">About Us</a></li>
+                        <li><a href="#3d" id="open3D-footer">
+                                </i> 3D View
+                            </a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h1 class="footer-title"><i class="fas fa-phone-alt"></i> CONTACT US</h1>
+                    <div class="contact-info">
+                        <p>Phone: +91 98765 43210<br>
+                            Email: info@vectorsmotors.com</p>
                     </div>
-
-                    <div class="footer-column">
-                        <h4>SOLUTIONS</h4>
-                        <ul>
-                            <li><a href="#">INDUSTRIAL USE</a></li>
-                            <li><a href="#">AGRICULTURE</a></li>
-                            <li><a href="#">RECREATION</a></li>
-                            <li><a href="#">EMERGENCY SERVICES</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="footer-column" id="about">
-                        <h4>COMPANY</h4>
-                        <ul>
-                            <li><a href="#">ABOUT US</a></li>
-                            <li><a href="#">CAREERS</a></li>
-                            <li><a href="#">NEWS</a></li>
-                            <li><a href="#">CONTACT</a></li>
-                            <li><a href="#">SUPPORT</a></li>
-                        </ul>
-                    </div>
+                </div>
+                <div class="footer-end">
+                    <iframe class="responsive-map"
+                        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3820.9118816656064!2d74.240347!3d16.731248!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc1008d2532b153%3A0xa154d05f5c9250ae!2sD.%20Y.%20Patil%20College%20Of%20Engineering%20%26%20Technology!5e0!3m2!1sen!2sus!4v1769239694336!5m2!1sen!2sus"
+                        allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                    <img src="./images/Baja Atv.jpg" alt="">
                 </div>
             </div>
 
             <div class="footer-bottom">
-                <p>&copy; 2023 VECTORS ALL-TERRAIN VEHICLES. ALL RIGHTS RESERVED.</p>
+                <p>&copy; 2025 VECTORS ALL-TERRAIN VEHICLES. ALL RIGHTS RESERVED.</p>
                 <div class="footer-legal">
                     <a href="#">PRIVACY POLICY</a>
                     <a href="#">TERMS OF SERVICE</a>
@@ -342,8 +301,8 @@
             </div>
 
             <div class="quick-actions">
-                <button class="quick-btn" id="quickQuote">
-                    <i class="fas fa-calculator"></i> Get Quote
+                <button class="quick-btn" onclick="openTestDrive()">
+                    <i class="fas fa-car"></i> Test Drive
                 </button>
                 <button class="quick-btn" id="quickHelp">
                     <i class="fas fa-phone"></i> Emergency
@@ -380,9 +339,10 @@
         </div>
         <div class="model-viewer-container">
             <!-- 3D model will be loaded here -->
-            <model-viewer src="./images/Old.glb" alt="Vectors ATV 3D Model" camera-controls auto-rotate
-                shadow-intensity="1" exposure="1" style="width: 100%; height: 100%; background-color: white">
+            <model-viewer src="./images/Old.glb" alt="Vectors ATV 3D Model" camera-controls auto-rotate ar
+                shadow-intensity="1" exposure="1" style="width:100%; height:100%; background:#ffffff;">
             </model-viewer>
+
             <div class="model-controls">
                 <button class="model-control-btn" onclick="toggleFullscreen()">
                     <i class="fas fa-expand"></i>
@@ -467,22 +427,12 @@
 
             // Set up quick actions
             const quickBook = document.getElementById('quickBook');
-            const quickQuote = document.getElementById('quickQuote');
             const quickHelp = document.getElementById('quickHelp');
             const quickBrochure = document.getElementById('quickBrochure');
 
             if (quickBook) {
                 quickBook.addEventListener('click', function () {
                     startBookingSystem();
-                });
-            }
-
-            if (quickQuote) {
-                quickQuote.addEventListener('click', function () {
-                    if (typeof generateQuickQuote === 'function') {
-                        const quote = generateQuickQuote();
-                        showBookingMessage(quote, "bot");
-                    }
                 });
             }
 

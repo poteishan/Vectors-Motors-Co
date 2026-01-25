@@ -298,6 +298,7 @@ function generatePDFReport() {
 }
 
 function generatePDFBrochure() {
+    showBookingMessage("✅ PDF Downloaded Successfully!", "bot");
     const services = {
         regular: { name: "Regular Service", price: 1500, time: "2-3 hours" },
         maintenance: { name: "Routine Maintenance", price: 3500, time: "3-4 hours" },

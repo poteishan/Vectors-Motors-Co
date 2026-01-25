@@ -128,12 +128,12 @@ a {
 
 .btn-outline {
     background-color: transparent;
-    color: var(--primary-color);
-    border-color: var(--primary-color);
+    color: #0b1527;
+    border-color:#0b1527;
 }
 
 .btn-outline:hover {
-    background-color: var(--primary-color);
+    background-color: #0b1527;
     color: white;
     transform: translateY(-2px);
 }
@@ -363,7 +363,7 @@ IMPROVED SECTORS SECTION DESIGN
 
 .model-slide-header {
     padding: 20px;
-    background: var(--primary-color);
+    background-color: #0B1931;
     color: white;
     display: flex;
     justify-content: space-between;
@@ -425,7 +425,7 @@ model-viewer {
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.9);
     border: none;
-    color: var(--primary-color);
+    color: #0b1527;
     font-size: 20px;
     cursor: pointer;
     display: flex;
@@ -434,12 +434,17 @@ model-viewer {
     transition: all 0.3s;
 }
 
+.text-color{
+    color: #0B1931;
+}
+
 .model-control-btn:hover {
     background: white;
     transform: scale(1.1);
 }
 
 .model-info {
+    color: #0B1931;
     position: absolute;
     bottom: 20px;
     left: 20px;
@@ -703,7 +708,7 @@ body.no-scroll {
     width: 50px;
     height: 50px;
     background: rgba(255, 255, 255, 0.95);
-    color: var(--primary-color);
+    color: #0b1527;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -741,7 +746,7 @@ body.no-scroll {
 
 .category-title {
     font-size: 1.75rem;
-    color: var(--primary-color);
+    color:#0b1527;
     margin-bottom: 15px;
     letter-spacing: 1px;
     position: relative;
@@ -880,7 +885,7 @@ body.no-scroll {
 
 .section-title {
     font-size: 2.5rem;
-    color: var(--primary-color);
+    color: #0b1527;
     text-align: center;
     margin-bottom: 1rem;
     letter-spacing: 1px;
@@ -917,13 +922,13 @@ body.no-scroll {
 
 .feature-icon {
     font-size: 2.5rem;
-    color: var(--primary-color);
+    color: #0b1527;
     margin-bottom: 1.5rem;
 }
 
 .feature-title {
     font-size: 1.5rem;
-    color: var(--primary-color);
+    color: #0b1527;
     margin-bottom: 1rem;
     letter-spacing: 0.5px;
 }
@@ -980,7 +985,7 @@ body.no-scroll {
 
 .product-title {
     font-size: 1.5rem;
-    color: var(--primary-color);
+    color: #0b1527;
     margin-bottom: 0.8rem;
     letter-spacing: 0.5px;
 }
@@ -992,7 +997,7 @@ body.no-scroll {
 
 /* Footer */
 .footer {
-    background-color:#0a1527;
+    background-color: #0a1527;
     color: white;
     padding: 60px 0 30px;
 }
@@ -1149,7 +1154,7 @@ body.no-scroll {
     right: 30px;
     width: 60px;
     height: 60px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background: linear-gradient(135deg, rgb(15, 25, 40) 0%, var(--secondary-color) 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1297,7 +1302,7 @@ body.no-scroll {
 }
 
 .message.bot .avatar {
-    background: var(--primary-color);
+    background: #0b1527;
 }
 
 .message.user .avatar {
@@ -1333,7 +1338,7 @@ body.no-scroll {
 }
 
 .message.user .bubble {
-    background: var(--primary-color);
+    background: #0b1527;
     color: white;
     border: none;
 }
@@ -1346,10 +1351,9 @@ body.no-scroll {
 
 .chat-input {
     padding: 15px;
-    background: white;
+    background: #0B1931;
     border-top: 1px solid #e9ecef;
     min-height: 60px;
-    overflow-y: scroll;
 }
 
 .button-grid {
@@ -1361,7 +1365,7 @@ body.no-scroll {
 
 .chat-btn {
     background: white;
-    border: 2px solid var(--primary-color);
+    border: 2px solid #0b1527;
     border-radius: 8px;
     padding: 10px 12px;
     font-family: 'Open Sans', sans-serif;
@@ -1422,7 +1426,7 @@ body.no-scroll {
 }
 
 .submit-btn {
-    background: var(--primary-color);
+    background: #0b1527;
     color: white;
     border: none;
     border-radius: 6px;
@@ -1489,7 +1493,7 @@ body.no-scroll {
 }
 
 .confirmation-card h3 {
-    color: var(--primary-color);
+    color: #0b1527;
     margin-bottom: 15px;
     font-size: 16px;
     display: flex;
@@ -1515,7 +1519,7 @@ body.no-scroll {
 
 .detail-row.total {
     font-weight: bold;
-    color: var(--primary-color);
+    color: #0b1527;
     font-size: 15px;
     padding-top: 12px;
     margin-top: 8px;
@@ -1564,7 +1568,7 @@ body.no-scroll {
     display: flex;
     gap: 10px;
     padding: 15px 20px;
-    background: white;
+    background: #0B1931;
     border-top: 1px solid #e9ecef;
     justify-content: center;
 }
@@ -1572,7 +1576,7 @@ body.no-scroll {
 .quick-btn {
     flex: 1;
     background: white;
-    border: 2px solid var(--primary-color);
+    border: 2px solid #0b1527;
     border-radius: 6px;
     padding: 10px 12px;
     display: flex;
@@ -1582,9 +1586,9 @@ body.no-scroll {
     cursor: pointer;
     font-size: 12px;
     font-weight: 600;
-    color: var(--primary-color);
+    color: #0b1527;
     transition: all 0.3s;
-    min-width: 120px;
+    min-width: 110px;
     max-width: 200px;
 }
 
@@ -1627,7 +1631,7 @@ body.no-scroll {
 
 .modal-header {
     padding: 20px;
-    background: var(--primary-color);
+    background: #0b1527;
     color: white;
     display: flex;
     justify-content: space-between;
@@ -1635,6 +1639,8 @@ body.no-scroll {
 }
 
 .query-form {
+    height: 200px;
+    overflow-y: scroll;
     background: #fff;
     padding: 20px;
     border-radius: 15px;
@@ -1843,7 +1849,7 @@ textarea.form-input {
 .typing-dots span {
     width: 8px;
     height: 8px;
-    background: var(--primary-color);
+    background: #0b1527;
     border-radius: 50%;
     animation: bounce 1.4s infinite ease-in-out;
 }

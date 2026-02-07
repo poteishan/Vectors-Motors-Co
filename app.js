@@ -7,6 +7,10 @@ document.getElementById("open3D-footer")?.addEventListener("click", function (e)
     document.getElementById("open3D").click();
 });
 
+document.getElementById("open3D").addEventListener("click", () => {
+    document.querySelector("model-viewer").setAttribute("src", "./images/Old.glb")
+})
+
 
 function toggleFullscreen() {
     const modelViewer = document.querySelector('model-viewer');

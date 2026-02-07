@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="./images/logo.svg" type="image/x-icon">
     <title>Vectors ATV | Premium All-Terrain Vehicles</title>
-    <link rel="stylesheet" href="style.css">
+     <link rel="stylesheet" href="./css/critical.css">
+     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="./output.css" rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css2?family=Allerta+Stencil&family=Open+Sans:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- HTML2PDF for Chatbot -->
@@ -112,7 +112,7 @@
 
     <section class="hero">
         <!-- background video -->
-        <video class="hero-video" autoplay muted loop playsinline>
+        <video loading="lazy" class="hero-video" autoplay muted loop playsinline>
             <source src="./images/FInal_Video.mp4" type="video/mp4">
         </video>
 
@@ -180,14 +180,13 @@
         <div class="container">
             <h2 class="section-title">WATCH THE ULTIMATE TEST OF OUR VEHICLE</h2>
             <p class="section-subtitle">Choose from our range of premium all-terrain vehicles</p>
-            <!-- <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/e1ijbyxJu48?si=wyfAdkgTO1kC-qoH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" class="test-video" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
             <div class="test-arrow">
                 <div class="arrows">
                     <span class="arrow"></span>
                     <span class="arrow"></span>
                     <span class="arrow"></span>
                 </div>
-                <video src="./images/videoplayback.mp4" class="test-video" type="video/mp4" controls></video>
+                <video loading="lazy" src="./images/videoplayback.mp4" class="test-video" type="video/mp4" controls></video>
                 <div class="anti-arrows">
                     <span class="anti-arrow"></span>
                     <span class="anti-arrow"></span>
@@ -240,7 +239,7 @@
                         src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3820.9118816656064!2d74.240347!3d16.731248!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc1008d2532b153%3A0xa154d05f5c9250ae!2sD.%20Y.%20Patil%20College%20Of%20Engineering%20%26%20Technology!5e0!3m2!1sen!2sus!4v1769239694336!5m2!1sen!2sus"
                         allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
                     </iframe>
-                    <img src="./images/Baja Atv.jpg" alt="">
+                    <img src="./images/Baja Atv.webp" alt="">
                 </div>
             </div>
 
@@ -359,7 +358,7 @@
 
     <!-- Load model-viewer library -->
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <script src="app.js"></script>
+    <script src="app.js" defer></script>
 
     <script>
         // Chatbot Integration

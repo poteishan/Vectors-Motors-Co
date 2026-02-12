@@ -7,10 +7,6 @@ document.getElementById("open3D-footer")?.addEventListener("click", function (e)
     document.getElementById("open3D").click();
 });
 
-document.getElementById("open3D").addEventListener("click", () => {
-    document.querySelector("model-viewer").setAttribute("src", "./images/Old.glb")
-})
-
 
 function toggleFullscreen() {
     const modelViewer = document.querySelector('model-viewer');
@@ -240,7 +236,7 @@ function generatePDFReport() {
     color: #333;
 ">
     <div style="text-align:center; margin-bottom:25px;">
-        <h2 style="margin:0; letter-spacing:1px;">🚗 VECTORS MOTORS</h2>
+        <h2 style="margin:0; letter-spacing:1px;">VECTORS MOTORS</h2>
         <p style="margin-top:5px; color:#777;">Service Booking Confirmation</p>
     </div>
 
@@ -302,7 +298,7 @@ function generatePDFReport() {
 }
 
 function generatePDFBrochure() {
-    showBookingMessage("✅ PDF Downloaded Successfully!", "bot");
+    showBookingMessage("✅ Booking Confirmed!", "bot");
     const services = {
         regular: { name: "Regular Service", price: 1500, time: "2-3 hours" },
         maintenance: { name: "Routine Maintenance", price: 3500, time: "3-4 hours" },
@@ -333,7 +329,7 @@ function generatePDFBrochure() {
     const html = `
         <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto;">
             <div style="text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #1a3a5f;">
-                <h1 style="color: #1a3a5f; margin-bottom: 5px; font-size: 28px;">🏍️ VECTORS MOTORS</h1>
+                <h1 style="color: #1a3a5f; margin-bottom: 5px; font-size: 28px;">VECTORS MOTORS</h1>
                 <h2 style="color: #666; margin-top: 0; font-size: 20px;">ATV Service Price List & Brochure</h2>
                 <p style="color: #888; font-size: 14px;">Effective Date: ${new Date().toLocaleDateString('en-IN')}</p>
             </div>
@@ -636,7 +632,7 @@ function startBookingSystem() {
         messages.innerHTML = '';
     }
 
-    showBookingMessage("👋 Welcome to Vectors Motors ATV Service!", "bot");
+    showBookingMessage("Welcome to Vectors Motors ATV Service!", "bot");
     showBookingMessage("I'll help you book a service appointment. Let's get started!", "bot");
 
     const statusName = document.getElementById('statusName');
@@ -772,3 +768,455 @@ window.submitQuery = submitQuery;
 window.toggleFullscreen = toggleFullscreen;
 window.openTestDrive = openTestDrive;
 window.submitTestDrive = submitTestDrive;
+
+// ==================== BOOKING SYSTEM ====================
+function startBookingSystem() {
+    clearBookingMessages();
+    showBookingMessage("Welcome to Vectors Motors ATV Service!", "bot");
+    showBookingMessage("I'll help you book a service appointment. Let's get started!", "bot");
+
+    setTimeout(() => askBookingQuestion(), 800);
+}
+
+function askBookingQuestion() {
+    clearBookingInput();
+
+    switch (state.booking.step) {
+        case 0:
+            showBookingMessage("What's your full name?", "bot");
+            showNameInput();
+            break;
+        case 1:
+            showBookingMessage("What's your contact number?", "bot");
+            showPhoneInput();
+            break;
+        case 2:
+            showBookingMessage("Your email address? (Optional)", "bot");
+            showEmailInput();
+            break;
+        case 3:
+            showBookingMessage("What's your ATV registration number?", "bot");
+            showVehicleButtons();
+            break;
+        case 4:
+            showBookingMessage("Select service type:", "bot");
+            showServiceButtons();
+            break;
+        case 5:
+            showBookingMessage("Describe the issue briefly:", "bot");
+            showIssueButtons();
+            break;
+        case 6:
+            showBookingMessage("Preferred service date?", "bot");
+            showDateButtons();
+            break;
+        case 7:
+            showBookingMessage("Need any spare parts?", "bot");
+            showPartsButtons();
+            break;
+        case 8:
+            showBookingMessage("Review your booking:", "bot");
+            showConfirmation();
+            break;
+    }
+}
+
+// Input Functions
+function showNameInput() {
+    elements.bookingInput.innerHTML = `
+        <div class="input-container">
+            <div class="input-group">
+                <input type="text" id="nameInput" placeholder="Enter your full name" class="form-input">
+                <button id="submitName" class="submit-btn">
+                    <i class="fas fa-check"></i> Submit
+                </button>
+            </div>
+            <div class="quick-options">
+                <p class="quick-label"><i class="fas fa-bolt"></i> Quick fill:</p>
+                <div class="quick-buttons">
+                    <button class="quick-option" data-name="Rahul Sharma">Rahul Sharma</button>
+                    <button class="quick-option" data-name="Priya Patel">Priya Patel</button>
+                    <button class="quick-option" data-name="Amit Kumar">Amit Kumar</button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    const nameInput = document.getElementById('nameInput');
+    nameInput.focus();
+
+    document.getElementById('submitName').addEventListener('click', submitName);
+    nameInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') submitName();
+    });
+
+    document.querySelectorAll('.quick-option').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            nameInput.value = e.target.dataset.name;
+            submitName();
+        });
+    });
+}
+
+function submitName() {
+    const name = document.getElementById('nameInput').value.trim();
+
+    if (!name || name.length < 2) {
+        showError("Please enter a valid name (min 2 characters)");
+        return;
+    }
+
+    state.booking.name = name;
+    state.booking.step = 1;
+    showBookingMessage(name, "user");
+    updateStatus("name", name);
+    setTimeout(() => askBookingQuestion(), 500);
+}
+
+function showPhoneInput() {
+    elements.bookingInput.innerHTML = `
+        <div class="input-container">
+            <div class="input-group">
+                <input type="tel" id="phoneInput" placeholder="Enter 10-digit phone" class="form-input">
+                <button id="submitPhone" class="submit-btn">
+                    <i class="fas fa-check"></i> Submit
+                </button>
+            </div>
+            <div class="quick-options">
+                <p class="quick-label"><i class="fas fa-bolt"></i> Quick fill:</p>
+                <div class="quick-buttons">
+                    <button class="quick-option" data-phone="9876543210">9876543210</button>
+                    <button class="quick-option" data-phone="8765432109">8765432109</button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    const phoneInput = document.getElementById('phoneInput');
+    phoneInput.focus();
+
+    document.getElementById('submitPhone').addEventListener('click', submitPhone);
+    phoneInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') submitPhone();
+    });
+
+    document.querySelectorAll('.quick-option').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            phoneInput.value = e.target.dataset.phone;
+            submitPhone();
+        });
+    });
+}
+
+function submitPhone() {
+    const phone = document.getElementById('phoneInput').value.trim();
+
+    if (!phone || !/^\d{10}$/.test(phone)) {
+        showError("Please enter a valid 10-digit phone number");
+        return;
+    }
+
+    state.booking.phone = phone;
+    state.booking.step = 2;
+    showBookingMessage(phone, "user");
+    setTimeout(() => askBookingQuestion(), 500);
+}
+
+function showEmailInput() {
+    elements.bookingInput.innerHTML = `
+        <div class="input-container">
+            <div class="input-group">
+                <input type="email" id="emailInput" placeholder="Enter email (optional)" class="form-input">
+                <div class="button-group">
+                    <button id="submitEmail" class="submit-btn">
+                        <i class="fas fa-check"></i> Submit
+                    </button>
+                    <button id="skipEmail" class="skip-btn">
+                        <i class="fas fa-forward"></i> Skip
+                    </button>
+                </div>
+            </div>
+            <div class="quick-options">
+                <p class="quick-label"><i class="fas fa-bolt"></i> Quick fill:</p>
+                <div class="quick-buttons">
+                    <button class="quick-option" data-email="customer@gmail.com">customer@gmail.com</button>
+                    <button class="quick-option" data-email="rider@outlook.com">rider@outlook.com</button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    const emailInput = document.getElementById('emailInput');
+    emailInput.focus();
+
+    document.getElementById('submitEmail').addEventListener('click', submitEmail);
+    document.getElementById('skipEmail').addEventListener('click', skipEmail);
+    emailInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') submitEmail();
+    });
+
+    document.querySelectorAll('.quick-option').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            emailInput.value = e.target.dataset.email;
+            submitEmail();
+        });
+    });
+}
+
+function submitEmail() {
+    const email = document.getElementById('emailInput').value.trim();
+
+    if (email && !isValidEmail(email)) {
+        showError("Please enter a valid email address");
+        return;
+    }
+
+    state.booking.email = email;
+    state.booking.step = 3;
+    showBookingMessage(email || "Skipped email", "user");
+    setTimeout(() => askBookingQuestion(), 500);
+}
+
+function skipEmail() {
+    state.booking.email = "";
+    state.booking.step = 3;
+    showBookingMessage("Skipped email", "user");
+    setTimeout(() => askBookingQuestion(), 500);
+}
+
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// Button Display Functions
+function showVehicleButtons() {
+    const buttons = [
+        { text: "DL01AB1234", value: "DL01AB1234" },
+        { text: "HR26BR4567", value: "HR26BR4567" },
+        { text: "Other", action: "showCustomVehicle" }
+    ];
+    renderButtonGrid(buttons, handleVehicleSelection, "booking");
+}
+
+function showServiceButtons() {
+    const buttons = [
+        { text: "🛢️ Regular Service", value: "regular", details: "₹1,500 • 2-3 hours" },
+        { text: "📋 Routine Maintenance", value: "maintenance", details: "₹3,500 • 3-4 hours" },
+        { text: "🔧 Suspension Repair", value: "suspension", details: "₹4,500 • 4-5 hours" },
+        { text: "🛑 Brake Overhaul", value: "brakes", details: "₹3,000 • 3-4 hours" },
+        { text: "⚡ Full Service", value: "full", details: "₹6,000 • 5-6 hours" }
+    ];
+    renderButtonGrid(buttons, handleServiceSelection, "booking");
+}
+
+function showIssueButtons() {
+    const buttons = [
+        { text: "Strange noise from engine", value: "Strange noise from engine" },
+        { text: "Brakes not working properly", value: "Brakes not working properly" },
+        { text: "Suspension feels rough", value: "Suspension feels rough" },
+        { text: "Won't start", value: "Won't start" },
+        { text: "Overheating", value: "Overheating" },
+        { text: "Other issue", action: "showCustomIssue" }
+    ];
+    renderButtonGrid(buttons, handleIssueSelection, "booking");
+}
+
+function showDateButtons() {
+    const today = new Date();
+    const buttons = [];
+
+    for (let i = 1; i <= 5; i++) {
+        const date = new Date();
+        date.setDate(today.getDate() + i);
+        const day = date.toLocaleDateString('en-IN', { weekday: 'short' });
+        const dateStr = date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+        const isoDate = date.toISOString().split('T')[0];
+
+        buttons.push({
+            text: `${day}, ${dateStr}`,
+            value: isoDate
+        });
+    }
+    
+
+    buttons.push({ text: "Other Date", action: "showDatePicker" });
+    renderButtonGrid(buttons, handleDateSelection, "booking");
+}
+
+function showPartsButtons() {
+    const buttons = [
+        { text: "🛢️ Oil & Filter", value: "oil_filter", details: "₹650" },
+        { text: "🛑 Brake Pads", value: "brake_pads", details: "₹800" },
+        { text: "🔌 Spark Plug", value: "spark_plug", details: "₹300" },
+        { text: "✅ No Parts Needed", value: "none" },
+        { text: "➕ Add More Parts", action: "showDetailedParts" }
+    ];
+    renderButtonGrid(buttons, handlePartsSelection, "booking");
+}
+
+function showConfirmation() {
+    const booking = state.booking;
+    const service = CONFIG.services[booking.service];
+    const partsTotal = booking.parts.reduce((sum, part) => sum + part.price, 0);
+    const total = service.price + partsTotal;
+
+    const html = `
+        <div class="confirmation-card">
+            <h3><i class="fas fa-check-circle"></i> Booking Summary</h3>
+            <div class="confirmation-details">
+                <div class="detail-row">
+                    <span class="label">Name:</span>
+                    <span class="value">${booking.name}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Phone:</span>
+                    <span class="value">${booking.phone}</span>
+                </div>
+                ${booking.email ? `<div class="detail-row">
+                    <span class="label">Email:</span>
+                    <span class="value">${booking.email}</span>
+                </div>` : ''}
+                <div class="detail-row">
+                    <span class="label">Vehicle:</span>
+                    <span class="value">${booking.vehicle}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Service:</span>
+                    <span class="value">${service.name} - ₹${service.price}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Date:</span>
+                    <span class="value">${booking.date}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Issue:</span>
+                    <span class="value">${booking.issue}</span>
+                </div>
+                ${booking.parts.length > 0 ? `<div class="detail-row">
+                    <span class="label">Parts:</span>
+                    <span class="value">${booking.parts.map(p => p.name).join(', ')}</span>
+                </div>` : ''}
+                <div class="detail-row total">
+                    <span class="label">Total Amount:</span>
+                    <span class="value">₹${total}</span>
+                </div>
+            </div>
+        </div>
+    `;
+
+    elements.bookingMessages.innerHTML += html;
+
+    const buttons = [
+        { text: "✅ Confirm Booking", action: "confirmBooking" },
+        { text: "✏️ Edit Details", action: "editBooking" },
+        { text: "📄 Download Summary", action: "downloadSummary" }
+    ];
+    renderButtonGrid(buttons, handleConfirmation, "booking");
+}
+
+// Button Handlers
+function handleVehicleSelection(value, action) {
+    if (action === "showCustomVehicle") {
+        showCustomInput("Enter registration number:", value => {
+            state.booking.vehicle = value;
+            state.booking.step = 4;
+            showBookingMessage(value, "user");
+            setTimeout(() => askBookingQuestion(), 500);
+        });
+    } else {
+        state.booking.vehicle = value;
+        state.booking.step = 4;
+        showBookingMessage(value, "user");
+        setTimeout(() => askBookingQuestion(), 500);
+    }
+}
+
+function handleServiceSelection(value) {
+    const service = CONFIG.services[value];
+    state.booking.service = value;
+    state.booking.step = 5;
+    showBookingMessage(service.name, "user");
+    updateStatus("service", service.name);
+    setTimeout(() => askBookingQuestion(), 500);
+}
+
+function handleIssueSelection(value, action) {
+    if (action === "showCustomIssue") {
+        showCustomInput("Describe the issue:", value => {
+            state.booking.issue = value;
+            state.booking.step = 6;
+            showBookingMessage(value, "user");
+            setTimeout(() => askBookingQuestion(), 500);
+        });
+    } else {
+        state.booking.issue = value;
+        state.booking.step = 6;
+        showBookingMessage(value, "user");
+        setTimeout(() => askBookingQuestion(), 500);
+    }
+}
+
+function handleDateSelection(value, action) {
+    if (action === "showDatePicker") {
+        showCustomDatePicker();
+    } else {
+        const date = new Date(value);
+        const dateStr = date.toLocaleDateString('en-IN', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        state.booking.date = dateStr;
+        state.booking.step = 7;
+        showBookingMessage(dateStr, "user");
+        updateStatus("date", dateStr);
+        setTimeout(() => askBookingQuestion(), 500);
+    }
+}
+
+function handlePartsSelection(value, action) {
+    if (action === "showDetailedParts") {
+        showDetailedParts();
+    } else if (value === "none") {
+        state.booking.parts = [];
+        state.booking.step = 8;
+        showBookingMessage("No parts needed", "user");
+        setTimeout(() => askBookingQuestion(), 500);
+    } else {
+        const part = getPartDetails(value);
+        if (part) {
+            state.booking.parts.push(part);
+            showBookingMessage(`Added: ${part.name} (₹${part.price})`, "user");
+
+            setTimeout(() => {
+                showBookingMessage("Add more parts?", "bot");
+                const buttons = [
+                    { text: "➕ Add More", action: "showDetailedParts" },
+                    { text: "✅ Done", value: "done" }
+                ];
+                renderButtonGrid(buttons, (val, act) => {
+                    if (act === "showDetailedParts") {
+                        showDetailedParts();
+                    } else {
+                        state.booking.step = 8;
+                        setTimeout(() => askBookingQuestion(), 500);
+                    }
+                }, "booking");
+            }, 500);
+        }
+    }
+}
+
+function handleConfirmation(value, action) {
+    if (action === "confirmBooking") {
+        completeBooking();
+    } else if (action === "editBooking") {
+        state.booking.step = 0;
+        clearBookingMessages();
+        startBookingSystem();
+    } else if (action === "downloadSummary") {
+        generatePDFReport();
+    }
+}

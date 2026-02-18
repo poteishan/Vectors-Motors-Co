@@ -298,7 +298,7 @@ function generatePDFReport() {
 }
 
 function generatePDFBrochure() {
-    showBookingMessage("✅ Booking Confirmed!", "bot");
+    showBookingMessage("✅ PDF Downloaded successfully!", "bot");
     const services = {
         regular: { name: "Regular Service", price: 1500, time: "2-3 hours" },
         maintenance: { name: "Routine Maintenance", price: 3500, time: "3-4 hours" },
@@ -1219,4 +1219,5 @@ function handleConfirmation(value, action) {
     } else if (action === "downloadSummary") {
         generatePDFReport();
     }
+
 }

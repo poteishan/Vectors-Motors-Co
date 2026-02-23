@@ -331,6 +331,7 @@ IMPROVED SECTORS SECTION DESIGN
     background: radial-gradient(circle, rgba(42, 157, 143, 0.1) 0%, transparent 70%);
     border-radius: 50%;
 }
+
 /* 
 .products-toggle-section::after {
     content: '';
@@ -992,7 +993,7 @@ body.no-scroll {
 
 /* Footer */
 .footer {
-    background-color:#0a1527;
+    background-color: #0a1527;
     color: white;
     padding: 60px 0 30px;
 }
@@ -1862,6 +1863,143 @@ textarea.form-input {
     border: 0;
     border-radius: 12px;
     margin-top: 15px;
+}
+
+/* =====================================================
+   CINEMATIC VIDEO SECTION — AUTOFOCUS VERSION
+===================================================== */
+
+.cinematic-video-section {
+    position: relative;
+    padding: 130px 0;
+    background: #0d1b2a;
+    overflow: hidden;
+}
+
+/* ================= MOVING ENERGY BACKGROUND ================= */
+
+.cinematic-video-section::before {
+    content: "";
+    position: absolute;
+    width: 160%;
+    height: 160%;
+    top: -30%;
+    left: -30%;
+
+    background:
+        radial-gradient(circle at 30% 40%, rgba(230, 57, 70, 0.18), transparent 40%),
+        radial-gradient(circle at 70% 60%, rgba(255, 140, 0, 0.15), transparent 45%),
+        radial-gradient(circle at 50% 80%, rgba(42, 157, 143, 0.12), transparent 50%);
+
+    animation: energyMove 18s linear infinite;
+    z-index: 0;
+}
+
+/* smooth floating motion */
+@keyframes energyMove {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+
+    50% {
+        transform: rotate(180deg) scale(1.15);
+    }
+
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
+}
+
+/* ================= HEADER ================= */
+
+.video-header {
+    text-align: center;
+    margin-bottom: 60px;
+    position: relative;
+    z-index: 2;
+}
+
+.video-title {
+    font-size: 2.8rem;
+    color: #ffffff;
+}
+
+.video-subtitle {
+    color: #9fb3c8;
+}
+
+.video-badge{
+    color: #e63946;
+}
+
+/* ================= VIDEO AUTOFOCUS DESIGN ================= */
+
+.cinematic-video-wrapper {
+    position: relative;
+    max-width: 1100px;
+    margin: auto;
+    border-radius: 18px;
+    overflow: hidden;
+    z-index: 2;
+}
+
+/* VIDEO */
+.cinematic-video {
+    width: 100%;
+    display: block;
+    border-radius: 18px;
+    object-fit: cover;
+}
+
+/* ================= AUTOFOCUS GLOW ================= */
+
+/* main glow */
+.cinematic-video-wrapper::before {
+    content: "";
+    position: absolute;
+    inset: -120px;
+    background:
+        radial-gradient(circle,
+            rgba(255, 120, 0, 0.35) 0%,
+            rgba(230, 57, 70, 0.25) 30%,
+            transparent 65%);
+    filter: blur(80px);
+    animation: focusPulse 4s ease-in-out infinite;
+    z-index: -1;
+}
+
+/* soft breathing autofocus */
+@keyframes focusPulse {
+
+    0%,
+    100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.12);
+    }
+}
+
+/* subtle edge frame */
+.video-frame {
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    pointer-events: none;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+
+    .video-title {
+        font-size: 2rem;
+    }
+
 }
 
 @keyframes bounce {

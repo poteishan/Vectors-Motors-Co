@@ -113,7 +113,7 @@
     <section class="hero">
         <!-- background video -->
         <video class="hero-video" autoplay muted loop playsinline>
-            <source src="./images/FInal_Video.webm" type="video/webm">
+            <source src="./images/FInal (online-video-cutter.com).webm" type="video/webm">
         </video>
 
         <!-- black overlay -->
@@ -206,7 +206,6 @@
         <div class="container">
             <h2 class="section-title">WATCH THE ULTIMATE TEST OF OUR VEHICLE</h2>
             <p class="section-subtitle">Choose from our range of premium all-terrain vehicles</p>
-            <!-- <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/e1ijbyxJu48?si=wyfAdkgTO1kC-qoH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" class="test-video" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
             <div class="test-arrow">
                 <div class="arrows">
                     <span class="arrow"></span>
@@ -258,7 +257,8 @@
                     <h1 class="footer-title"><i class="fas fa-phone-alt"></i> CONTACT US</h1>
                     <div class="contact-info">
                         <p>Phone: +91 98765 43210<br>
-                            Email: info@vectorsmotors.com</p>
+                            Email: info@vectorsmotors
+                        </p>
                     </div>
                 </div>
                 <div class="footer-end">
@@ -281,99 +281,159 @@
         </div>
     </footer>
 
-    <!-- Booking Chatbot Toggle Button -->
-    <div class="chatbot-toggle" id="chatbotToggle">
-        <i class="fa-solid fa-car"></i>
-    </div>
+    <!-- ═══════════════════════════════════════════════════════════════
+         BOT 1 — SERVICE BOOKING  (bottom-right)
+    ═══════════════════════════════════════════════════════════════ -->
+    <button class="bot-fab bot-fab--booking" id="fabBooking" title="Book a Service">
+        <i class="fas fa-calendar-check"></i>
+        <span class="bot-fab-label">BOOK SERVICE</span>
+    </button>
 
-    <!-- Booking Chatbot Container -->
-    <div class="chatbot-container" id="chatbotContainer">
-        <div class="chatbot-header">
-            <h3><i class="fas fa-car-alt"></i> VECTOR'S ASSISTANCE</h3>
-            <button class="close-chatbot" id="closeChatbot">&times;</button>
+    <div class="bot-panel bot-panel--booking" id="panelBooking">
+        <!-- Header -->
+        <div class="bot-header bot-header--blue">
+            <div class="bot-header-info">
+                <div class="bot-avatar bot-avatar--blue">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <div>
+                    <div class="bot-title">SERVICE BOOKING</div>
+                    <div class="bot-subtitle"><span class="bot-online"></span> Vectors Assistant</div>
+                </div>
+            </div>
+            <button class="bot-close" id="closeBooking" aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
 
+        <!-- Original booking body — fully preserved -->
         <div class="chatbot-body">
-            <div class="chat-messages" id="bookingMessages">
-                <!-- Messages will be inserted here -->
-            </div>
-
+            <div class="chat-messages" id="bookingMessages"></div>
             <div class="typing-indicator" id="bookingTyping">
-                <div class="typing-dots">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
+                <div class="typing-dots"><span></span><span></span><span></span></div>
                 <span>Processing...</span>
             </div>
-
-            <div class="chat-input" id="bookingInput">
-                <!-- Input/buttons will be inserted here -->
-            </div>
-
+            <div class="chat-input" id="bookingInput"></div>
             <div class="status-bar">
-                <div class="status-item">
-                    <i class="fas fa-user"></i>
-                    <span>Name: <span id="statusName">Not Started</span></span>
+                <div class="status-item"><i class="fas fa-user"></i><span>Name: <span id="statusName">—</span></span>
                 </div>
-                <div class="status-item">
-                    <i class="fas fa-wrench"></i>
-                    <span>Service: <span id="statusService">No Service</span></span>
-                </div>
-                <div class="status-item">
-                    <i class="fas fa-calendar"></i>
-                    <span>Date: <span id="statusDate">No Date</span></span>
-                </div>
+                <div class="status-item"><i class="fas fa-wrench"></i><span>Service: <span
+                            id="statusService">—</span></span></div>
+                <div class="status-item"><i class="fas fa-calendar"></i><span>Date: <span
+                            id="statusDate">—</span></span></div>
             </div>
-
             <div class="quick-actions">
-                <button class="quick-btn" onclick="openTestDrive()">
-                    <i class="fas fa-car"></i> Test Drive
-                </button>
-                <button class="quick-btn" id="quickHelp">
-                    <i class="fas fa-phone"></i> Emergency
-                </button>
-                <button class="quick-btn" id="quickBrochure">
-                    <i class="fas fa-file-pdf"></i> Brochure
-                </button>
+                <button class="quick-btn" onclick="openTestDrive()"><i class="fas fa-car"></i> Test Drive</button>
+                <button class="quick-btn" id="quickHelp"><i class="fas fa-phone"></i> Emergency</button>
+                <button class="quick-btn" id="quickBrochure"><i class="fas fa-file-pdf"></i> Brochure</button>
             </div>
         </div>
     </div>
 
-    <!-- PDF Modal -->
+    <!-- ═══════════════════════════════════════════════════════════════
+         BOT 2 — DIAGNOSTIC REPORT  (above booking FAB)
+    ═══════════════════════════════════════════════════════════════ -->
+    <button class="bot-fab bot-fab--diag" id="fabDiag" title="Diagnostic Report">
+        <i class="fas fa-microchip"></i>
+        <span class="bot-fab-label">DIAGNOSTICS</span>
+    </button>
+
+    <div class="bot-panel bot-panel--diag" id="panelDiag">
+        <!-- Header -->
+        <div class="bot-header bot-header--dark">
+            <div class="bot-header-info">
+                <div class="bot-avatar bot-avatar--teal">
+                    <i class="fas fa-microchip"></i>
+                </div>
+                <div>
+                    <div class="bot-title">DIAGNOSTIC REPORT</div>
+                    <div class="bot-subtitle">Vehicle Health Analytics</div>
+                </div>
+            </div>
+            <button class="bot-close" id="closeDiag" aria-label="Close"><i class="fas fa-times"></i></button>
+        </div>
+
+        <!-- Diagnostic body -->
+        <div class="diag-body">
+            <div class="diag-upload-zone" id="diagUploadZone">
+                <label for="diagFileInput" class="diag-upload-label">
+                    <div class="diag-upload-icon-wrap"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <span class="diag-upload-title">Upload Diagnostic Report</span>
+                    <span class="diag-upload-sub">CSV · JSON · TXT · Image · PDF</span>
+                    <span class="diag-upload-cta">Click or drag file here</span>
+                </label>
+                <input type="file" id="diagFileInput" accept="image/*,.pdf,.csv,.txt,.json" style="display:none">
+            </div>
+
+            <div id="diagAnalyticsPanel" style="display:none; flex-direction:column; flex:1;">
+                <div class="diag-file-bar">
+                    <div class="diag-file-info"><i class="fas fa-file-alt"></i><span id="diagFileName">—</span></div>
+                    <div class="diag-file-meta">
+                        <span id="diagTimestamp"></span>
+                        <button class="diag-reupload-btn" onclick="document.getElementById('diagFileInput').click()"><i
+                                class="fas fa-sync-alt"></i> Re-upload</button>
+                    </div>
+                </div>
+                <div class="diag-alert" id="diagAlert" style="display:none">
+                    <i class="fas fa-exclamation-triangle"></i><span id="diagAlertText"></span>
+                </div>
+                <div class="diag-summary-strip">
+                    <div class="diag-sum-pill" style="border-color:#30d158"><i class="fas fa-check-circle"
+                            style="color:#30d158"></i>
+                        <div><span class="diag-sum-num" id="diagNormal">0</span><span class="diag-sum-lbl">Normal</span>
+                        </div>
+                    </div>
+                    <div class="diag-sum-pill" style="border-color:#ff9500"><i class="fas fa-exclamation-circle"
+                            style="color:#ff9500"></i>
+                        <div><span class="diag-sum-num" id="diagWarning">0</span><span
+                                class="diag-sum-lbl">Warning</span></div>
+                    </div>
+                    <div class="diag-sum-pill" style="border-color:#ff3b30"><i class="fas fa-times-circle"
+                            style="color:#ff3b30"></i>
+                        <div><span class="diag-sum-num" id="diagCritical">0</span><span
+                                class="diag-sum-lbl">Critical</span></div>
+                    </div>
+                    <div class="diag-sum-pill" style="border-color:#5a6a8a"><i class="fas fa-tachometer-alt"
+                            style="color:#7a8aaa"></i>
+                        <div><span class="diag-sum-num" id="diagTotal">0</span><span class="diag-sum-lbl">Total</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="diag-metrics-list" id="diagMetricsList"></div>
+                <div class="diag-download-bar">
+                    <button class="diag-download-btn" id="diagDownloadBtn">
+                        <i class="fas fa-file-pdf"></i> Download Full Report PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PDF Modal (booking confirmation) -->
     <div class="modal" id="pdfModal">
         <div class="modal-content">
             <div class="modal-header">
                 <h3><i class="fas fa-file-pdf"></i> Service Report</h3>
                 <button class="close-chatbot" id="closeModal">&times;</button>
             </div>
-            <div class="modal-body" id="pdfContent">
-                <!-- PDF content will be inserted here -->
-            </div>
+            <div class="modal-body" id="pdfContent"></div>
             <div class="modal-footer">
-                <button class="submit-btn" id="downloadPDF">
-                    <i class="fas fa-download"></i> Download PDF
-                </button>
+                <button class="submit-btn" id="downloadPDF"><i class="fas fa-download"></i> Download PDF</button>
             </div>
         </div>
     </div>
-    <!-- ==================== 3D MODEL MODAL ==================== -->
+
+    <!-- 3D MODEL MODAL -->
     <div class="model-slide" id="modelSlide">
         <div class="model-slide-header">
             <h2><i class="fas fa-cube"></i> ATV 3D Model</h2>
             <button class="close-model" id="closeModel">&times;</button>
         </div>
         <div class="model-viewer-container">
-            <!-- 3D model will be loaded here -->
             <model-viewer src="./images/vehicle.glb" camera-controls auto-rotate field-of-view="65deg"
                 camera-orbit="25deg 75deg 70m" min-camera-orbit="auto auto 25m" max-camera-orbit="auto auto 80m"
-                camera-target="0m 0.2m 0m" interaction-prompt="none" 
-                style="width:100%; height:100%; background-color:white;">
-            </model-viewer>
+                camera-target="0m 0.2m 0m" interaction-prompt="none"
+                style="width:100%;height:100%;background-color:white;"></model-viewer>
             <div class="model-controls">
-                <button class="model-control-btn" onclick="toggleFullscreen()">
-                    <i class="fas fa-expand"></i>
-                </button>
+                <button class="model-control-btn" onclick="toggleFullscreen()"><i class="fas fa-expand"></i></button>
             </div>
             <div class="model-info">
                 <h3><i class="fas fa-info-circle"></i> Vectors ATV Model X</h3>
@@ -384,687 +444,1329 @@
         </div>
     </div>
 
-    <!-- Load model-viewer library -->
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <script src="app.js"></script>
 
     <script>
-        // Chatbot Integration
+        // ═══════════════════════════════════════════════════════════════
+        //  TWO INDEPENDENT CHATBOTS
+        // ═══════════════════════════════════════════════════════════════
         document.addEventListener('DOMContentLoaded', function () {
-            // Initialize chatbot UI
-            initChatbotUI();
 
-            // Start booking system
-            setTimeout(() => {
-                startBookingSystem();
-            }, 1000);
+            // ── BOT 1: Booking ─────────────────────────────────────────
+            const fabBook = document.getElementById('fabBooking');
+            const panelBook = document.getElementById('panelBooking');
+            const closeBook = document.getElementById('closeBooking');
+            let bookingOpen = false;
+            let bookingBooted = false;
 
-            // Show notification badge after 5 seconds
-            setTimeout(() => {
-                const badge = document.getElementById('chatbotBadge');
-                const chatbotContainer = document.getElementById('chatbotContainer');
-                if (badge && !chatbotContainer.classList.contains('active')) {
-                    badge.style.display = 'flex';
-                }
-            }, 5000);
-        });
-
-        function initChatbotUI() {
-            const chatbotToggle = document.getElementById('chatbotToggle');
-            const chatbotContainer = document.getElementById('chatbotContainer');
-            const closeChatbot = document.getElementById('closeChatbot');
-            const badge = document.getElementById('chatbotBadge');
-
-            // Toggle chatbot
-            if (chatbotToggle) {
-                chatbotToggle.addEventListener('click', function () {
-                    chatbotContainer.classList.add('active');
-                    // Hide badge when opened
-                    if (badge) {
-                        badge.style.display = 'none';
-                    }
-                });
+            function openBookingPanel() {
+                panelBook.classList.add('bot-panel--open');
+                fabBook.classList.add('bot-fab--active');
+                bookingOpen = true;
+                if (!bookingBooted) { bookingBooted = true; setTimeout(startBookingSystem, 300); }
+            }
+            function closeBookingPanel() {
+                panelBook.classList.remove('bot-panel--open');
+                fabBook.classList.remove('bot-fab--active');
+                bookingOpen = false;
             }
 
-            // Close chatbot
-            if (closeChatbot) {
-                closeChatbot.addEventListener('click', function () {
-                    chatbotContainer.classList.remove('active');
-                });
-            }
+            fabBook.addEventListener('click', e => { e.stopPropagation(); bookingOpen ? closeBookingPanel() : openBookingPanel(); });
+            closeBook.addEventListener('click', closeBookingPanel);
 
-            // Close modal
+            // Quick actions
+            document.getElementById('quickHelp').addEventListener('click', () =>
+                showBookingMessage('🚨 EMERGENCY ASSISTANCE • Call: 1800 - VECTORS - 1(24 / 7) • WhatsApp: +91 98765 43210 • Free pickup within 50km. We dispatch a technician immediately!', 'bot'));
+            document.getElementById('quickBrochure').addEventListener('click', () =>
+                typeof generatePDFBrochure === 'function' && generatePDFBrochure());
+
+            // PDF modal
             const closeModal = document.getElementById('closeModal');
             const pdfModal = document.getElementById('pdfModal');
-
-            if (closeModal) {
-                closeModal.addEventListener('click', function () {
-                    pdfModal.classList.remove('active');
-                });
-            }
-
-            // Close modal when clicking outside
-            if (pdfModal) {
-                pdfModal.addEventListener('click', function (e) {
-                    if (e.target === this) {
-                        this.classList.remove('active');
-                    }
-                });
-            }
-
-            // Set up quick actions
-            const quickBook = document.getElementById('quickBook');
-            const quickHelp = document.getElementById('quickHelp');
-            const quickBrochure = document.getElementById('quickBrochure');
-
-            if (quickBook) {
-                quickBook.addEventListener('click', function () {
-                    startBookingSystem();
-                });
-            }
-
-            if (quickHelp) {
-                quickHelp.addEventListener('click', function () {
-                    showBookingMessage("🚨 EMERGENCY ASSISTANCE\n\n• Call: 1800-VECTORS-1 (24/7)\n• WhatsApp: +91 98765 43210\n• Free pickup within 50km\n\nWe'll dispatch a technician immediately!", "bot");
-                });
-            }
-
-            if (quickBrochure) {
-                quickBrochure.addEventListener('click', function () {
-                    if (typeof generatePDFBrochure === 'function') {
-                        generatePDFBrochure();
-                    }
-                });
-            }
-
-            // Set up PDF buttons
             const downloadPDF = document.getElementById('downloadPDF');
+            closeModal.addEventListener('click', () => pdfModal.classList.remove('active'));
+            pdfModal.addEventListener('click', e => { if (e.target === pdfModal) pdfModal.classList.remove('active'); });
+            downloadPDF.addEventListener('click', () => typeof window.generatePDFReport === 'function' && window.generatePDFReport());
 
-            if (downloadPDF) {
-                downloadPDF.addEventListener('click', function () {
-                    if (typeof window.generatePDFReport === 'function') {
-                        window.generatePDFReport();
-                    }
-                });
-            }
-        }
+            // ── BOT 2: Diagnostic ──────────────────────────────────────
+            const fabDiag = document.getElementById('fabDiag');
+            const panelDiag = document.getElementById('panelDiag');
+            const closeDiag = document.getElementById('closeDiag');
+            let diagOpen = false;
 
-        // Helper functions for chatbot
+            function openDiagPanel() { panelDiag.classList.add('bot-panel--open'); fabDiag.classList.add('bot-fab--active'); diagOpen = true; }
+            function closeDiagPanel() { panelDiag.classList.remove('bot-panel--open'); fabDiag.classList.remove('bot-fab--active'); diagOpen = false; }
+
+            fabDiag.addEventListener('click', e => { e.stopPropagation(); diagOpen ? closeDiagPanel() : openDiagPanel(); });
+            closeDiag.addEventListener('click', closeDiagPanel);
+
+            // File upload
+            const diagFileInput = document.getElementById('diagFileInput');
+            if (diagFileInput) diagFileInput.addEventListener('change', handleDiagUpload);
+
+            // Drag & drop
+            const diagZone = document.getElementById('diagUploadZone');
+            diagZone.addEventListener('dragover', e => { e.preventDefault(); diagZone.classList.add('drag-over'); });
+            diagZone.addEventListener('dragleave', () => diagZone.classList.remove('drag-over'));
+            diagZone.addEventListener('drop', e => {
+                e.preventDefault(); diagZone.classList.remove('drag-over');
+                if (e.dataTransfer.files[0]) handleDiagUpload({ target: { files: e.dataTransfer.files } });
+            });
+
+            // Panels close only via their X button — no click-outside auto-close
+        });
+
+        // ═══════════════════════════════════════════════════════════════
+        //  BOOKING — all original functions intact
+        // ═══════════════════════════════════════════════════════════════
         function showBookingMessage(text, sender) {
             const messages = document.getElementById('bookingMessages');
             if (!messages) return;
-
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${sender}`;
-
-            const avatar = document.createElement('div');
-            avatar.className = 'avatar';
-            avatar.innerHTML = `<i class="fas fa-${sender === 'bot' ? 'robot' : 'user'}"></i>`;
-
-            const bubble = document.createElement('div');
-            bubble.className = 'bubble';
-
+            const div = document.createElement('div');
+            div.className = 'message ' + sender;
+            const av = document.createElement('div');
+            av.className = 'avatar';
+            av.innerHTML = '<i class="fas fa-' + (sender === 'bot' ? 'robot' : 'user') + '"></i>';
+            const bub = document.createElement('div');
+            bub.className = 'bubble';
             if (text.includes('\n')) {
-                const lines = text.split('\n');
-                lines.forEach(line => {
-                    const p = document.createElement('p');
-                    p.textContent = line;
-                    bubble.appendChild(p);
-                });
-            } else {
-                bubble.innerHTML = `<p>${text}</p>`;
-            }
-
-            messageDiv.appendChild(avatar);
-            messageDiv.appendChild(bubble);
-            messages.appendChild(messageDiv);
-
-            // Scroll to bottom
-            setTimeout(() => {
-                messages.scrollTop = messages.scrollHeight;
-            }, 100);
+                text.split('\n').forEach(line => { const p = document.createElement('p'); p.textContent = line; bub.appendChild(p); });
+            } else { bub.innerHTML = '<p>' + text + '</p>'; }
+            div.appendChild(av); div.appendChild(bub);
+            messages.appendChild(div);
+            setTimeout(() => { messages.scrollTop = messages.scrollHeight; }, 100);
         }
 
         function startBookingSystem() {
-            // Clear messages
+            window._bookingData = { name: '', phone: '', service: '', date: '', price: 0, bookingId: '' };
             const messages = document.getElementById('bookingMessages');
-            if (messages) {
-                messages.innerHTML = '';
-            }
-
-            // Show initial message
-            showBookingMessage("Welcome to Vectors Motors ATV Service!", "bot");
-            showBookingMessage("I'll help you book a service appointment. Let's get started!", "bot");
-
-            // Reset status
-            const statusName = document.getElementById('statusName');
-            const statusService = document.getElementById('statusService');
-            const statusDate = document.getElementById('statusDate');
-
-            if (statusName) statusName.textContent = "Not Started";
-            if (statusService) statusService.textContent = "No Service";
-            if (statusDate) statusDate.textContent = "No Date";
-
-            // Show initial options after delay
+            if (messages) messages.innerHTML = '';
+            showBookingMessage('Welcome to Vectors Motors ATV Service!', 'bot');
+            showBookingMessage("I'll help you book a service appointment. Let's get started!", 'bot');
+            ['statusName', 'statusService', 'statusDate'].forEach((id, i) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = ['Not Started', 'No Service', 'No Date'][i];
+            });
             setTimeout(() => {
-                const inputArea = document.getElementById('bookingInput');
-                if (inputArea) {
-                    inputArea.innerHTML = `
-                        <div class="button-grid">
-                            <button class="chat-btn" onclick="startBookingFlow()">
-                                <i class="fas fa-calendar-check"></i> Start Booking
-                            </button>
-                            <button class="chat-btn" onclick="openQueryForm()">
-            <i class="fas fa-circle-question"></i> Send Query
-        </button>
-                            <button class="chat-btn" onclick="showServiceInfo()">
-                                <i class="fas fa-info-circle"></i> Service Info
-                            </button>
-                            <button class="chat-btn" onclick="showMaintenanceTips()">
-                                <i class="fas fa-tools"></i> Maintenance Tips
-                            </button>
-                        </div>
-                    `;
-                }
+                const inp = document.getElementById('bookingInput');
+                if (inp) inp.innerHTML = `
+                <div class="button-grid">
+                    <button class="chat-btn" onclick="startBookingFlow()"><i class="fas fa-calendar-check"></i> Start Booking</button>
+                    <button class="chat-btn" onclick="openQueryForm()"><i class="fas fa-circle-question"></i> Send Query</button>
+                    <button class="chat-btn" onclick="showServiceInfo()"><i class="fas fa-info-circle"></i> Service Info</button>
+                    <button class="chat-btn" onclick="showMaintenanceTips()"><i class="fas fa-tools"></i> Maintenance Tips</button>
+                </div>`;
             }, 800);
         }
 
         function startBookingFlow() {
-            showBookingMessage("Let's book your service!", "user");
-
-            // Show typing indicator
+            showBookingMessage("Let's book your service!", 'user');
             const typing = document.getElementById('bookingTyping');
-            if (typing) {
-                typing.classList.add('active');
-            }
-
+            if (typing) typing.classList.add('active');
             setTimeout(() => {
-                if (typing) {
-                    typing.classList.remove('active');
-                }
-                showBookingMessage("Great! Let's start with your details.", "bot");
-
-                // Show name input
-                const inputArea = document.getElementById('bookingInput');
-                if (inputArea) {
-                    inputArea.innerHTML = `
-                        <div class="input-container">
-                            <div class="input-group">
-                                <input type="text" id="userName" placeholder="Enter your full name" class="form-input">
-                            </div>
-                            <div class="button-group">
-                                <button class="submit-btn" onclick="submitUserName()">
-                                    <i class="fas fa-check"></i> Submit
-                                </button>
-                                <button class="skip-btn" onclick="startBookingSystem()">
-                                    <i class="fas fa-arrow-left"></i> Back
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                }
+                if (typing) typing.classList.remove('active');
+                showBookingMessage("Great! Let's start with your details.", 'bot');
+                const inp = document.getElementById('bookingInput');
+                if (inp) inp.innerHTML = `
+                <div class="input-container">
+                    <div class="input-group">
+                        <input type="text" id="userName" placeholder="Enter your full name" class="form-input">
+                    </div>
+                    <div class="button-group">
+                        <button class="submit-btn" onclick="submitUserName()"><i class="fas fa-check"></i> Submit</button>
+                        <button class="skip-btn"   onclick="startBookingSystem()"><i class="fas fa-arrow-left"></i> Back</button>
+                    </div>
+                </div>`;
             }, 1000);
         }
 
-        function fillName(name) {
-            const nameInput = document.getElementById('userName');
-            if (nameInput) {
-                nameInput.value = name;
-            }
-        }
+        function fillName(name) { const n = document.getElementById('userName'); if (n) n.value = name; }
 
         function submitUserName() {
             const nameInput = document.getElementById('userName');
             const name = nameInput ? nameInput.value.trim() : '';
-
             if (!name || name.length < 2) {
-                // Show error
-                const inputArea = document.getElementById('bookingInput');
-                if (inputArea) {
-                    const errorDiv = document.createElement('div');
-                    errorDiv.className = 'error-message';
-                    errorDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please enter a valid name (min 2 characters)';
-                    inputArea.prepend(errorDiv);
-
-                    setTimeout(() => {
-                        if (errorDiv.parentNode) errorDiv.remove();
-                    }, 3000);
-                }
-                return;
+                showBookingMessage('Please enter a valid name (at least 2 characters).', 'bot'); return;
             }
-
-            showBookingMessage(name, "user");
-
-            // Update status
-            const statusName = document.getElementById('statusName');
-            if (statusName) {
-                statusName.textContent = name;
-            }
-
-            // Continue to next step
+            showBookingMessage(name, 'user');
+            document.getElementById('statusName').textContent = name;
+            if (!window._bookingData) window._bookingData = {};
+            window._bookingData.name = name;
             setTimeout(() => {
-                showBookingMessage("What's your contact number?", "bot");
-
-                const inputArea = document.getElementById('bookingInput');
-                if (inputArea) {
-                    inputArea.innerHTML = `
-                        <div class="input-container">
-                            <div class="input-group">
-                                <input type="tel" id="userPhone" placeholder="Enter 10-digit phone number" class="form-input">
-                            </div>
-                            <div class="button-group">
-                                <button class="submit-btn" onclick="submitUserPhone()">
-                                    <i class="fas fa-check"></i> Submit
-                                </button>
-                                <button class="skip-btn" onclick="startBookingFlow()">
-                                    <i class="fas fa-arrow-left"></i> Back
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                }
+                showBookingMessage("What's your contact number?", 'bot');
+                const inp = document.getElementById('bookingInput');
+                if (inp) inp.innerHTML = `
+                <div class="input-container">
+                    <div class="input-group">
+                        <input type="tel" id="userPhone" placeholder="Enter 10-digit mobile number" class="form-input" maxlength="10">
+                    </div>
+                    <div class="button-group">
+                        <button class="submit-btn" onclick="submitPhone()"><i class="fas fa-check"></i> Submit</button>
+                        <button class="skip-btn"   onclick="startBookingSystem()"><i class="fas fa-arrow-left"></i> Back</button>
+                    </div>
+                </div>`;
             }, 500);
         }
 
-        function fillPhone(phone) {
-            const phoneInput = document.getElementById('userPhone');
-            if (phoneInput) {
-                phoneInput.value = phone;
-            }
-        }
-
-        function submitUserPhone() {
+        function submitPhone() {
             const phoneInput = document.getElementById('userPhone');
             const phone = phoneInput ? phoneInput.value.trim() : '';
-
-            if (!phone || !/^\d{10}$/.test(phone)) {
-                // Show error
-                const inputArea = document.getElementById('bookingInput');
-                if (inputArea) {
-                    const errorDiv = document.createElement('div');
-                    errorDiv.className = 'error-message';
-                    errorDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please enter a valid 10-digit phone number';
-                    inputArea.prepend(errorDiv);
-
-                    setTimeout(() => {
-                        if (errorDiv.parentNode) errorDiv.remove();
-                    }, 3000);
-                }
-                return;
-            }
-
-            showBookingMessage(phone, "user");
-
-            // Continue to service selection
+            if (!phone || phone.length < 10) { showBookingMessage('Please enter a valid 10-digit phone number.', 'bot'); return; }
+            showBookingMessage(phone, 'user');
+            if (!window._bookingData) window._bookingData = {};
+            window._bookingData.phone = phone;
             setTimeout(() => {
-                showBookingMessage("Select service type:", "bot");
-
-                const inputArea = document.getElementById('bookingInput');
-                if (inputArea) {
-                    inputArea.innerHTML = `
-                        <div class="button-grid">
-                            <button class="chat-btn" onclick="selectBookingService('Regular Service')">
-                                <i class="fas fa-oil-can"></i> Regular Service
-                                <small>₹1,500 • 2-3 hours</small>
-                            </button>
-                            <button class="chat-btn" onclick="selectBookingService('Full Service')">
-                                <i class="fas fa-tools"></i> Full Service
-                                <small>₹6,000 • 5-6 hours</small>
-                            </button>
-                            <button class="chat-btn" onclick="selectBookingService('Brake Overhaul')">
-                                <i class="fas fa-car-crash"></i> Brake Service
-                                <small>₹3,000 • 3-4 hours</small>
-                            </button>
-                            <button class="chat-btn" onclick="selectBookingService('Suspension Repair')">
-                                <i class="fas fa-car"></i> Suspension
-                                <small>₹4,500 • 4-5 hours</small>
-                            </button>
-                        </div>
-                    `;
-                }
+                showBookingMessage('Which service do you need?', 'bot');
+                const inp = document.getElementById('bookingInput');
+                if (inp) inp.innerHTML = `
+                <div class="button-grid">
+                    <button class="chat-btn" onclick="selectBookingService('Regular Service',1500)"><i class="fas fa-oil-can"></i> Regular Service<small>₹1,500 · 2-3 hrs</small></button>
+                    <button class="chat-btn" onclick="selectBookingService('Suspension Repair',4500)"><i class="fas fa-car"></i> Suspension<small>₹4,500 · 4-5 hrs</small></button>
+                    <button class="chat-btn" onclick="selectBookingService('Brake Overhaul',3000)"><i class="fas fa-car-crash"></i> Brake Service<small>₹3,000 · 3-4 hrs</small></button>
+                    <button class="chat-btn" onclick="selectBookingService('Full Service',6000)"><i class="fas fa-tools"></i> Full Service<small>₹6,000 · 5-6 hrs</small></button>
+                </div>`;
             }, 500);
         }
 
-        function selectBookingService(service) {
-
-            let price = 0;
-
-            if (service.includes("Regular")) price = 1500;
-            else if (service.includes("Full")) price = 6000;
-            else if (service.includes("Brake")) price = 3000;
-            else if (service.includes("Suspension")) price = 4500;
-
-            // store globally
-            window.bookingPrice = price;
-
-            showBookingMessage(service, "user");
-
-            document.getElementById("statusService").textContent = service;
-
-            showBookingMessage(service, "user");
-
-            // Update status
-            const statusService = document.getElementById('statusService');
-            if (statusService) {
-                statusService.textContent = service;
-            }
-
-            // Continue to date selection
+        function selectBookingService(service, price) {
+            window._bookingPrice = price;
+            if (!window._bookingData) window._bookingData = {};
+            window._bookingData.service = service;
+            window._bookingData.price = price;
+            showBookingMessage(service, 'user');
+            document.getElementById('statusService').textContent = service;
             setTimeout(() => {
-                showBookingMessage("Select preferred date:", "bot");
-
-                const inputArea = document.getElementById("bookingInput");
-                if (!inputArea) return;
-
+                showBookingMessage('Select your preferred date:', 'bot');
                 const today = new Date();
-                const dates = [];
-
-                for (let i = 1; i <= 5; i++) {
-                    const d = new Date(today);
-                    d.setDate(today.getDate() + i);
-
-                    dates.push({
-                        label: d.toLocaleDateString("en-IN", {
-                            weekday: "short",
-                            day: "numeric",
-                            month: "short"
-                        }),
-                        iso: d.toISOString().split("T")[0]
-                    });
-                }
-
-                inputArea.innerHTML = `
-        <div class="button-grid">
-            ${dates.map(d => `
-                <button class="chat-btn"
-                    onclick="selectBookingDate('${d.label}', '${d.iso}')">
-                    <i class="fas fa-calendar"></i> ${d.label}
-                </button>
-            `).join("")}
-
-            <button class="chat-btn other-date-btn"
-                onclick="openCalendar()">
-                <i class="fas fa-ellipsis-h"></i> Other dates
-            </button>
-
-            <!-- hidden but usable date input -->
-            <input type="date"
-                id="hiddenDatePicker"
-                min="${today.toISOString().split("T")[0]}"
-                onchange="handleCustomDate(this.value)"
-                style="
-                    position:absolute;
-                    opacity:0;
-                    pointer-events:none;
-                ">
-        </div>
-    `;
+                const dates = Array.from({ length: 5 }, (_, i) => {
+                    const d = new Date(today); d.setDate(today.getDate() + i + 1);
+                    return { label: d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }), iso: d.toISOString().split('T')[0] };
+                });
+                const inp = document.getElementById('bookingInput');
+                if (inp) inp.innerHTML = `
+                <div class="button-grid">
+                    ${dates.map(d => `<button class="chat-btn" onclick="selectBookingDate('${d.label}','${d.iso}')"><i class="fas fa-calendar"></i> ${d.label}</button>`).join('')}
+                    <button class="chat-btn" onclick="openCalendar()"><i class="fas fa-ellipsis-h"></i> Other dates</button>
+                    <input type="date" id="hiddenDatePicker" min="${today.toISOString().split('T')[0]}" onchange="handleCustomDate(this.value)" style="position:absolute;opacity:0;pointer-events:none;">
+                </div>`;
             }, 500);
-
-
         }
 
-        function openCalendar() {
-            const picker = document.getElementById("hiddenDatePicker");
+        function openCalendar() { const p = document.getElementById('hiddenDatePicker'); p.style.pointerEvents = 'auto'; p.showPicker(); p.style.pointerEvents = 'none'; }
+        function handleCustomDate(v) { if (!v) return; const d = new Date(v); selectBookingDate(d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }), v); }
 
-            picker.style.pointerEvents = "auto";
-            picker.showPicker();   // 🔥 modern browsers
-            picker.style.pointerEvents = "none";
-        }
-
-        function handleCustomDate(value) {
-            if (!value) return;
-
-            const d = new Date(value);
-            const label = d.toLocaleDateString("en-IN", {
-                weekday: "short",
-                day: "numeric",
-                month: "short"
-            });
-
-            selectBookingDate(label, value);
-        }
-
-
-
-        function selectBookingDate(dateStr, isoDate) {
-            showBookingMessage(dateStr, "user");
-
-            // Update status
-            const statusDate = document.getElementById('statusDate');
-            if (statusDate) {
-                statusDate.textContent = dateStr;
-            }
-
-            // Show confirmation
+        function selectBookingDate(dateStr) {
+            showBookingMessage(dateStr, 'user');
+            document.getElementById('statusDate').textContent = dateStr;
+            if (!window._bookingData) window._bookingData = {};
+            window._bookingData.date = dateStr;
             setTimeout(() => {
-                showBookingMessage("Great! Here's your booking summary:", "bot");
-
-                const name = document.getElementById('statusName').textContent;
-                const service = document.getElementById('statusService').textContent;
-                const date = document.getElementById('statusDate').textContent;
-
-                const inputArea = document.getElementById('bookingInput');
-                if (inputArea) {
-                    inputArea.innerHTML = `
-                        <div class="confirmation-card">
-                            <h3><i class="fas fa-check-circle"></i> Booking Summary</h3>
-                            <div class="confirmation-details">
-                                <div class="detail-row">
-                                    <span class="label">Name:</span>
-                                    <span class="value">${name}</span>
-                                </div>
-                                <div class="detail-row">
-                                    <span class="label">Service:</span>
-                                    <span class="value">${service}</span>
-                                </div>
-                                <div class="detail-row">
-                                    <span class="label">Date:</span>
-                                    <span class="value">${date}</span>
-                                </div>
-                                <div class="detail-row total">
-                                    <span class="label">Total Amount:</span>
-                                    <span class="value">₹${service.includes('Regular') ? '1,500' : service.includes('Full') ? '6,000' : service.includes('Brake') ? '3,000' : '4,500'}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="button-grid">
-                            <button class="submit-btn" onclick="confirmBooking()">
-                                <i class="fas fa-check"></i> Confirm Booking
-                            </button>
-                            <button class="skip-btn" onclick="startBookingSystem()">
-                                <i class="fas fa-edit"></i> Edit Details
-                            </button>
-                        </div>
-                    `;
-                }
+                showBookingMessage("Here's your booking summary:", 'bot');
+                const bd = window._bookingData;
+                const inp = document.getElementById('bookingInput');
+                if (inp) inp.innerHTML = `
+                <div class="confirmation-card">
+                    <h3><i class="fas fa-check-circle"></i> Booking Summary</h3>
+                    <div class="confirmation-details">
+                        <div class="detail-row"><span class="label">Name:</span><span class="value">${bd.name}</span></div>
+                        <div class="detail-row"><span class="label">Phone:</span><span class="value">${bd.phone}</span></div>
+                        <div class="detail-row"><span class="label">Service:</span><span class="value">${bd.service}</span></div>
+                        <div class="detail-row"><span class="label">Date:</span><span class="value">${dateStr}</span></div>
+                        <div class="detail-row total"><span class="label">Total:</span><span class="value">₹${bd.price.toLocaleString('en-IN')}</span></div>
+                    </div>
+                </div>
+                <div class="button-grid">
+                    <button class="submit-btn" onclick="confirmBooking()"><i class="fas fa-check"></i> Confirm Booking</button>
+                    <button class="skip-btn"   onclick="startBookingSystem()"><i class="fas fa-edit"></i> Edit Details</button>
+                </div>`;
             }, 500);
         }
 
         function confirmBooking() {
-            saveBookingForPDF();
-            showBookingMessage("✅ Booking Confirmed!", "bot");
-
             const bookingId = 'VM' + Date.now().toString().slice(-6);
-            showBookingMessage(`Thank you! Your booking ID: ${bookingId}\nWe'll contact you within 24 hours to confirm.`, "bot");
-
-            // Show download option
-            const inputArea = document.getElementById('bookingInput');
-            if (inputArea) {
-                inputArea.innerHTML = `
-                    <div class="button-grid">
-                        <button class="submit-btn" onclick="downloadBookingConfirmation()">
-                            <i class="fas fa-download"></i> Download Summary
-                        </button>
-                        <button class="skip-btn" onclick="startBookingSystem()">
-                            <i class="fas fa-plus"></i> New Booking
-                        </button>
-                    </div>
-                `;
-            }
-            localStorage.setItem(
-                "vectors-booking",
-                JSON.stringify({
-                    name: document.getElementById("statusName").textContent,
-                    service: document.getElementById("statusService").textContent,
-                    date: document.getElementById("statusDate").textContent,
-                    price: window.bookingPrice
-                })
-            );
-
+            if (!window._bookingData) window._bookingData = {};
+            window._bookingData.bookingId = bookingId;
+            showBookingMessage('✅ Booking Confirmed! ID: ' + bookingId, 'bot');
+            showBookingMessage("We'll contact you within 24 hours to confirm your appointment.", 'bot');
+            const inp = document.getElementById('bookingInput');
+            if (inp) inp.innerHTML = `
+            <div class="button-grid">
+                <button class="submit-btn" onclick="downloadBookingConfirmation()"><i class="fas fa-download"></i> Download Summary</button>
+                <button class="skip-btn"   onclick="startBookingSystem()"><i class="fas fa-plus"></i> New Booking</button>
+            </div>`;
         }
 
         function downloadBookingConfirmation() {
+            const bd = window._bookingData || {};
+            const name      = bd.name      || '—';
+            const phone     = bd.phone     || '—';
+            const service   = bd.service   || '—';
+            const date      = bd.date      || '—';
+            const price     = bd.price     || 0;
+            const bookingId = bd.bookingId || ('VM' + Date.now().toString().slice(-6));
             const pdfContent = document.getElementById('pdfContent');
-            const pdfModal = document.getElementById('pdfModal');
-
-            const name = document.getElementById('statusName').textContent;
-            const service = document.getElementById('statusService').textContent;
-            const date = document.getElementById('statusDate').textContent;
-
+            const pdfModal   = document.getElementById('pdfModal');
             pdfContent.innerHTML = `
-                <div style="padding:20px;font-family:'Open Sans',sans-serif;">
-                    <h2 style="color:var(--primary-color);text-align:center;margin-bottom:20px;">VECTORS MOTORS</h2>
-                    <h3 style="color:#666;text-align:center;margin-bottom:30px;">Service Booking Confirmation</h3>
-                    
-                    <div style="background:#f8f9fa;padding:20px;border-radius:8px;margin-bottom:20px;">
-                        <h4 style="color:var(--primary-color);margin-bottom:15px;">Booking Details</h4>
-                        <table style="width:100%;border-collapse:collapse;">
-                            <tr>
-                                <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Booking ID:</strong></td>
-                                <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">VM${Date.now().toString().slice(-8)}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Customer:</strong></td>
-                                <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${name}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Service:</strong></td>
-                                <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${service}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Date:</strong></td>
-                                <td style="padding:8px 0;border-bottom:1px solid #ddd;text-align:right;">${date}</td>
-                            </tr>
-                        </table>
-                    </div>
-                    
-                    <div style="background:#fff5f0;padding:20px;border-radius:8px;margin-bottom:20px;">
-                        <h4 style="color:#ff6b35;margin-bottom:15px;">Cost Breakdown</h4>
-                        <table style="width:100%;border-collapse:collapse;">
-                            <tr>
-                                <td style="padding:10px 0;border-bottom:1px solid #ddd;">Service Charge</td>
-                                <td style="padding:10px 0;border-bottom:1px solid #ddd;text-align:right;">₹${service.includes('Regular') ? '1,500' : service.includes('Full') ? '6,000' : service.includes('Brake') ? '3,000' : '4,500'}</td>
-                            </tr>
-                            <tr style="background:#ff6b35;color:white;font-weight:bold;">
-                                <td style="padding:15px 0;">TOTAL AMOUNT</td>
-                                <td style="padding:15px 0;text-align:right;">₹${service.includes('Regular') ? '1,500' : service.includes('Full') ? '6,000' : service.includes('Brake') ? '3,000' : '4,500'}</td>
-                            </tr>
-                        </table>
-                    </div>
-                    
-                    <div style="text-align:center;color:#666;font-size:14px;margin-top:30px;">
-                        <p>Thank you for choosing Vectors Motors!</p>
-                        <p><strong>Service Center:</strong> DYPCET, Vectors Motors & Co, Kolhapur - 416002</p>
-                        <p><strong>Contact:</strong> 1800-VECTORS-1</p>
-                    </div>
+            <div style="padding:20px;font-family:'Open Sans',sans-serif;">
+                <h2 style="color:#1a3a5f;text-align:center;margin-bottom:20px;">VECTORS MOTORS &amp; CO.</h2>
+                <h3 style="color:#666;text-align:center;margin-bottom:30px;">Service Booking Confirmation</h3>
+                <div style="background:#f8f9fa;padding:20px;border-radius:8px;margin-bottom:20px;">
+                    <h4 style="color:#1a3a5f;margin-bottom:15px;">Booking Details</h4>
+                    <table style="width:100%;border-collapse:collapse;">
+                        <tr><td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Booking ID:</strong></td><td style="text-align:right;padding:8px 0;border-bottom:1px solid #ddd;">${bookingId}</td></tr>
+                        <tr><td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Customer Name:</strong></td><td style="text-align:right;padding:8px 0;border-bottom:1px solid #ddd;">${name}</td></tr>
+                        <tr><td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Phone:</strong></td><td style="text-align:right;padding:8px 0;border-bottom:1px solid #ddd;">${phone}</td></tr>
+                        <tr><td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Service:</strong></td><td style="text-align:right;padding:8px 0;border-bottom:1px solid #ddd;">${service}</td></tr>
+                        <tr><td style="padding:8px 0;border-bottom:1px solid #ddd;"><strong>Date:</strong></td><td style="text-align:right;padding:8px 0;border-bottom:1px solid #ddd;">${date}</td></tr>
+                    </table>
                 </div>
-            `;
-
+                <div style="background:#fff5f0;padding:20px;border-radius:8px;margin-bottom:20px;">
+                    <h4 style="color:#ff6b35;margin-bottom:15px;">Cost Breakdown</h4>
+                    <table style="width:100%;border-collapse:collapse;">
+                        <tr><td style="padding:10px 0;border-bottom:1px solid #ddd;">Service Charge</td><td style="text-align:right;padding:10px 0;border-bottom:1px solid #ddd;">&#8377;${price.toLocaleString('en-IN')}</td></tr>
+                        <tr style="background:#1a3a5f;color:white;font-weight:bold;">
+                            <td style="padding:12px 8px;">TOTAL AMOUNT</td>
+                            <td style="text-align:right;padding:12px 8px;">&#8377;${price.toLocaleString('en-IN')}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="text-align:center;color:#666;font-size:14px;margin-top:20px;">
+                    <p>Thank you for choosing Vectors Motors!</p>
+                    <p><strong>Service Center:</strong> DYPCET, Vectors Motors &amp; Co, Kolhapur - 416002</p>
+                    <p><strong>Contact:</strong> 1800-VECTORS-1</p>
+                </div>
+            </div>`;
+            window.generatePDFReport = function () {
+                const el = document.getElementById('pdfContent');
+                if (!el) return;
+                const opt = {
+                    margin: 10,
+                    filename: 'Vectors_Booking_' + bookingId + '.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+                html2pdf().set(opt).from(el).save();
+            };
             pdfModal.classList.add('active');
         }
 
-        function showServiceInfo() {
-            showBookingMessage("Our service packages:", "bot");
+        // function openQueryForm() { showBookingMessage('For queries, call 1800-VECTORS-1 or WhatsApp +91 98765 43210.', 'bot'); }
+        // function openTestDrive() { showBookingMessage('To book a test drive, call +91 98765 43210 or visit our showroom.', 'bot'); }
 
-            const inputArea = document.getElementById('bookingInput');
-            if (inputArea) {
-                inputArea.innerHTML = `
-                    <div class="confirmation-card">
-                        <h3><i class="fas fa-info-circle"></i> Service Information</h3>
-                        <div class="confirmation-details">
-                            <div class="detail-row">
-                                <span class="label">Regular Service:</span>
-                                <span class="value">₹1,500 • 2-3 hours</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="label">Full Service:</span>
-                                <span class="value">₹6,000 • 5-6 hours</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="label">Brake Overhaul:</span>
-                                <span class="value">₹3,000 • 3-4 hours</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="label">Suspension Repair:</span>
-                                <span class="value">₹4,500 • 4-5 hours</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="label">Emergency Service:</span>
-                                <span class="value">₹2,000 + parts</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="button-grid">
-                        <button class="submit-btn" onclick="startBookingFlow()">
-                            <i class="fas fa-calendar-check"></i> Book Service
-                        </button>
-                        <button class="skip-btn" onclick="startBookingSystem()">
-                            <i class="fas fa-arrow-left"></i> Back
-                        </button>
-                    </div>
-                `;
-            }
+        function showServiceInfo() {
+            showBookingMessage('Our service packages:', 'bot');
+            const inp = document.getElementById('bookingInput');
+            if (inp) inp.innerHTML = `
+            <div class="confirmation-card">
+                <h3><i class="fas fa-info-circle"></i> Service Information</h3>
+                <div class="confirmation-details">
+                    <div class="detail-row"><span class="label">Regular Service:</span><span class="value">₹1,500 · 2-3 hours</span></div>
+                    <div class="detail-row"><span class="label">Full Service:</span><span class="value">₹6,000 · 5-6 hours</span></div>
+                    <div class="detail-row"><span class="label">Brake Overhaul:</span><span class="value">₹3,000 · 3-4 hours</span></div>
+                    <div class="detail-row"><span class="label">Suspension Repair:</span><span class="value">₹4,500 · 4-5 hours</span></div>
+                    <div class="detail-row"><span class="label">Emergency Service:</span><span class="value">₹2,000 + parts</span></div>
+                </div>
+            </div>
+            <div class="button-grid">
+                <button class="submit-btn" onclick="startBookingFlow()"><i class="fas fa-calendar-check"></i> Book Service</button>
+                <button class="skip-btn"   onclick="startBookingSystem()"><i class="fas fa-arrow-left"></i> Back</button>
+            </div>`;
         }
 
         function showMaintenanceTips() {
-            showBookingMessage("ATV Maintenance Tips:", "bot");
-
-            const inputArea = document.getElementById('bookingInput');
-            if (inputArea) {
-                inputArea.innerHTML = `
-                    <div class="confirmation-card">
-                        <h3><i class="fas fa-tools"></i> Maintenance Schedule</h3>
-                        <div class="confirmation-details">
-                            <div class="detail-row">
-                                <span class="label">Oil Change:</span>
-                                <span class="value">Every 50 hours or 6 months</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="label">Air Filter:</span>
-                                <span class="value">Every 100 hours</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="label">Spark Plugs:</span>
-                                <span class="value">Every 200 hours</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="label">Brake Fluid:</span>
-                                <span class="value">Annually</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="label">Coolant:</span>
-                                <span class="value">Every 2 years</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="button-grid">
-                        <button class="submit-btn" onclick="startBookingFlow()">
-                            <i class="fas fa-calendar-check"></i> Schedule Maintenance
-                        </button>
-                        <button class="skip-btn" onclick="startBookingSystem()">
-                            <i class="fas fa-arrow-left"></i> Back
-                        </button>
-                    </div>
-                `;
-            }
+            showBookingMessage('ATV Maintenance Tips:', 'bot');
+            const inp = document.getElementById('bookingInput');
+            if (inp) inp.innerHTML = `
+            <div class="confirmation-card">
+                <h3><i class="fas fa-tools"></i> Maintenance Schedule</h3>
+                <div class="confirmation-details">
+                    <div class="detail-row"><span class="label">Oil Change:</span><span class="value">Every 50 hours or 6 months</span></div>
+                    <div class="detail-row"><span class="label">Air Filter:</span><span class="value">Every 100 hours</span></div>
+                    <div class="detail-row"><span class="label">Spark Plugs:</span><span class="value">Every 200 hours</span></div>
+                    <div class="detail-row"><span class="label">Brake Fluid:</span><span class="value">Annually</span></div>
+                    <div class="detail-row"><span class="label">Coolant:</span><span class="value">Every 2 years</span></div>
+                </div>
+            </div>
+            <div class="button-grid">
+                <button class="submit-btn" onclick="startBookingFlow()"><i class="fas fa-calendar-check"></i> Schedule</button>
+                <button class="skip-btn"   onclick="startBookingSystem()"><i class="fas fa-arrow-left"></i> Back</button>
+            </div>`;
         }
 
         window.showBookingMessage = showBookingMessage;
         window.startBookingSystem = startBookingSystem;
+        // ═══════════════════════════════════════════════════════════════
+        //  DIAGNOSTIC — Analytics Engine
+        // ═══════════════════════════════════════════════════════════════
+        const DIAG_METRIC_DEFS = [
+            { key: 'state_of_charge', label: 'State of Charge', unit: '%', icon: 'fa-battery-three-quarters', min: 0, max: 100, normalRange: [20, 100] },
+            { key: 'cell_temperature', label: 'Cell Temperature', unit: '°C', icon: 'fa-thermometer-half', min: -20, max: 80, normalRange: [-20, 45] },
+            { key: 'motor_current', label: 'Motor Current', unit: 'A', icon: 'fa-bolt', min: 0, max: 300, normalRange: [0, 200] },
+            { key: 'engine_oil_pressure', label: 'Engine Oil Pressure', unit: 'kPa', icon: 'fa-oil-can', min: 0, max: 700, normalRange: [200, 500] },
+            { key: 'intake_air_pressure', label: 'Intake Air Pressure', unit: 'kPa', icon: 'fa-wind', min: 0, max: 200, normalRange: [90, 140] },
+            { key: 'output_shaft_speed', label: 'Output Shaft Speed', unit: 'RPM', icon: 'fa-cog', min: 0, max: 5000, normalRange: [0, 3500] },
+            { key: 'brake_oil_pressure', label: 'Brake Oil Pressure', unit: 'bar', icon: 'fa-circle-stop', min: 0, max: 200, normalRange: [10, 120] },
+            { key: 'total_operating_hour', label: 'Total Operating Hour', unit: 'hrs', icon: 'fa-clock', min: 0, max: 10000, normalRange: [0, 5000] }
+        ];
+
+        let diagReportData = null;
+
+        function diagGetStatus(def, val) {
+            if (val < def.normalRange[0]) return 'critical';
+            if (val > def.normalRange[1]) return 'warning';
+            return 'normal';
+        }
+        function diagColor(s) { return { normal: '#30d158', warning: '#ff9500', critical: '#ff3b30' }[s]; }
+        function diagLabel(s) { return { normal: 'NORMAL', warning: 'WARNING', critical: 'CRITICAL' }[s]; }
+
+        function diagAdvice(def, status, val) {
+            const g = { normal: 'Operating within acceptable limits. No action required.', warning: 'Approaching threshold. Schedule preventive maintenance soon.', critical: 'CRITICAL: Outside safe range. Immediate service required.' };
+            const sp = {
+                state_of_charge: { critical: 'Battery critically low (' + val + '%). Charge immediately.', warning: 'Battery low (' + val + '%). Plan a charging stop soon.' },
+                cell_temperature: { critical: 'Cells overheating (' + val + '°C). Stop and allow full cooling.', warning: 'Temperature elevated (' + val + '°C). Reduce load and monitor.' },
+                engine_oil_pressure: { critical: 'Oil pressure critically low (' + val + ' kPa). Risk of engine seizure.', warning: 'Oil pressure below optimal. Check oil level.' },
+                brake_oil_pressure: { critical: 'Brake pressure critical (' + val + ' bar). DO NOT OPERATE — brake failure risk.', warning: 'Brake pressure low. Inspect brake fluid immediately.' }
+            };
+            return sp[def.key] && sp[def.key][status] ? sp[def.key][status] : g[status];
+        }
+
+        function handleDiagUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            if (file.type.startsWith('image/') || file.type === 'application/pdf') { diagLoadDemo(file.name); return; }
+            const reader = new FileReader();
+            reader.onload = ev => {
+                const parsed = diagParseText(ev.target.result);
+                if (parsed && Object.keys(parsed).length >= 2) { diagReportData = parsed; diagRenderPanel(file.name); }
+                else diagLoadDemo(file.name);
+            };
+            reader.readAsText(file);
+        }
+
+        function diagParseText(text) {
+            try {
+                const json = JSON.parse(text); const data = {};
+                DIAG_METRIC_DEFS.forEach(d => {
+                    if (json[d.key] !== undefined) data[d.key] = parseFloat(json[d.key]);
+                    else if (json[d.label] !== undefined) data[d.key] = parseFloat(json[d.label]);
+                });
+                if (Object.keys(data).length > 0) return data;
+            } catch (e) { }
+            const data = {};
+            text.split(/[,;]+/).forEach(line => {
+                DIAG_METRIC_DEFS.forEach(def => {
+                    [def.key.replace(/_/g, ' '), def.label.toLowerCase()].forEach(kw => {
+                        const m = line.match(new RegExp(kw + '[^\d-]*([\d.]+)', 'i'));
+                        if (m && data[def.key] === undefined) data[def.key] = parseFloat(m[1]);
+                    });
+                });
+            });
+            return Object.keys(data).length > 0 ? data : null;
+        }
+
+        function diagLoadDemo(filename) {
+            // Demo data: intentionally includes 1 CRITICAL + 2 WARNING to reflect real-world scenarios
+            diagReportData = {
+                state_of_charge: 72,          // NORMAL  — 72% charge, within 20–100%
+                cell_temperature: 52,          // WARNING — 52°C exceeds safe limit of 45°C
+                motor_current: 145,            // NORMAL  — 145 A within 0–200 A
+                engine_oil_pressure: 140,      // CRITICAL — 140 kPa below min safe 200 kPa
+                intake_air_pressure: 105,      // NORMAL  — within 90–140 kPa
+                output_shaft_speed: 3800,      // WARNING — 3800 RPM exceeds safe 3500 RPM
+                brake_oil_pressure: 65,        // NORMAL  — 65 bar within 10–120 bar
+                total_operating_hour: 3240     // NORMAL  — 3240 hrs within 0–5000 hrs
+            };
+            diagRenderPanel(filename || 'DEMO_REPORT');
+        }
+
+        function diagRenderPanel(filename) {
+            document.getElementById('diagUploadZone').style.display = 'none';
+            const ap = document.getElementById('diagAnalyticsPanel');
+            ap.style.display = 'flex'; ap.style.flexDirection = 'column'; ap.style.flex = '1';
+            document.getElementById('diagFileName').textContent = filename;
+            document.getElementById('diagTimestamp').textContent = new Date().toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+            let normal = 0, warn = 0, crit = 0; const critItems = [];
+            const list = document.getElementById('diagMetricsList');
+            list.innerHTML = '';
+
+            DIAG_METRIC_DEFS.forEach(def => {
+                const val = diagReportData[def.key];
+                if (val === undefined) return;
+                const status = diagGetStatus(def, val);
+                const color = diagColor(status);
+                const pct = Math.min(100, Math.max(0, ((val - def.min) / (def.max - def.min)) * 100));
+                if (status === 'normal') normal++;
+                else if (status === 'warning') warn++;
+                else { crit++; critItems.push(def.label); }
+                const statusBg = status === 'critical' ? 'rgba(255,59,48,0.06)' : status === 'warning' ? 'rgba(255,149,0,0.06)' : 'rgba(48,209,88,0.04)';
+                const statusBorder = status === 'critical' ? '#ff3b30' : status === 'warning' ? '#ff9500' : '#30d158';
+                const pulseClass = status === 'critical' ? ' diag-pulse-icon' : '';
+                const row = document.createElement('div');
+                row.className = 'diag-metric-row diag-status-' + status;
+                row.style.cssText = 'background:' + statusBg + ';border-left:3px solid ' + statusBorder + ';border-radius:10px;margin-bottom:8px;';
+                row.innerHTML =
+                    '<div class="diag-row-left">' +
+                    '<div class="diag-row-icon' + pulseClass + '" style="background:' + color + '22;color:' + color + ';box-shadow:0 0 0 0 ' + color + '44;"><i class="fas ' + def.icon + '"></i></div>' +
+                    '<div class="diag-row-info">' +
+                    '<span class="diag-row-label">' + def.label + '</span>' +
+                    '<div class="diag-row-bar-track"><div class="diag-row-bar-fill" style="width:' + pct + '%;background:linear-gradient(90deg,' + color + 'cc,' + color + ');box-shadow:0 0 6px ' + color + '66;"></div></div>' +
+                    '<span class="diag-row-range">Safe: ' + def.normalRange[0] + '–' + def.normalRange[1] + ' ' + def.unit + '</span>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="diag-row-right">' +
+                    '<span class="diag-row-value" style="color:' + color + '">' + val.toLocaleString() + '<small> ' + def.unit + '</small></span>' +
+                    '<span class="diag-row-badge" style="background:' + color + '22;color:' + color + ';border:1px solid ' + color + '44;">' + diagLabel(status) + '</span>' +
+                    '</div>';
+                list.appendChild(row);
+            });
+
+            document.getElementById('diagNormal').textContent = normal;
+            document.getElementById('diagWarning').textContent = warn;
+            document.getElementById('diagCritical').textContent = crit;
+            document.getElementById('diagTotal').textContent = normal + warn + crit;
+
+            const alertEl = document.getElementById('diagAlert');
+            if (crit > 0) { alertEl.style.display = 'flex'; alertEl.className = 'diag-alert diag-alert-critical'; document.getElementById('diagAlertText').textContent = 'CRITICAL: ' + critItems.join(', ') + ' — immediate attention required.'; }
+            else if (warn > 0) { alertEl.style.display = 'flex'; alertEl.className = 'diag-alert diag-alert-warning'; document.getElementById('diagAlertText').textContent = warn + ' parameter(s) approaching threshold. Schedule maintenance.'; }
+            else alertEl.style.display = 'none';
+
+            document.getElementById('diagDownloadBtn').onclick = () => diagGeneratePDF(filename, normal, warn, crit);
+        }
+
+        function diagGeneratePDF(filename, normal, warn, crit) {
+    const now = new Date();
+    const dateStr = now.toLocaleString('en-IN', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    const reportId = 'VM-556849AG' 
+    const overallStatus = crit > 0 ? 'CRITICAL' : warn > 0 ? 'WARNING' : 'ALL SYSTEMS HEALTHY';
+    const overallColor = crit > 0 ? '#ff3b30' : warn > 0 ? '#ff9500' : '#30d158';
+
+    let metricsHTML = '';
+    DIAG_METRIC_DEFS.forEach(def => {
+        const val = diagReportData[def.key]; if (val === undefined) return;
+        const status = diagGetStatus(def, val), color = diagColor(status);
+        const pct = Math.min(100, Math.max(0, ((val - def.min) / (def.max - def.min)) * 100));
+        const advice = diagAdvice(def, status, val);
+        const rowBg = status === 'critical' ? '#fff8f8' : status === 'warning' ? '#fffcf5' : '#fff';
+        const leftAccent = status === 'critical' ? 'border-left:4px solid #ff3b30;' : status === 'warning' ? 'border-left:4px solid #ff9500;' : 'border-left:4px solid transparent;';
+        metricsHTML += '<tr style="background:' + rowBg + ';' + leftAccent + '">' +
+            '<td style="padding:12px 16px;"><div class="mt-param-name">' + def.label + '</div><div class="mt-param-sub">' + def.unit + ' &middot; ' + def.icon.replace('fa-','').replace(/-/g,' ') + '</div></td>' +
+            '<td class="mt-reading" style="padding:12px 16px;"><span class="mt-reading-val" style="color:' + color + ';">' + val.toLocaleString() + '</span><span class="mt-reading-unit">' + def.unit + '</span></td>' +
+            '<td class="mt-bar-col" style="padding:12px 16px;"><div class="mt-bar-track"><div class="mt-bar-fill" style="width:' + pct + '%;background:' + color + ';"></div></div><span class="mt-range-txt">Safe: ' + def.normalRange[0] + ' – ' + def.normalRange[1] + ' ' + def.unit + '</span></td>' +
+            '<td class="mt-status-col" style="padding:12px 16px;"><span class="mt-badge" style="background:' + color + '14;color:' + color + ';border-color:' + color + '44;">' + diagLabel(status) + '</span></td>' +
+            '<td class="mt-advice-col" style="padding:12px 16px;">' + advice + '</td>' +
+            '</tr>';
+    });
+
+    const critRows = DIAG_METRIC_DEFS.filter(d => diagReportData[d.key] !== undefined && diagGetStatus(d, diagReportData[d.key]) === 'critical').map(d => '<li style="margin-bottom:8px;font-size:12px;line-height:1.5;"><strong style="color:#cc2200;">' + d.label + '</strong> &mdash; <span style="color:#b02000;">' + diagAdvice(d, 'critical', diagReportData[d.key]) + '</span></li>').join('');
+    const warnRows = DIAG_METRIC_DEFS.filter(d => diagReportData[d.key] !== undefined && diagGetStatus(d, diagReportData[d.key]) === 'warning').map(d => '<li style="margin-bottom:8px;font-size:12px;line-height:1.5;"><strong style="color:#cc6600;">' + d.label + '</strong> &mdash; <span style="color:#a05000;">' + diagAdvice(d, 'warning', diagReportData[d.key]) + '</span></li>').join('');
+
+    const pdfHTML = `<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<style>
+  /* ========== RESET & BASE ========== */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  html, body {
+    width: 297mm;
+    background: #ffffff;
+    font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+    font-size: 13px;
+    color: #1e293b;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    line-height: 1.5;
+  }
+
+  /* ========== TOP ACCENT BAR ========== */
+  .accent-bar {
+    height: 6px;
+    background: linear-gradient(90deg, #0a1f44 0%, #1a4a8f 40%, ${overallColor} 100%);
+  }
+
+  /* ========== COVER / HEADER ========== */
+  .cover {
+    background: linear-gradient(125deg, #060f20 0%, #0c2040 45%, #122d5a 80%, #0e2348 100%);
+    padding: 40px 48px 32px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover-ring1 {
+    position: absolute;
+    right: -50px;
+    top: -50px;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    border: 55px solid rgba(255,255,255,0.04);
+  }
+  .cover-ring2 {
+    position: absolute;
+    right: 90px;
+    bottom: -70px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 35px solid rgba(255,255,255,0.035);
+  }
+  .cover-ring3 {
+    position: absolute;
+    left: -30px;
+    bottom: -30px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 25px solid rgba(255,255,255,0.025);
+  }
+  .cover-slash {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 8px;
+    height: 100%;
+    background: ${overallColor};
+    opacity: 0.7;
+  }
+  .cover-inner {
+    position: relative;
+    z-index: 2;
+  }
+  .cover-eyebrow {
+    font-size: 9px;
+    letter-spacing: 5px;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .cover-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 22px;
+    height: 1px;
+    background: rgba(255,255,255,0.25);
+  }
+  .cover-title {
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    line-height: 1.1;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+  .cover-title span {
+    color: ${overallColor};
+  }
+  .cover-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.42);
+    letter-spacing: 2px;
+    margin-bottom: 28px;
+  }
+  .cover-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 24px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    border: 1.5px solid ${overallColor};
+    color: ${overallColor};
+    background: ${overallColor}1a;
+    margin-bottom: 30px;
+  }
+  .cover-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: ${overallColor};
+    display: inline-block;
+  }
+  .cover-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+    margin-bottom: 22px;
+  }
+  .cover-meta {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+  .cover-meta-item {
+    padding: 0 0 0 20px;
+    border-left: 1px solid rgba(255,255,255,0.08);
+  }
+  .cover-meta-item:first-child {
+    padding-left: 0;
+    border-left: none;
+  }
+  .cover-meta-label {
+    font-size: 8px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .cover-meta-val {
+    font-size: 15px;
+    color: rgba(255,255,255,0.9);
+    font-weight: 600;
+    display: block;
+  }
+
+  /* ========== ALERT BANNER ========== */
+  .alert-banner {
+    padding: 14px 48px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    color: #fff;
+  }
+  .alert-banner-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .alert-banner-text {
+    line-height: 1.5;
+  }
+  .alert-banner-text strong {
+    font-size: 15px;
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  /* ========== PAGE BODY ========== */
+  .page {
+    padding: 32px 48px 36px;
+  }
+
+  /* ----- SECTION HEADINGS ----- */
+  .sec {
+    margin-top: 30px;
+  }
+  .sec-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1.5px solid #e2e8f0;
+  }
+  .sec-head-bar {
+    width: 5px;
+    height: 18px;
+    border-radius: 3px;
+    background: linear-gradient(180deg, #1a4a8f, #0a1f44);
+    flex-shrink: 0;
+  }
+  .sec-head-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: #64748b;
+  }
+  .sec-head-line {
+    flex: 1;
+    height: 1px;
+    background: #e2e8f0;
+  }
+
+  /* ----- HEALTH SUMMARY CARDS ----- */
+  .summary-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .sc {
+    padding: 18px 14px 16px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1.5px solid;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  }
+  .sc-shine {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    border-radius: 10px 10px 0 0;
+  }
+  .sc-num {
+    font-size: 40px;
+    font-weight: 900;
+    display: block;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .sc-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 700;
+    opacity: 0.7;
+    display: block;
+  }
+
+  /* ----- DETAILED PARAMETER TABLE ----- */
+  .tbl-wrap {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1.5px solid #e2e8f0;
+  }
+  .mt {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .mt thead tr {
+    background: linear-gradient(90deg, #0a1f44 0%, #1a4a8f 100%);
+  }
+  .mt th {
+    color: rgba(255,255,255,0.92);
+    padding: 12px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .mt th:nth-child(2) { text-align: center; }
+  .mt th:nth-child(4) { text-align: center; }
+  .mt td {
+    padding: 12px 16px;
+    font-size: 13px;
+    vertical-align: middle;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .mt tbody tr:last-child td { border-bottom: none; }
+  .mt tbody tr:nth-child(even) { background: #f8fafc; }
+  .mt tbody tr:nth-child(odd) { background: #ffffff; }
+  .mt-param-name {
+    font-weight: 700;
+    font-size: 14px;
+    color: #0f172a;
+    white-space: nowrap;
+  }
+  .mt-param-sub {
+    font-size: 10px;
+    color: #94a3b8;
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+  }
+  .mt-reading {
+    text-align: center;
+    white-space: nowrap;
+  }
+  .mt-reading-val {
+    font-size: 16px;
+    font-weight: 900;
+    display: block;
+    line-height: 1.2;
+  }
+  .mt-reading-unit {
+    font-size: 11px;
+    font-weight: 500;
+    color: #94a3b8;
+    display: block;
+    margin-top: 2px;
+  }
+  .mt-bar-col {
+    min-width: 110px;
+  }
+  .mt-bar-track {
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 5px;
+  }
+  .mt-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+  }
+  .mt-range-txt {
+    font-size: 10px;
+    color: #94a3b8;
+    letter-spacing: 0.4px;
+  }
+  .mt-status-col {
+    text-align: center;
+    white-space: nowrap;
+  }
+  .mt-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border: 1px solid;
+  }
+  .mt-advice-col {
+    font-size: 12px;
+    color: #334155;
+    line-height: 1.6;
+    max-width: 200px;
+  }
+
+  /* ----- RECOMMENDATIONS ----- */
+  .rec-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .rbox {
+    padding: 16px 20px;
+    border-radius: 10px;
+    border: 1.5px solid;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  }
+  .rbox-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .rbox-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .rbox-title-wrap {
+    flex: 1;
+  }
+  .rbox-title {
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.3;
+  }
+  .rbox-subtitle {
+    font-size: 10px;
+    opacity: 0.7;
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+  }
+  .rbox ul {
+    padding-left: 20px;
+  }
+  .rbox li {
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .healthy-box {
+    padding: 20px 24px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #f0fff6, #e6fff0);
+    border: 1.5px solid #30d158;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  }
+  .healthy-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+  }
+  .healthy-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: #1a7a3a;
+    margin-bottom: 5px;
+  }
+  .healthy-sub {
+    font-size: 13px;
+    color: #2a6a3a;
+    line-height: 1.6;
+  }
+
+  /* ----- AUTHORISATION / SIGN-OFF ----- */
+  .sign-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 22px;
+    margin-top: 26px;
+  }
+  .sign-box {
+    padding: 16px 18px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #fafbfc;
+  }
+  .sign-label {
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #94a3b8;
+    margin-bottom: 26px;
+    display: block;
+  }
+  .sign-line {
+    border-top: 1.5px solid #cbd5e1;
+    margin-bottom: 6px;
+  }
+  .sign-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: #334155;
+    letter-spacing: 0.5px;
+  }
+  .sign-role {
+    font-size: 10px;
+    color: #94a3b8;
+    margin-top: 3px;
+  }
+
+  /* ----- FOOTER ----- */
+  .foot {
+    margin-top: 26px;
+    padding: 14px 48px;
+    background: #f8fafc;
+    border-top: 1.5px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .foot-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .foot-brand-name {
+    font-size: 14px;
+    font-weight: 800;
+    color: #0a1f44;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .foot-brand-addr {
+    font-size: 10px;
+    color: #94a3b8;
+    letter-spacing: 0.8px;
+    margin-top: 2px;
+  }
+  .foot-center {
+    text-align: center;
+  }
+  .foot-center-report {
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .foot-center-conf {
+    font-size: 9px;
+    color: #cbd5e1;
+    letter-spacing: 1px;
+    margin-top: 3px;
+  }
+  .foot-page-wrap {
+    text-align: right;
+  }
+  .foot-page-num {
+    font-size: 12px;
+    font-weight: 800;
+    color: #1a4a8f;
+    background: #e8eeff;
+    padding: 5px 14px;
+    border-radius: 14px;
+    letter-spacing: 1px;
+    display: inline-block;
+  }
+  .foot-generated {
+    font-size: 9px;
+    color: #cbd5e1;
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ----- WATERMARK (very subtle) ----- */
+  .watermark {
+    position: fixed;
+    bottom: 90px;
+    right: 50px;
+    font-size: 36px;
+    font-weight: 900;
+    color: rgba(26, 74, 143, 0.02);
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    transform: rotate(-30deg);
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+<!-- WATERMARK -->
+<div class="watermark">VECTORS MOTORS</div>
+
+<!-- TOP ACCENT BAR -->
+<div class="accent-bar"></div>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-ring1"></div>
+  <div class="cover-ring2"></div>
+  <div class="cover-ring3"></div>
+  <div class="cover-slash"></div>
+  <div class="cover-inner">
+    <div class="cover-eyebrow">Vectors Motors &amp; Co. &nbsp;&middot;&nbsp; All-Terrain Vehicle Division</div>
+    <div class="cover-title">Vehicle <span>Diagnostic</span> Report</div>
+    <div class="cover-sub">Comprehensive System Health Analysis &amp; Parameter Assessment</div>
+    <div class="cover-status">
+      <span class="cover-status-dot"></span>
+      ${overallStatus}
+    </div>
+    <div class="cover-divider"></div>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <span class="cover-meta-label">Report ID</span>
+        <span class="cover-meta-val">${reportId}</span>
+      </div>
+      <div class="cover-meta-item">
+        <span class="cover-meta-label">Generated On</span>
+        <span class="cover-meta-val">${dateStr}</span>
+      </div>
+      <div class="cover-meta-item">
+        <span class="cover-meta-label">Source File</span>
+        <span class="cover-meta-val">${filename}</span>
+      </div>
+      <div class="cover-meta-item">
+        <span class="cover-meta-label">Parameters</span>
+        <span class="cover-meta-val">${normal + warn + crit} Analysed</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ALERT BANNER -->
+${crit > 0
+  ? `<div class="alert-banner" style="background:linear-gradient(90deg,#c0180c,#e02010);">
+      <span class="alert-banner-icon">⛔</span>
+      <div class="alert-banner-text">
+        <strong>CRITICAL ALERT — IMMEDIATE ACTION REQUIRED</strong>
+        One or more parameters are outside safe operating limits. Do not operate this vehicle until all critical issues are resolved and verified by a qualified technician.
+      </div>
+    </div>`
+  : warn > 0
+  ? `<div class="alert-banner" style="background:linear-gradient(90deg,#c07000,#e08c00);">
+      <span class="alert-banner-icon">⚠️</span>
+      <div class="alert-banner-text">
+        <strong>WARNING — SCHEDULE PREVENTIVE MAINTENANCE</strong>
+        ${warn} parameter(s) are approaching or exceeding safe thresholds. Monitor closely and schedule service at your earliest convenience.
+      </div>
+    </div>`
+  : `<div class="alert-banner" style="background:linear-gradient(90deg,#1a7a3a,#22a04a);">
+      <span class="alert-banner-icon">✅</span>
+      <div class="alert-banner-text">
+        <strong>ALL SYSTEMS HEALTHY</strong>
+        All ${normal} monitored parameters are operating within safe limits. Continue scheduled maintenance.
+      </div>
+    </div>`
+}
+
+<!-- PAGE BODY -->
+<div class="page">
+
+  <!-- SYSTEM HEALTH OVERVIEW -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-head-bar"></div>
+      <div class="sec-head-title">01 &nbsp;&nbsp; System Health Overview</div>
+      <div class="sec-head-line"></div>
+    </div>
+    <div class="summary-row">
+      <div class="sc" style="background:linear-gradient(145deg,#f0fff6,#e8fff2);border-color:#30d158;">
+        <div class="sc-shine" style="background:linear-gradient(90deg,#30d158,#22b04a);"></div>
+        <span class="sc-num" style="color:#30d158;">${normal}</span>
+        <span class="sc-label" style="color:#1a7a3a;">Normal</span>
+      </div>
+      <div class="sc" style="background:linear-gradient(145deg,#fffbf0,#fff4dc);border-color:#ff9500;">
+        <div class="sc-shine" style="background:linear-gradient(90deg,#ff9500,#e07800);"></div>
+        <span class="sc-num" style="color:#ff9500;">${warn}</span>
+        <span class="sc-label" style="color:#a06000;">Warning</span>
+      </div>
+      <div class="sc" style="background:linear-gradient(145deg,#fff5f5,#ffe8e8);border-color:#ff3b30;">
+        <div class="sc-shine" style="background:linear-gradient(90deg,#ff3b30,#cc1000);"></div>
+        <span class="sc-num" style="color:#ff3b30;">${crit}</span>
+        <span class="sc-label" style="color:#cc2200;">Critical</span>
+      </div>
+      <div class="sc" style="background:linear-gradient(145deg,#f3f6ff,#e8eeff);border-color:#4a6fbf;">
+        <div class="sc-shine" style="background:linear-gradient(90deg,#1a4a8f,#0a1f44);"></div>
+        <span class="sc-num" style="color:#1a4a8f;">${normal + warn + crit}</span>
+        <span class="sc-label" style="color:#2a4a7f;">Total Parameters</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DETAILED PARAMETER ANALYSIS -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-head-bar"></div>
+      <div class="sec-head-title">02 &nbsp;&nbsp; Detailed Parameter Analysis</div>
+      <div class="sec-head-line"></div>
+    </div>
+    <div class="tbl-wrap">
+      <table class="mt">
+        <thead>
+          <tr>
+            <th style="width:16%;">Parameter</th>
+            <th style="width:11%;text-align:center;">Reading</th>
+            <th style="width:15%;">Level &amp; Safe Range</th>
+            <th style="width:10%;text-align:center;">Status</th>
+            <th style="width:48%;">Assessment &amp; Recommended Action</th>
+          </tr>
+        </thead>
+        <tbody>${metricsHTML}</tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- RECOMMENDATIONS -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-head-bar"></div>
+      <div class="sec-head-title">03 &nbsp;&nbsp; Recommendations &amp; Required Actions</div>
+      <div class="sec-head-line"></div>
+    </div>
+    ${critRows || warnRows
+      ? `<div class="rec-grid">
+          ${critRows ? `<div class="rbox" style="background:linear-gradient(135deg,#fff5f5,#fff0f0);border-color:#ff3b30;">
+            <div class="rbox-head">
+              <div class="rbox-icon" style="background:#ff3b3018;color:#ff3b30;">⛔</div>
+              <div class="rbox-title-wrap">
+                <div class="rbox-title" style="color:#cc1000;">Immediate Action Required</div>
+                <div class="rbox-subtitle" style="color:#cc2200;">Critical parameters — do not operate</div>
+              </div>
+            </div>
+            <ul style="color:#9a1500;">${critRows}</ul>
+          </div>` : '<div></div>'}
+          ${warnRows ? `<div class="rbox" style="background:linear-gradient(135deg,#fffbf0,#fff7e6);border-color:#ff9500;">
+            <div class="rbox-head">
+              <div class="rbox-icon" style="background:#ff950018;color:#ff9500;">⚠️</div>
+              <div class="rbox-title-wrap">
+                <div class="rbox-title" style="color:#c07000;">Monitoring Required</div>
+                <div class="rbox-subtitle" style="color:#a06000;">Schedule maintenance promptly</div>
+              </div>
+            </div>
+            <ul style="color:#804a00;">${warnRows}</ul>
+          </div>` : '<div></div>'}
+        </div>`
+      : `<div class="healthy-box">
+          <span class="healthy-icon">✅</span>
+          <div>
+            <div class="healthy-title">All Systems Operating Normally</div>
+            <div class="healthy-sub">All ${normal + warn + crit} monitored parameters are within safe thresholds. Continue the regular maintenance schedule as prescribed. Next scheduled service should be performed on time to ensure continued vehicle health.</div>
+          </div>
+        </div>`
+    }
+  </div>
+
+  <!-- AUTHORISATION / SIGN-OFF -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-head-bar"></div>
+      <div class="sec-head-title">04 &nbsp;&nbsp; Authorisation &amp; Sign-Off</div>
+      <div class="sec-head-line"></div>
+    </div>
+    <div class="sign-row">
+      <div class="sign-box">
+        <span class="sign-label">Diagnostic Technician</span>
+        <div class="sign-line"></div>
+        <div class="sign-name">Authorised Signatory</div>
+        <div class="sign-role">Vectors Motors &amp; Co.</div>
+      </div>
+      <div class="sign-box">
+        <span class="sign-label">Workshop Supervisor</span>
+        <div class="sign-line"></div>
+        <div class="sign-name">Authorised Signatory</div>
+        <div class="sign-role">All-Terrain Vehicle Division</div>
+      </div>
+      <div class="sign-box" style="background:linear-gradient(135deg,#f3f6ff,#eef1ff);border-color:#c0ccee;">
+        <span class="sign-label">Report Classification</span>
+        <div style="margin-top:12px;text-align:center;">
+          <div style="font-size:13px;font-weight:900;color:#1a4a8f;letter-spacing:1px;">CONFIDENTIAL</div>
+          <div style="font-size:9px;color:#6a8abf;margin-top:5px;line-height:1.5;">For internal use only. Do not distribute without written authorisation.</div>
+          <div style="font-size:9px;color:#94a3b8;margin-top:7px;">Ref: ${reportId}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot">
+  <div class="foot-brand">
+    <div class="foot-brand-name">Vectors Motors &amp; Co.</div>
+    <div class="foot-brand-addr">DYPCET Campus, Kolhapur – 416 002 &nbsp;|&nbsp; All-Terrain Vehicle Division</div>
+  </div>
+  <div class="foot-center">
+    <div class="foot-center-report">Report ID: ${reportId}</div>
+    <div class="foot-center-conf">Confidential &nbsp;&middot;&nbsp; For Internal Use Only</div>
+  </div>
+  <div class="foot-page-wrap">
+    <div class="foot-page-num">Page 1 of 1</div>
+    <div class="foot-generated">Generated: ${dateStr}</div>
+  </div>
+</div>
+
+</body></html>`;
+
+    const btn = document.getElementById('diagDownloadBtn');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+    btn.disabled = true;
+
+    const opt = { margin: [0, 0, 0, 0], filename: 'Vectors_Diagnostic_' + reportId + '.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true, logging: false, backgroundColor: '#ffffff' }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' } };
+    const blob = new Blob([pdfHTML], { type: 'text/html;charset=utf-8' });
+    const blobUrl = URL.createObjectURL(blob);
+    const iframe = document.createElement('iframe');
+    iframe.style.cssText = 'position:fixed;left:0;top:0;width:100%;height:100%;opacity:0;pointer-events:none;z-index:-9999;border:none;';
+    iframe.src = blobUrl;
+    document.body.appendChild(iframe);
+    iframe.onload = function () {
+        setTimeout(() => {
+            const el = (iframe.contentDocument || iframe.contentWindow.document).body;
+            html2pdf().set(opt).from(el).save().then(() => {
+                document.body.removeChild(iframe); URL.revokeObjectURL(blobUrl);
+                btn.innerHTML = '<i class="fas fa-check-circle"></i> Downloaded!';
+                setTimeout(() => { btn.innerHTML = '<i class="fas fa-file-pdf"></i> Download Full Report PDF'; btn.disabled = false; }, 2800);
+            }).catch(() => {
+                window.open(blobUrl, '_blank'); document.body.removeChild(iframe);
+                btn.innerHTML = '<i class="fas fa-file-pdf"></i> Download Full Report PDF'; btn.disabled = false;
+            });
+        }, 800);
+    };
+}
     </script>
 </body>
 
-
 </html>
-

@@ -298,7 +298,7 @@ function generatePDFReport() {
 }
 
 function generatePDFBrochure() {
-    showBookingMessage("✅ PDF Downloaded successfully!", "bot");
+    showBookingMessage("✅ PDF Downloading...!", "bot");
     const services = {
         regular: { name: "Regular Service", price: 1500, time: "2-3 hours" },
         maintenance: { name: "Routine Maintenance", price: 3500, time: "3-4 hours" },
@@ -539,6 +539,7 @@ function openTestDrive() {
             </select>
 
             <input type="date" id="tdDate" class="form-input" required>
+            <input type="time" id="tdTime" class="form-input" required>
 
             <div class="button-grid">
                 <button class="submit-btn" onclick="submitTestDrive()">
@@ -567,8 +568,9 @@ function submitTestDrive() {
     const city = document.getElementById("tdCity").value.trim();
     const model = document.getElementById("tdModel").value;
     const date = document.getElementById("tdDate").value;
+    const time = document.getElementById("tdDate").value;
 
-    if (!name || !phone || !email || !city || !model || !date) {
+    if (!name || !phone || !email || !city || !model || !date || !time) {
         alert("Please fill all fields");
         return;
     }
@@ -600,7 +602,7 @@ function submitTestDrive() {
     // Bot confirmation
     showBookingMessage("✅ Test drive request submitted successfully!", "bot");
     showBookingMessage("📞 We will contact you within 24 hours to confirm your test drive.", "bot");
-    showBookingMessage(`Test Drive Details:\n📅 Date: ${new Date(date).toLocaleDateString('en-IN')}\n🏍️ Model: ${model}\n📍 City: ${city}`, "bot");
+    showBookingMessage(`Test Drive Details:\n\n Date: ${new Date(date).toLocaleDateString('en-IN')}\nTime: ${time}\nModel: ${model}\nCity: ${city}`, "bot");
 
     // Restore chatbot options
     setTimeout(() => {
@@ -1219,5 +1221,4 @@ function handleConfirmation(value, action) {
     } else if (action === "downloadSummary") {
         generatePDFReport();
     }
-
 }
